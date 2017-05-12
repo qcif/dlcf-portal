@@ -1,0 +1,31 @@
+<!-- Default home page -->
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,600' rel='stylesheet' type='text/css'>
+
+
+
+<div class="default-page">
+  <div class="header">
+    <h1 id="main-title" class="container">Welcome to the DMP Tool</h1>
+    <div class="container"><a class="btn btn-large btn-info" href="/<%= typeof branding == 'undefined'? data.branding : branding %>/<%= typeof portal == 'undefined'? data.portal : portal %>/plan/edit"><span class="glyphicon glyphicon-plus-sign"></span> Create a plan</a></div>
+    <br/>
+  </div>
+
+
+
+
+
+  <div class="main container clearfix">
+    <div class="col-md-offset-5 col-md-3">
+      <img src="/images/loading.svg" id="loading">
+    </div>
+    <dashboard></dashboard>
+
+  <script src="/dynamic/systemjs-config.js?appName=dashboard"></script>
+  <script>
+    System.import('dashboard').catch(function(err){ console.error(err); });
+  </script>
+
+
+
+  </div>
+</div>

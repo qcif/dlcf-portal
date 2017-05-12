@@ -1,0 +1,11 @@
+<div class="row">
+  <div class="col-md-offset-5 col-md-3" id="loading">
+    <img src="/images/loading.svg">
+  </div>
+  <local-auth><!-- Add Angular2 selector --></local-auth>
+</div>
+<!-- Import and Load angular 2-->
+<script src="/dynamic/systemjs-config.js?appName=localAuth"></script>
+<script>
+  System.import('localAuth').catch(function(err){ console.error(err); });
+</script>

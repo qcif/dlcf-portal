@@ -1,0 +1,69 @@
+// Copyright (c) 2017 Queensland Cyber Infrastructure Foundation (http://www.qcif.edu.au/)
+//
+// GNU GENERAL PUBLIC LICENSE
+//    Version 2, June 1991
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along
+// with this program; if not, write to the Free Software Foundation, Inc.,
+// 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+import { Injectable, Inject }       from '@angular/core';
+import { DropdownField, TextField } from './field-simple';
+import { FieldBase }     from './field-base';
+import { BaseService } from '../base-service';
+import { Http } from '@angular/http';
+import 'rxjs/add/operator/toPromise';
+import { FieldControlService } from './field-control.service';
+import { Observable } from 'rxjs/Observable';
+/**
+ * Plan Client-side services
+ *
+ *
+ *
+ * @author <a target='_' href='https://github.com/shilob'>Shilo Banihit</a>
+ */
+@Injectable()
+export class PlansService extends BaseService {
+
+  constructor (@Inject(Http) http, @Inject(FieldControlService) protected fcs: FieldControlService) {
+    super(http);
+  }
+
+  getPlanFields(planId: string = null, editable: boolean = true) {
+    if (planId) {
+
+    } else {
+      return this.getFormFieldsMeta(this.config.defaultForm, editable).then((fields) => {
+        return this.fcs.getLookupData(fields);
+      });
+    }
+  }
+
+  getFormFields(formName) {
+    return this.http.get(`${this.brandingAndPortallUrl}/plan/form/${formName}`, this.options)
+      .toPromise()
+      .then((res) => this.extractData(res));
+  }
+
+  getFormFieldsMeta(formName, editable) {
+    let fields = null;
+    return this.getFormFields(formName).then(form => {
+      if (form) {
+        fields = this.fcs.getFieldsMeta(form.fields);
+      } else {
+        console.error("Error, form not found:" + formName);
+      }
+      return fields;
+    });
+  }
+}

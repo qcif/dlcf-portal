@@ -1,0 +1,8 @@
+<% include ../../../functions %>
+<div class='container'>
+<% for (var i=0; i < sails.config.auth.active.length; i++) {
+  var activeAuth = sails.config.auth.active[i];
+%>
+<%- superPartial("/user/"+sails.config.auth[activeAuth].templatePath,branding,portal) %>
+<% } %>
+</div>
