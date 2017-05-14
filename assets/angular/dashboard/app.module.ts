@@ -5,11 +5,11 @@ import { HttpModule } from '@angular/http';
 import { AppComponent }  from './app.component';
 import { UserSimpleService } from '../shared/user.service-simple';
 import { DashboardService } from '../shared/dashboard-service';
-import { PaginationModule } from 'ngx-bootstrap';
+import { PaginationModule,TooltipModule } from 'ngx-bootstrap';
 
 
 @NgModule({
-  imports:      [ BrowserModule, HttpModule, ReactiveFormsModule, FormsModule, PaginationModule.forRoot() ],
+  imports:      [ BrowserModule, HttpModule, ReactiveFormsModule, FormsModule, PaginationModule.forRoot(), TooltipModule.forRoot() ],
   declarations: [ AppComponent ],
   providers:    [ UserSimpleService, DashboardService ],
   bootstrap:    [ AppComponent ]

@@ -91,7 +91,7 @@ z-index: 999;}
 }
 .logo h1 a:hover {text-decoration: none;opacity: .7}
 .logo h1 a span {
-    color: #1abc9c;
+    color: #428bca;
 }
 .shopping-item {
     border: 1px solid #ddd;
@@ -105,11 +105,11 @@ z-index: 999;}
     color: #666;
 }
 .cart-amunt {
-    color: #1abc9c;
+    color: #428bca;
     font-weight: 700;
 }
 .product-count {
-    background: none repeat scroll 0 0 #1abc9c;
+    background: none repeat scroll 0 0 #428bca;
     border-radius: 50%;
     color: #fff;
     display: inline-block;
@@ -128,8 +128,8 @@ z-index: 999;}
 
 
 .shopping-item:hover {
-    background: none repeat scroll 0 0 #1abc9c;
-    border-color: #1abc9c;
+    background: none repeat scroll 0 0 #428bca;
+    border-color: #428bca;
 }
 .shopping-item:hover a {
     color: #fff;text-decoration: none
@@ -165,7 +165,7 @@ z-index: 999;}
 .slide-text {display: table-cell;vertical-align: middle}
 
 .zigzag-bottom {
-background: none repeat scroll 0 0 #1abc9c;
+background: none repeat scroll 0 0 #428bca;
 bottom: -80px;
 height: 165px;
 left: -5%;
@@ -215,9 +215,9 @@ z-index: 9;
 
 
 .readmore {
-    background: none repeat scroll 0 0 #1abc9c;
+    background: none repeat scroll 0 0 #428bca;
     color: #fff;
-    border: 1px solid #1abc9c;
+    border: 1px solid #428bca;
     display: inline-block;
     font-size: 20px;
     margin-top: 15px;
@@ -230,13 +230,13 @@ z-index: 9;
 
 
 .promo-area {
-  background: none repeat scroll 0 0 #1abc9c;
+  background: none repeat scroll 0 0 #428bca;
   color: #fff;
   padding: 77px 0 200px;
 }
 
 .brands-area {
-  background: none repeat scroll 0 0 #1abc9c;
+  background: none repeat scroll 0 0 #428bca;
   color: #fff;
   padding: 0px 0 200px;
 }
@@ -285,7 +285,7 @@ z-index: 9;
   width: 100%;transition: .4s;
 }
 .product-hover a {
-    background: none repeat scroll 0 0 #1abc9c;
+    background: none repeat scroll 0 0 #428bca;
     border-radius: 5px;
     color: #fff;
     display: block;
@@ -296,20 +296,14 @@ z-index: 9;
     position: absolute;
     text-align: center;
     text-transform: uppercase;
-    border: 1px solid #1abc9c;
+    border: 1px solid #428bca;
     width: 80%;z-index: 99;transition: .4s;
 }
 .product-hover a:hover {
   background: #000;
   text-decoration: none;border-color: #444;
 }
-.product-carousel-price ins {
-  color: #1abc9c;
-  font-weight: 700;
-  margin-right: 5px;
-  text-decoration: none;
-}
-.product-hover a i.fa {
+a {
     margin-right: 5px;
 }
 .product-hover a.add-to-cart-link {top: -25%;}
@@ -435,7 +429,7 @@ padding: 35px 0 180px;}
 
 .footer-bottom-area {background: #000;color: #fff}
 .footer-about-us span {
-  color: #1abc9c;
+  color: #428bca;
 }
 .footer-wid-title {
   font-family: raleway;
@@ -462,7 +456,7 @@ padding: 35px 0 180px;}
 
 
 .footer-social a {
-  background: none repeat scroll 0 0 #1abc9c;
+  background: none repeat scroll 0 0 #428bca;
   color: #fff;
   display: inline-block;
   font-size: 20px;
@@ -471,7 +465,7 @@ padding: 35px 0 180px;}
   margin-right: 10px;
   padding-top: 5px;
   text-align: center;
-  width: 40px;border: 1px solid #1abc9c;
+  width: 40px;border: 1px solid #428bca;
 }
 
 .footer-social a:hover {background-color: #222;border-color: #666}
@@ -487,20 +481,20 @@ padding: 35px 0 180px;}
     width: 100%;
 }
 .newsletter-form input[type="submit"] {
-    background: none repeat scroll 0 0 #1abc9c;
+    background: none repeat scroll 0 0 #428bca;
     border: medium none;
     color: #fff;
     display: inline-block;
     font-size: 18px;
     padding: 7px 20px;
-    text-transform: uppercase;border: 1px solid #1abc9c;
+    text-transform: uppercase;border: 1px solid #428bca;
 }
 .newsletter-form input[type="submit"]:hover {background: #222;border-color: #666}
 .newsletter-form {
     margin-top: 25px;
 }
-a {color: #1abc9c}
-a:hover, a:focus {color: #17a78b}
+a {color: #428bca}
+a:hover, a:focus {color: #428bca}
 .footer-bottom-area {
   background: none repeat scroll 0 0 #000;
   color: #fff;
@@ -600,7 +594,7 @@ input[type="text"], input[type="password"], input[type="email"], textarea {
     padding: 10px;
 }
 input[type="submit"], button[type=submit] {
-    background: none repeat scroll 0 0 #1abc9c;
+    background: none repeat scroll 0 0 #428bca;
     border: medium none;
     color: #fff;
     padding: 11px 20px;
@@ -628,12 +622,7 @@ input[type="submit"]:hover, button[type=submit]:hover {background-color: #222}
 .thubmnail-recent > h2 a {
     color: #222;
 }
-.product-sidebar-price > ins {
-    color: #1abc9c;
-    font-weight: 700;
-    margin-right: 10px;
-    text-decoration: none;
-}
+
 .single-sidebar > ul {
     list-style: outside none none;
     margin: 0;
@@ -683,7 +672,7 @@ input[type="submit"]:hover, button[type=submit]:hover {background-color: #222}
     margin-bottom: 25px;
 }
 .product-inner-price > ins {
-    color: #1abc9c;
+    color: #428bca;
     font-weight: 700;
     margin-right: 10px;
     text-decoration: none;
@@ -693,20 +682,11 @@ input[type="submit"]:hover, button[type=submit]:hover {background-color: #222}
     margin-right: 15px;
 }
 .quantity input[type="number"] {
-    border: 1px solid #1abc9c;
+    border: 1px solid #428bca;
     padding: 5px;
     width: 50px;
 }
-.add_to_cart_button {
-    background: none repeat scroll 0 0 #1abc9c;
-    border: medium none;
-    color: #fff;
-    padding: 6px 25px;display: inline-block
-}
-.add_to_cart_button:hover {background-color: #222;color: #fff;text-decoration: none}
-form.cart {
-    margin-bottom: 25px;
-}
+
 .product-inner-category {
     margin-bottom: 30px;
 }
@@ -721,7 +701,7 @@ form.cart {
     display: inline-block;
 }
 .product-tab li.active {
-    background: none repeat scroll 0 0 #1abc9c;
+    background: none repeat scroll 0 0 #428bca;
 }
 .product-tab li.active a {
     color: #fff;
@@ -806,7 +786,7 @@ td.product-name {
     font-size: 18px;
 }
 div.quantity input.plus, div.quantity input.minus {
-    background: none repeat scroll 0 0 #1abc9c;
+    background: none repeat scroll 0 0 #428bca;
     border: medium none;
     color: #fff;
     height: 25px;
@@ -1015,5 +995,5 @@ div.logo img {
 .single-shop-product {margin-bottom: 50px}
 
 .pagination > li > a, .pagination > li > span {
-  color: #1abc9c;
+  color: #428bca;
 }

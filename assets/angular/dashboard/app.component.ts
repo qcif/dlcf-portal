@@ -7,7 +7,8 @@ import { PlanTable } from '../shared/dashboard-models';
 import * as _ from "lodash";
 import { LoadableComponent } from '../shared/loadable.component';
 import { OnInit } from '@angular/core';
-import { PaginationModule } from 'ngx-bootstrap';
+import { PaginationModule, TooltipModule} from 'ngx-bootstrap';
+
 
 declare var pageData: any;
 declare var jQuery: any;

@@ -4,10 +4,10 @@
 for var in "$@"
 do
     if [ $var = "install" ]; then
-        docker run -it --rm -v $PWD:/opt/rds-rdmp-portal nexus-prod.redboxresearchdata.com.au:21443/rds-rdmp-portal:latest /bin/bash -c "cd /opt/rds-rdmp-portal && npm install sails-hook-autoreload && npm install -g typings && npm install"
+        docker run -it --rm -v $PWD:/opt/rds-rdmp-portal qcifengineering/dlcf-portal:latest /bin/bash -c "cd /opt/rds-rdmp-portal && npm install sails-hook-autoreload && npm install -g typings && npm install"
     fi
     if [ $var = "compile" ]; then
-      docker run -it --rm -v $PWD:/opt/rds-rdmp-portal nexus-prod.redboxresearchdata.com.au:21443/rds-rdmp-portal:latest /bin/bash -c "cd /opt/rds-rdmp-portal && npm install grunt -g && grunt --gruntfile Gruntfile-ts-compile.js"
+      docker run -it --rm -v $PWD:/opt/rds-rdmp-portal qcifengineering/dlcf-portal:latest /bin/bash -c "cd /opt/rds-rdmp-portal && npm install grunt -g && grunt --gruntfile Gruntfile-ts-compile.js"
     fi
 done
 
