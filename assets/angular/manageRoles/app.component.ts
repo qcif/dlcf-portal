@@ -36,7 +36,7 @@ declare var jQuery: any;
  */
 @Component({
   selector: 'manage-roles',
-  templateUrl: '/angular/dashboard/manageRoles.html'
+  templateUrl: '/angular/manageRoles/manageRoles.html'
 })
 
 // TODO: find a way to remove jQuery dependency

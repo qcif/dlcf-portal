@@ -143,13 +143,22 @@ z-index: 999;}
 
 
 .mainmenu-area ul.navbar-nav li a {
-    color: #fff;
     font-size: 16px;
     font-weight: 700;
     padding: 20px;
+    color: white;
 }
 
-.mainmenu-area ul.navbar-nav li:hover a, .mainmenu-area ul.navbar-nav li.active a {background: #222}
+ .mainmenu-area ul.navbar-nav li.active a {
+   background-color: #222;
+   color:white;
+}
+
+.mainmenu-area ul.dropdown-menu li a {
+    color: black;
+}
+
+.mainmenu-area ul.navbar-nav li:hover a, .mainmenu-area ul.navbar-nav li.active a {}
 .mainmenu-area .nav > li > a:focus {color: #000}
 
 .slider-area {clear: both}
@@ -1020,4 +1029,22 @@ div.logo img {
 
 .dashboard-controls {
   margin-left: 0.5em;
+}
+
+.key-value-list {
+  padding: 0;
+}
+
+.key-value-pair {
+  list-style: none;
+}
+
+.key-value-pair > .key {
+  font-weight: bold;
+  font-size: 110%;
+  display:block;
+}
+
+.view-controls {
+  padding-bottom:1em;
 }

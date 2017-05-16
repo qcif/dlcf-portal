@@ -47,6 +47,13 @@ module.exports.routes = {
       'view': 'dashboard'
     }
   },
+  '/:branding/:portal/record/:oid/view': {
+    controller: 'typescript/RenderViewController',
+    action: 'render',
+    locals:{
+      'view': 'record/view'
+    }
+  },
   '/:branding/:portal/styles/theme.css': {
     controller: 'typescript/BrandingController',
     action: 'renderCss'
