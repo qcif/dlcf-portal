@@ -21,7 +21,7 @@ import { Input, Component, Injectable , Inject, OnInit} from '@angular/core';
 import { SimpleComponent } from './field-simple.component';
 import { FieldBase } from './field-base';
 import { FormGroup, FormControl } from '@angular/forms';
-import * as _ from "lodash";
+import * as _ from "lodash-lib";
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/observable/of';
@@ -32,7 +32,7 @@ import { CompleterService, CompleterData } from 'ng2-completer';
  * Vocabulary Field
  *
  * @author <a target='_' href='https://github.com/shilob'>Shilo Banihit</a>
- * 
+ *
  */
 export class VocabField extends FieldBase<any> {
   public vocabId: string;
@@ -83,7 +83,7 @@ export class VocabField extends FieldBase<any> {
 @Injectable()
 export class VocabFieldLookupService extends BaseService {
 
-  constructor (@Inject(Http) private http) {
+  constructor (@Inject(Http) http) {
     super(http);
   }
 

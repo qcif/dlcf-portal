@@ -29,11 +29,12 @@ import { LoadableComponent } from '../shared/loadable.component';
  *
  *
  * @author <a target='_' href='https://github.com/shilob'>Shilo Banihit</a>
- * 
+ *
  */
 @Component({
+  moduleId: module.id,
   selector: 'local-auth',
-  templateUrl: '/angular/localAuth/localAuth.html'
+  templateUrl: './localAuth.html'
 })
 
 @Injectable()
@@ -42,6 +43,7 @@ export class AppComponent extends LoadableComponent {
   loginMessage: string;
   isLoginDisabled: boolean;
   constructor (@Inject(UserSimpleService) protected userService: UserSimpleService, @Inject(FormBuilder) fb: FormBuilder, @Inject(DOCUMENT) protected document:any) {
+    super();
     this.form = fb.group({
         "username": ["", Validators.required],
         "password":["", Validators.required]
@@ -54,7 +56,7 @@ export class AppComponent extends LoadableComponent {
     });
   }
 
-  onLogin(event) {
+  onLogin(event:any) {
     if (this.isLoginDisabled || this.form.status == 'INVALID') {
       this.getErrors();
       return;

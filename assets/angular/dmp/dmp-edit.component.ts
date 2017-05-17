@@ -21,23 +21,25 @@ import { Component, Inject }       from '@angular/core';
 import { PlansService } from '../shared/form/plans.service';
 import { LoadableComponent } from '../shared/loadable.component';
 import { FieldControlService } from '../shared/form/field-control.service';
-import * as _ from "lodash";
+import * as _ from "lodash-lib";
 /**
  * Main DMP Edit component
  *
  * @author <a target='_' href='https://github.com/shilob'>Shilo Banihit</a>
- * 
+ *
  */
 @Component({
+  moduleId: module.id,
   selector: 'dmp-edit',
-  templateUrl: '/angular/dmp/dmp-edit.html'
+  templateUrl: './dmp-edit.html'
 })
 
 export class DmpEditComponent extends LoadableComponent {
   fields: any[] = [];
   form: FormGroup;
-  initSubs;
+  initSubs: any;
   fieldMap: any;
+  payLoad: any;
 
   constructor(
     @Inject(PlansService) protected plansService: PlansService,

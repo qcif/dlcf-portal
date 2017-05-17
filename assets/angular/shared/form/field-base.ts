@@ -70,7 +70,7 @@ export class FieldBase<T> {
     return false;
   }
 
-  public getFormElem() {
+  public getFormElem(): any {
     return this.required ? new FormControl(this.value || '', Validators.required)
                                       : new FormControl(this.value || '');
   }

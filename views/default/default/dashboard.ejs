@@ -19,12 +19,12 @@
       <img src="/images/loading.svg" id="loading">
     </div>
     <dashboard></dashboard>
-
+<% if (!sails.config.ng2.use_bundled) { %>
   <script src="/dynamic/systemjs-config.js?appName=dashboard"></script>
   <script>
     System.import('dashboard').catch(function(err){ console.error(err); });
   </script>
-
+<% } %>
 
 
   </div>

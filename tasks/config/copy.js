@@ -21,88 +21,27 @@
  */
 module.exports = function(grunt) {
 
+  // Retrieve dynamic asset configuration for node_modules
+  var dynAssetConfig = require('../../config/dynamicasset');
+  var copyFilesConfig = [
+    {
+      expand: true,
+      cwd: './assets',
+      src: ['**/*.!(coffee|less)'],
+      dest: '.tmp/public'
+    }
+  ];
+  dynAssetConfig.dynamicasset.node_modules.copy.forEach(function(moduleName){
+    copyFilesConfig.push({
+        expand: true,
+        cwd: './node_modules/' + moduleName,
+        src: '**/*',
+        dest: '.tmp/public/node_modules/' + moduleName
+      });
+  });
   grunt.config.set('copy', {
     dev: {
-      files: [
-        {
-          expand: true,
-          cwd: './assets',
-          src: ['**/*.!(coffee|less)'],
-          dest: '.tmp/public'
-        },
-        {
-          expand: true,
-          cwd: './node_modules/@angular',
-          src: '**/*',
-          dest: '.tmp/public/node_modules/@angular'
-        },
-        {
-          expand: true,
-          cwd: './node_modules/rxjs',
-          src: '**/*',
-          dest: '.tmp/public/node_modules/rxjs'
-        },
-        {
-          expand: true,
-          cwd: './node_modules/zone.js',
-          src: '**/*',
-          dest: '.tmp/public/node_modules/zone.js'
-        },
-        {
-          expand: true,
-          cwd: './node_modules/core-js',
-          src: '**/*',
-          dest: '.tmp/public/node_modules/core-js'
-        },
-        {
-          expand: true,
-          cwd: './node_modules/systemjs',
-          src: '**/*',
-          dest: '.tmp/public/node_modules/systemjs'
-        },
-        {
-          expand: true,
-          cwd: './node_modules/lodash',
-          src: '**/*',
-          dest: '.tmp/public/node_modules/lodash'
-        },
-        {
-          expand: true,
-          cwd: './node_modules/ng2-datetime',
-          src: '**/*',
-          dest: '.tmp/public/node_modules/ng2-datetime'
-        },
-        {
-          expand: true,
-          cwd: './node_modules/bootstrap-datepicker',
-          src: '**/*',
-          dest: '.tmp/public/node_modules/bootstrap-datepicker'
-        },
-        {
-          expand: true,
-          cwd: './node_modules/bootstrap-timepicker',
-          src: '**/*',
-          dest: '.tmp/public/node_modules/bootstrap-timepicker'
-        },
-        {
-          expand: true,
-          cwd: './node_modules/moment',
-          src: '**/*',
-          dest: '.tmp/public/node_modules/moment'
-        },
-        {
-          expand: true,
-          cwd: './node_modules/ng2-completer',
-          src: '**/*',
-          dest: '.tmp/public/node_modules/ng2-completer'
-        },
-        {
-          expand: true,
-          cwd: './node_modules/ngx-bootstrap',
-          src: '**/*',
-          dest: '.tmp/public/node_modules/ngx-bootstrap'
-        }
-      ]
+      files: copyFilesConfig
     },
     build: {
       files: [{

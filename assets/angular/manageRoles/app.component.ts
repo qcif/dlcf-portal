@@ -23,7 +23,7 @@ import { FormArray, FormGroup, FormControl, Validators, FormBuilder } from '@ang
 import { UserSimpleService } from '../shared/user.service-simple';
 import { RolesService } from '../shared/roles-service';
 import { Role, User, LoginResult, SaveResult } from '../shared/user-models';
-import * as _ from "lodash";
+import * as _ from "lodash-lib";
 import { LoadableComponent } from '../shared/loadable.component';
 
 declare var pageData :any;
@@ -35,8 +35,9 @@ declare var jQuery: any;
  * @author <a target='_' href='https://github.com/shilob'>Shilo Banihit</a>
  */
 @Component({
+  moduleId: module.id,
   selector: 'manage-roles',
-  templateUrl: '/angular/dashboard/manageRoles.html'
+  templateUrl: './manageRoles.html'
 })
 
 // TODO: find a way to remove jQuery dependency

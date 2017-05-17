@@ -221,7 +221,8 @@ export module Controllers.Core {
       mergedLocal.view = {};
       mergedLocal.view.pathFromApp = resolvedView;
       mergedLocal.view.ext = 'ejs';
-
+      // merge with ng2 app...
+      _.merge(mergedLocal, this.getNg2Apps(view));
       res.view(resolvedView, mergedLocal);
     }
 
@@ -255,6 +256,14 @@ export module Controllers.Core {
         sails.log.verbose(notAjaxMsg);
         res.notFound(notAjaxMsg);
       });
+    }
+
+    protected getNg2Apps(viewPath) {
+      if (sails.config.ng2.use_bundled && sails.config.ng2.apps[viewPath]) {
+        return {ng2_apps:sails.config.ng2.apps[viewPath]};
+      } else {
+        return {ng2_apps: []};
+      }
     }
 
   }

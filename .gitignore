@@ -124,8 +124,8 @@ nbproject
 ###################################################
 typescript/controllers/*.js
 api/controllers/typescript/*.js
-assets/angular/*/*.js
-assets/angular/*/*/*.js
+assets/angular/**/*.js
+assets/angular/**/*.json
 BrandingService.js
 PathRulesService.js
 RolesService.js
@@ -133,3 +133,4 @@ UsersService.js
 CoreService.js
 *.map
 VocabService.js
+assets/angular/**/*.ngfactory*

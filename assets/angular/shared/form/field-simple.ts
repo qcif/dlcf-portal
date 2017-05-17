@@ -18,11 +18,11 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import { FieldBase } from './field-base';
-import * as _ from "lodash";
+import * as _ from "lodash-lib";
 
 /**
  * Text Field Model
- * 
+ *
  * @author <a target='_' href='https://github.com/shilob'>Shilo Banihit</a>
 
  */

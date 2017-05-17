@@ -20,14 +20,15 @@
 import { Input, Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { FieldBase } from './field-base';
 import { FormGroup } from '@angular/forms';
-import * as _ from "lodash";
-import * as moment from 'moment';
+import * as _ from "lodash-lib";
+// import moment from 'moment';
+import moment from 'moment-es6';
 declare var jQuery: any;
 /**
  * Simple Component classes
  *
  * @author <a target='_' href='https://github.com/shilob'>Shilo Banihit</a>
- * 
+ *
  */
 export class SimpleComponent {
   @Input() public field: FieldBase<any>;
@@ -151,12 +152,10 @@ export class DateTimeComponent extends SimpleComponent {
 
   updateStartDate(newVal) {
     const thisDate = moment(newVal);
-    const jInst = jQuery(this.dateTimeView._element.nativeElement);
+    const jInst = jQuery(this.dateTimeView.element.nativeElement);
     const prevStartDate = moment(jInst.datepicker('getDate'));
     if (!prevStartDate.isValid() || thisDate.isAfter(prevStartDate)) {
       jInst.datepicker('update', newVal);
-      // jInst.datepicker('setDate', newVal);
-      // jInst.datepicker().find('input').val(thisDate.format(this.field.datePickerOpts.format.toUpperCase()));
     }
     jInst.datepicker('setStartDate', newVal);
   }

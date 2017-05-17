@@ -5,6 +5,8 @@
   <manage-roles></manage-roles>
 </div>
 <script src="/dynamic/systemjs-config.js?appName=manageRoles"></script>
+<% if (!sails.config.ng2.use_bundled) { %>
 <script>
   System.import('manageRoles').catch(function(err){ console.error(err); });
 </script>
+<% } %>

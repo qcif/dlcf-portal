@@ -17,9 +17,8 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import { platformBrowser }    from '@angular/platform-browser';
-import { DmpModuleNgFactory } from './dmp.module.ngfactory';
-import {enableProdMode} from '@angular/core';
-console.log('Running DMP - Edit Mode on AoT');
-enableProdMode();
-platformBrowser().bootstrapModuleFactory(DmpModuleNgFactory);
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+
+import { DmpModule } from './dmp.module';
+
+platformBrowserDynamic().bootstrapModule(DmpModule);

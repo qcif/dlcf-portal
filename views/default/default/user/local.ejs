@@ -4,8 +4,12 @@
   </div>
   <local-auth><!-- Add Angular2 selector --></local-auth>
 </div>
-<!-- Import and Load angular 2-->
+<% if (!sails.config.ng2.use_bundled) { %>
+<!-- Import and Load angular 2 if on dev mode-->
 <script src="/dynamic/systemjs-config.js?appName=localAuth"></script>
 <script>
   System.import('localAuth').catch(function(err){ console.error(err); });
 </script>
+<%
+}
+%>

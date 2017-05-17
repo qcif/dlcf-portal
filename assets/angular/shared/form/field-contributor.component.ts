@@ -21,14 +21,14 @@ import { Input, Component, OnInit} from '@angular/core';
 import { SimpleComponent } from './field-simple.component';
 import { FieldBase } from './field-base';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import * as _ from "lodash";
+import * as _ from "lodash-lib";
 import { RbValidator } from './validators';
 /**
  * Contributor Model
  *
  *
  * @author <a target='_' href='https://github.com/shilob'>Shilo Banihit</a>
- * 
+ *
  */
 export class ContributorField extends FieldBase<any> {
   formGroup: FormGroup;
@@ -60,7 +60,7 @@ export class ContributorField extends FieldBase<any> {
     };
   }
 
-  getFormElem(valueElem = undefined) {
+  getFormElem(valueElem = undefined): any {
     if (valueElem) {
       this.value = valueElem;
     }
@@ -149,7 +149,7 @@ export class ContributorField extends FieldBase<any> {
   </div>
   `,
 })
-export class ContributorComponent extends SimpleComponent implements OnInit {
+export class ContributorComponent extends SimpleComponent {
 
   isEmpty(fieldName) {
     return this.field.formGroup.controls[fieldName].errors && _.find(this.field.formGroup.controls[fieldName].errors.emptyFields, (f) => { return f == fieldName});

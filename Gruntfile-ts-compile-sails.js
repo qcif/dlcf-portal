@@ -1,11 +1,8 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     ts: {
-      options: {
-        sourceMap: false
-      },
       default : {
-        src: ["**/*.ts", "!node_modules/**"]
+        tsconfig:'tsconfig-sails.json'
       }
     }
   });

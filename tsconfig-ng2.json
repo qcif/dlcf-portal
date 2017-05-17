@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "target": "es5",
-        "module": "commonjs",
+        "module": "es2015",
         "moduleResolution": "node",
         "isolatedModules": false,
         "jsx": "react",
@@ -18,35 +18,16 @@
     },
     "exclude": [
         "node_modules/**",
-        "typings/browser/**",
-        "typings/browser.d.ts"
+        "typings/**",
+        "api/**",
+        "typescript/**"
     ],
     "filesGlob": [
-        "typescript/**/*.ts",
-        "api/**/*.ts",
         "assets/angular/**/*.ts"
     ],
     "compileOnSave": true,
     "buildOnSave": false,
-    "atom": {
-        "rewriteTsconfig": false
-    },
     "files": [
-        "typescript/controllers/CoreController.ts",
-        "typescript/services/CoreService.ts",
-        "api/controllers/typescript/AdminController.ts",
-        "api/controllers/typescript/BrandingController.ts",
-        "api/controllers/typescript/DynamicAssetController.ts",
-        "api/controllers/typescript/PlanController.ts",
-        "api/controllers/typescript/RenderViewController.ts",
-        "api/controllers/typescript/UserController.ts",
-        "api/controllers/typescript/VocabController.ts",
-        "api/services/BrandingService.ts",
-        "api/services/FormsService.ts",
-        "api/services/PathRulesService.ts",
-        "api/services/RolesService.ts",
-        "api/services/UsersService.ts",
-        "api/services/VocabService.ts",
         "assets/angular/dashboard/app.component.ngfactory.ts",
         "assets/angular/dashboard/app.component.ts",
         "assets/angular/dashboard/app.module.ngfactory.ts",

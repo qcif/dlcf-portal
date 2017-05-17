@@ -25,11 +25,12 @@ import { FieldBase } from '../shared/form/field-base';
  * Base component for a DMP field...
  *
  * @author <a target='_' href='https://github.com/shilob'>Shilo Banihit</a>
- * 
+ *
  */
 @Component({
+  moduleId: module.id,
   selector: 'dmp-field',
-  templateUrl: '/angular/dmp/dmp-field.component.html'
+  templateUrl: './dmp-field.component.html'
 })
 export class DmpFieldComponent {
   @Input() field: FieldBase<any>;

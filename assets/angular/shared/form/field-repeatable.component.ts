@@ -22,7 +22,7 @@ import { SimpleComponent } from './field-simple.component';
 import { Container } from './field-simple';
 import { FormArray } from '@angular/forms';
 import { ContributorComponent } from './field-contributor.component';
-import * as _ from "lodash";
+import * as _ from "lodash-lib";
 /**
  * Repeatable Field Container
  *

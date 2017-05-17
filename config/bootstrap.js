@@ -11,6 +11,10 @@
 var Observable = require('rxjs/Observable').Observable;
 
 module.exports.bootstrap = function(cb) {
+    if (sails.config.environment == "production" || sails.config.ng2.force_bundle) {
+      sails.config.ng2.use_bundled = true;
+      console.log("Using NG2 Bundled files.......");
+    }
     // actual bootstrap...
     sails.services.brandingservice.bootstrap()
     .flatMap(defaultBrand => {

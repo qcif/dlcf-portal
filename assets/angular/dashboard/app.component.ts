@@ -14,8 +14,9 @@ declare var pageData: any;
 declare var jQuery: any;
 
 @Component({
+  moduleId: module.id,
   selector: 'dashboard',
-  templateUrl: '/angular/dashboard/dashboard.html'
+  templateUrl: './dashboard.html'
 })
 
 // TODO: find a way to remove jQuery dependency

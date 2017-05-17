@@ -1,3 +1,4 @@
 # rds-rdmp-portal
 
-Run ./runForDev.sh install compile at least once.
+## Development
+Run `./runForDev.sh install jit` at least once.

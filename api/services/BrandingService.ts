@@ -28,7 +28,7 @@ declare var _this;
 export module Services {
   /**
    * Branding related functions...
-   * 
+   *
    * @author <a target='_' href='https://github.com/shilob'>Shilo Banihit</a>
    */
   export class Branding extends services.Services.Core.Service {

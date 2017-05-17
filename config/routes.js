@@ -55,18 +55,6 @@ module.exports.routes = {
     controller: 'typescript/BrandingController',
     action: 'renderImage'
   },
-  '/dyn-systemjs.config.js': {
-    view: 'systemjs-config',
-    locals: {
-      layout: false
-    }
-  },
-  '/apiClientConfig.json': {
-    view: 'apiClientConfig',
-    locals: {
-      layout: false
-    }
-  },
   '/:branding/:portal/admin': {
     controller: 'typescript/AdminController',
     action: 'rolesIndex',

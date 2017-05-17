@@ -28,13 +28,13 @@ import { User, LoginResult } from './user-models'
  * User related service...
  *
  * @author <a target='_' href='https://github.com/shilob'>Shilo Banihit</a>
- * 
+ *
  */
 @Injectable()
 export class UserSimpleService extends BaseService {
-  protected baseUrl;
-  protected config;
-  protected headers;
+  protected baseUrl: any;
+  protected config: any;
+  protected headers: any;
 
   constructor (@Inject(Http) http) {
     super(http);

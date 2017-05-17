@@ -22,7 +22,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/mergeMap';
-import * as _ from "lodash";
+import * as _ from "lodash-lib";
 /**
  * Base class for all client-side services...
  *
@@ -30,12 +30,12 @@ import * as _ from "lodash";
  *
  */
 export class BaseService {
-  protected http;
-  protected config;
+  protected http: any;
+  protected config: any;
   protected baseUrl:string;
   protected brandingAndPortallUrl:string;
-  protected options;
-  protected static __config;
+  protected options: any;
+  protected static __config: any;
 
   constructor (http, initCb=null) {
     this.http = http;
