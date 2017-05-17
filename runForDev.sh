@@ -14,7 +14,7 @@ do
       export ENV=development
       docker run -it --rm -v $PWD:/opt/rds-rdmp-portal qcifengineering/dlcf-portal:latest /bin/bash -c "cd /opt/rds-rdmp-portal; npm install --only=dev; node_modules/.bin/grunt --gruntfile Gruntfile-ts-compile-all-cjs.js"
     fi
-    if [ $1 == "aot" ]; then
+    if [ $var == "aot" ]; then
       cleanUpAllJs
       linkNodeLib "lodash-es" "lodash-lib"
       compileAoT
