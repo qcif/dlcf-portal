@@ -12,7 +12,7 @@
   </thead>
   <tbody *ngFor="let plan of draftPlans.items">
       <tr>
-          <td><a href='/default/rdmp/plan/{{ plan.oid }}//edit'>{{ plan.title }}</a><span class="dashboard-controls"><a class="glyphicon glyphicon-pencil" href="#" tooltip="Edit" ></a></span></td>
+          <td><a href='/default/rdmp/record/{{ plan.oid }}/view'>{{ plan.title }}</a><span class="dashboard-controls"><a class="glyphicon glyphicon-pencil" href="#" tooltip="Edit" ></a></span></td>
           <td>{{ plan.dateCreated }}</td>
           <td>{{ plan.dateModified }}</td>
       </tr>
@@ -33,11 +33,11 @@
 </thead>
 <tbody *ngFor="let plan of activePlans.items">
     <tr>
-        <td><a href='/default/rdmp/plan/{{ plan.oid }}//edit'>{{ plan.title }}</a><span class="dashboard-controls"><a class="glyphicon glyphicon-pencil" href="#" tooltip="Edit" ></a></span></td>
+        <td><a href='/default/rdmp/record/{{ plan.oid }}/view'>{{ plan.title }}</a><span class="dashboard-controls"><a class="glyphicon glyphicon-pencil" href="#" tooltip="Edit" ></a></span></td>
         <td>{{ plan.dateCreated }}</td>
         <td>{{ plan.dateModified }}</td>
     </tr>
 </tbody>
 </table>
-<pagination [directionLinks]="false" [boundaryLinks]="true" [totalItems]="draftPlans.totalItems"
-          [(ngModel)]="draftPlans.currentPage" (pageChanged)="draftTablePageChanged($event)" class="pagination-sm"></pagination>
+<pagination [directionLinks]="false" [boundaryLinks]="true" [totalItems]="activePlans.totalItems"
+          [(ngModel)]="activePlans.currentPage" (pageChanged)="activeTablePageChanged($event)" class="pagination-sm"></pagination>
