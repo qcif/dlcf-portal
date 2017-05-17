@@ -15,12 +15,15 @@ do
       docker run -it --rm -v $PWD:/opt/rds-rdmp-portal qcifengineering/dlcf-portal:latest /bin/bash -c "cd /opt/rds-rdmp-portal; npm install --only=dev; node_modules/.bin/grunt --gruntfile Gruntfile-ts-compile-all-cjs.js"
     fi
     if [ $var == "aot" ]; then
+      docker run -it --rm -v $PWD:/opt/rds-rdmp-portal qcifengineering/dlcf-portal:latest /bin/bash -c "cd /opt/rds-rdmp-portal; ./runForDev.sh aotCompile"
+      export ENV=development
+      export FORCE_BUNDLE=1
+    fi
+    if [ $var == "aotCompile" ]; then
       cleanUpAllJs
       linkNodeLib "lodash-es" "lodash-lib"
       compileAoT
-      export ENV=development
-      export FORCE_BUNDLE=1
-      docker run -it --rm -v $PWD:/opt/rds-rdmp-portal qcifengineering/dlcf-portal:latest /bin/bash -c "cd /opt/rds-rdmp-portal; npm install;"
+      exit 0
     fi
 done
 
