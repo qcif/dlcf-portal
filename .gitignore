@@ -134,3 +134,4 @@ CoreService.js
 *.map
 VocabService.js
 assets/angular/**/*.ngfactory*
+.project

@@ -1,0 +1,35 @@
+version: '2'
+services:
+  dlcfportal:
+    image: qcifengineering/dlcf-portal:local
+    ports:
+       - "1500:1500"
+    expose:
+       - "1500"
+    environment:
+      - NODE_ENV=acceptance
+      - PORT=1500
+      - sails_ng2__force_bundle=true
+    links:
+      - mongodb:mongodb
+      - redbox:redbox
+    entrypoint: /bin/bash -c "cd /opt/rds-rdmp-portal && node app.js"
+  mongodb:
+    image: mvertes/alpine-mongo:latest
+    ports:
+       - "27017:27017"
+  redbox:
+    image: qcifengineering/dlcf-redbox
+    ports:
+       - "9000:9000"
+  acceptance:
+    build: .
+    image: qcifengineering/acceptance-testing-dlcf
+    links:
+      - dlcfportal
+    command: ['gradle', 'test']
+    environment:
+      - GEB_BUILD_LOCAL_BASE_URL=http://dlcfportal:1500
+      - SAUCE_ACCESS_KEY
+      - SAUCE_USERNAME
+      - TRAVIS_BUILD_ID
