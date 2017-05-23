@@ -1,7 +1,7 @@
 version: '2'
 services:
   dlcfportal:
-    image: qcifengineering/dlcf-portal:local
+    image: qcifengineering/dlcf-portal:latest
     ports:
        - "1500:1500"
     expose:
