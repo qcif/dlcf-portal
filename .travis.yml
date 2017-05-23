@@ -3,8 +3,9 @@ services:
 - docker
 before_install:
 - docker pull qcifengineering/acceptance-testing
+- cd support/acceptance-testing
 - docker-compose rm -f
 install:
-- cd support/acceptance-testing && docker-compose build
+- docker-compose build
 script:
 - docker-compose run acceptance gradle test
