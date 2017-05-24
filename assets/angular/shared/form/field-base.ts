@@ -38,6 +38,8 @@ export class FieldBase<T> {
   hasGroup: boolean;
   hasLookup: boolean;
   options: any;
+  groupName: string;
+  hasControl: boolean;
 
   constructor(options = {}) {
     this.setOptions(options);
@@ -51,7 +53,8 @@ export class FieldBase<T> {
     required?: boolean,
     order?: number,
     controlType?: string,
-    cssClasses?: any
+    cssClasses?: any,
+    groupName?: string
   } = {}) {
     this.value = options.value;
     this.name = options.name || '';
@@ -60,7 +63,12 @@ export class FieldBase<T> {
     this.required = !!options.required;
     this.controlType = options.controlType || '';
     this.cssClasses = options.cssClasses || {}; // array of
+    this.groupName = options.groupName || null;
+    if (this.groupName) {
+      this.hasGroup = true;
+    }
     this.options = options;
+    this.hasControl = true;
   }
 
   get isValid() {
@@ -73,5 +81,28 @@ export class FieldBase<T> {
   public getFormElem(): any {
     return this.required ? new FormControl(this.value || '', Validators.required)
                                       : new FormControl(this.value || '');
+  }
+
+  public getGroup(group, fieldMap) : any {
+    let retval = null;
+    fieldMap[this.name] = {field:this};
+    let control = this.getFormElem();
+    fieldMap[this.name].control = control;
+    if (this.hasGroup && this.groupName) {
+      if (group[this.groupName]) {
+        group[this.groupName].addControl(this.name, control);
+      } else {
+        const fg = {};
+        fg[this.name] = control;
+        group[this.groupName] = new FormGroup(fg);
+      }
+      retval = group[this.groupName];
+    } else {
+      if (this.hasControl) {
+        group[this.name] = control;
+        retval = group[this.name];
+      }
+    }
+    return retval;
   }
 }

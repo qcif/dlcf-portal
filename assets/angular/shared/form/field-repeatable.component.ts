@@ -50,12 +50,23 @@ export class RepeatableContainer extends Container {
   }
 
   getGroup(group, fieldMap) {
+    fieldMap[this.name] = {field:this};
     if (!this.value || this.value.length == 0) {
       this.control = new FormArray(this.getInitArrayEntry());
     } else {
+      let fieldCtr = 0;
+      const baseField = this.fields[0];
       this.fields = _.map(this.value, valueElem => {
-        const fieldClone = this.createNewElem(this.fields[0]);
-        fieldClone.postInit(valueElem);
+        let fieldClone = null;
+        if (fieldCtr == 0) {
+          fieldClone = baseField;
+        } else {
+          fieldClone = this.createNewElem(baseField);
+        }
+        if (_.isFunction(fieldClone.postInit)) {
+          fieldClone.postInit(valueElem);
+        }
+        fieldCtr++;
         return fieldClone;
       });
       const elems = _.map(this.fields, field => {
@@ -63,7 +74,18 @@ export class RepeatableContainer extends Container {
       });
       this.control = new FormArray(elems);
     }
-    group[this.name] = this.control;
+    fieldMap[this.name].control = this.control;
+    if (this.groupName) {
+      if (group[this.groupName]) {
+        group[this.groupName].addControl(this.name, this.control);
+      } else {
+        const fg = {};
+        fg[this.name] = this.control;
+        group[this.groupName] = fg;
+      }
+    } else {
+      group[this.name] = this.control;
+    }
   }
 
   createNewElem(baseFieldInst) {

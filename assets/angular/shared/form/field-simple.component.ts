@@ -17,11 +17,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import { Input, Component, ViewChild, ViewContainerRef } from '@angular/core';
+import { Input, Component, ViewChild, ViewContainerRef, OnInit } from '@angular/core';
 import { FieldBase } from './field-base';
 import { FormGroup } from '@angular/forms';
 import * as _ from "lodash-lib";
-// import moment from 'moment';
 import moment from 'moment-es6';
 declare var jQuery: any;
 /**
@@ -34,6 +33,13 @@ export class SimpleComponent {
   @Input() public field: FieldBase<any>;
   @Input() public form: FormGroup;
   @Input() public fieldMap: any;
+
+  public getFormControl() {
+    if (this.fieldMap && this.field) {
+      return this.fieldMap[this.field.name].control;
+    }
+    return null;
+  }
 }
 
 @Component({
@@ -41,8 +47,8 @@ export class SimpleComponent {
   template: `
   <div [formGroup]='form' class="form-group">
     <label [attr.for]="field.name">{{field.label}}</label><br/>
-    <input [formControlName]="field.name"  [id]="field.name" [type]="field.type" class="form-control">
-    <div class="text-danger" *ngIf="form.controls[field.name].hasError('required') && form.controls[field.name].touched">{{field.label}} is required</div>
+    <input [formControl]="fieldMap[field.name].control"  [id]="field.name" [type]="field.type" class="form-control">
+    <div class="text-danger" *ngIf="fieldMap[field.name].control.hasError('required') && fieldMap[field.name].control.touched">{{field.label}} is required</div>
   </div>
   `,
 })
@@ -53,8 +59,8 @@ export class TextFieldComponent extends SimpleComponent {}
   template: `
   <div [formGroup]='form' class="form-group">
     <label [attr.for]="field.name">{{field.label}}</label><br/>
-    <textarea [formControlName]="field.name" [attr.rows]="field.rows" [attr.cols]="field.cols" [id]="field.name" class="form-control">{{field.value}}</textarea>
-    <div class="text-danger" *ngIf="form.controls[field.name].hasError('required') && form.controls[field.name].touched">{{field.label}} is required</div>
+    <textarea [formControl]="fieldMap[field.name].control"  [attr.rows]="field.rows" [attr.cols]="field.cols" [id]="field.name" class="form-control">{{field.value}}</textarea>
+    <div class="text-danger" *ngIf="fieldMap[field.name].control.hasError('required') && fieldMap[field.name].control.touched">{{field.label}} is required</div>
   </div>
   `,
 })
@@ -65,10 +71,10 @@ export class TextAreaComponent extends SimpleComponent {}
   template: `
   <div [formGroup]='form'>
      <label [attr.for]="field.name">{{field.label}}</label>
-     <select [formControlName]="field.name" [id]="field.name" >
+     <select [formControl]="fieldMap[field.name].control"  [id]="field.name" >
         <option *ngFor="let opt of field.options" [value]="opt.key">{{opt.value}}</option>
      </select>
-     <div class="text-danger" *ngIf="form.controls[field.name].hasError('required') && form.controls[field.name].touched">{{field.label}} is required</div>
+     <div class="text-danger" *ngIf="fieldMap[field.name].control.hasError('required') && fieldMap[field.name].control.touched">{{field.label}} is required</div>
   </div>
   `,
 })
@@ -143,31 +149,42 @@ Based on: https://bootstrap-datepicker.readthedocs.io/en/stable/
   template: `
   <div [formGroup]='form' class="form-group">
     <label [attr.for]="field.name">{{field.label}}</label><br/>
-    <datetime #dateTime [formControl]="form.controls[field.name]" (ngModelChange)="handleChange($event)" [timepicker]="field.timePickerOpts" [datepicker]="field.datePickerOpts" [hasClearButton]="field.hasClearButton"></datetime>
+    <datetime #dateTime [formControl]="fieldMap[field.name].control" [timepicker]="field.timePickerOpts" [datepicker]="field.datePickerOpts" [hasClearButton]="field.hasClearButton"></datetime>
   </div>
   `
 })
-export class DateTimeComponent extends SimpleComponent {
+export class DateTimeComponent extends SimpleComponent implements OnInit {
   @ViewChild('dateTime', {read: ViewContainerRef}) dateTimeView: ViewContainerRef;
+
+  ngOnInit() {
+    this.getFormControl().valueChanges.subscribe(date => {
+      this.handleChange(date);
+    });
+  }
 
   updateStartDate(newVal) {
     const thisDate = moment(newVal);
-    const jInst = jQuery(this.dateTimeView.element.nativeElement);
-    const prevStartDate = moment(jInst.datepicker('getDate'));
+    const prevStartDate = moment(this.getFormControl().value);
     if (!prevStartDate.isValid() || thisDate.isAfter(prevStartDate)) {
-      jInst.datepicker('update', newVal);
+      this.getFormControl().setValue(newVal);
     }
-    jInst.datepicker('setStartDate', newVal);
+    const newOpts = _.cloneDeep(this.field.datePickerOpts);
+    newOpts.startDate = newVal;
+    this.field.datePickerOpts = newOpts;
   }
 
-  handleChange(newVal) {
+  handleChange(newVal: Date) {
     if (this.field.onChange) {
       _.forEach(this.field.onChange.setStartDate, (targetField) => {
-        this.fieldMap[targetField].field.datePickerOpts.startDate = newVal;
         this.fieldMap[targetField].instance.updateStartDate(newVal);
       });
     }
   }
+
+  formatValue() {
+    return this.field.formatValue(this.fieldMap[this.field.name].control.value);
+  }
+
 }
 // For simple buttons
 @Component({
@@ -180,4 +197,15 @@ export class SimpleButtonComponent extends SimpleComponent {
   onClick(event) {
     this.fieldMap._rootComp[this.field.onClick_RootFn]();
   }
+}
+
+@Component({
+  selector: 'hidden-field',
+  template: `
+  <div [formGroup]='form'>
+    <input type="hidden" [formControl]="fieldMap[field.name].control" />
+  </div>
+  `,
+})
+export class HiddenValueComponent extends SimpleComponent {
 }

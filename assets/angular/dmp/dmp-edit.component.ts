@@ -17,8 +17,9 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import { Component, Inject }       from '@angular/core';
-import { PlansService } from '../shared/form/plans.service';
+import { Component, Inject, Input, ElementRef } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { RecordsService } from '../shared/form/records.service';
 import { LoadableComponent } from '../shared/loadable.component';
 import { FieldControlService } from '../shared/form/field-control.service';
 import * as _ from "lodash-lib";
@@ -35,21 +36,27 @@ import * as _ from "lodash-lib";
 })
 
 export class DmpEditComponent extends LoadableComponent {
+  @Input() oid: string;
   fields: any[] = [];
   form: FormGroup;
   initSubs: any;
   fieldMap: any;
   payLoad: any;
+  status: any;
 
   constructor(
-    @Inject(PlansService) protected plansService: PlansService,
+    elm: ElementRef,
+    @Inject(RecordsService) protected RecordsService: RecordsService,
     @Inject(FieldControlService) protected fcs: FieldControlService) {
     super();
-    this.initSubs = plansService.waitForInit(200).subscribe(initStat => {
+    this.status = {};
+    this.initSubs = RecordsService.waitForInit(200).subscribe(initStat => {
       if (initStat) {
         this.initSubs.unsubscribe();
         this.fieldMap = {_rootComp:this};
-        this.plansService.getPlanFields().then(obs => {
+        this.oid = elm.nativeElement.getAttribute('oid');
+        console.log("Loading form with OID:"+ this.oid);
+        this.RecordsService.getPlanFields(this.oid).then(obs => {
           obs.subscribe(fields => {
             if (fields) {
               this.fields = fields;
@@ -62,10 +69,71 @@ export class DmpEditComponent extends LoadableComponent {
   }
 
   onSubmit() {
-    console.log(this.form);
+    this.setSaving();
+    this.form.value.metadata = this.formatValues(this.form.value.metadata);
     this.payLoad = JSON.stringify(this.form.value);
     console.log("Saving the following values:");
     console.log(this.payLoad);
+    if (_.isEmpty(this.oid)) {
+      this.RecordsService.create(this.payLoad).then(res=>{
+        this.clearSaving();
+        console.log("Create Response:");
+        console.log(res);
+        if (res.success) {
+          this.oid = res.oid;
+          this.setSuccess('Saved successfully.');
+        } else {
+          this.setError(`Error while saving: ${res.message}`);
+        }
+      });
+    } else {
+      this.RecordsService.update(this.oid, this.payLoad).then(res=>{
+        this.clearSaving();
+        console.log("Update Response:");
+        console.log(res);
+        if (res.success) {
+          this.setSuccess('Saved successfully.');
+        } else {
+          this.setError(`Error while saving: ${res.message}`);
+        }
+      });
+    }
+  }
+
+  setStatus(stat, msg) {
+    this.status[stat] = {msg: msg};
+  }
+
+  clearStatus(stat) {
+    this.status[stat] = null;
+  }
+
+  setSaving(msg='Saving...') {
+    this.clearError();
+    this.clearSuccess();
+    this.setStatus('saving', msg);
+  }
+
+  clearSaving() {
+    this.clearStatus('saving');
+  }
+
+  setError(msg) {
+    this.clearSaving();
+    this.setStatus('error', msg);
+  }
+
+  clearError() {
+    this.clearStatus('error');
+  }
+
+  setSuccess(msg) {
+    this.clearSaving();
+    this.setStatus('success', msg);
+  }
+
+  clearSuccess() {
+    this.clearStatus('success');
   }
 
   rebuildForm() {
@@ -74,6 +142,18 @@ export class DmpEditComponent extends LoadableComponent {
 
   makeActive() {
     console.log("Make this plan active!!!");
+    console.log(this.form.value);
+  }
+
+  formatValues(data) {
+    const formVals = _.cloneDeep(data);
+    _.forOwn(formVals, (val, key) => {
+      if (_.isFunction(this.fieldMap[key].instance.formatValue)) {
+        const newVal = this.fieldMap[key].instance.formatValue();
+        formVals[key] = newVal;
+      }
+    });
+    return formVals;
   }
 
 }

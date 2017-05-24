@@ -36,7 +36,12 @@ module.exports.auth = {
       can_update:true
     },
     {
-      path: '/*/*/plan(/*)',
+      path: '/*/*/record(/*)',
+      role: 'Researcher',
+      can_update:true
+    },
+    {
+      path: '/*/*/recordmeta(/*)',
       role: 'Researcher',
       can_update:true
     },

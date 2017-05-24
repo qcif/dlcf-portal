@@ -4,8 +4,16 @@
       <dmp-field *ngFor="let field of fields" [field]="field" [form]="form" class="form-row" [fieldMap]="fieldMap"></dmp-field>
       <div class="form-row">
         <div class="pull-right col-md-10">
-          <button type="submit" class="btn btn-primary">Save</button>
-          <a href="/default/rdmp/home" class="btn btn-default" >Cancel</a>
+          <button type="submit" class="btn btn-primary" [disabled]="status.saving">Save</button>
+          <a href="/default/rdmp/home" class="btn btn-default" [class.disabled]="status.saving">Cancel</a>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="pull-right col-md-10">
+          <div class="bg-info" *ngIf="status.saving">{{status.saving.msg}}<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>
+</div>
+          <div class="bg-danger" *ngIf="status.error">{{status.error.msg}}</div>
+          <div class="bg-success" *ngIf="status.success">{{status.success.msg}}</div>
         </div>
       </div>
     </form>
