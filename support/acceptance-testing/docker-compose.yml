@@ -19,7 +19,7 @@ services:
     ports:
        - "27017:27017"
   redbox:
-    image: qcifengineering/dlcf-redbox
+    image: qcifengineering/dlcf-redbox:latest
     ports:
        - "9000:9000"
   acceptance:
@@ -32,4 +32,6 @@ services:
       - GEB_BUILD_LOCAL_BASE_URL=http://dlcfportal:1500
       - SAUCE_ACCESS_KEY
       - SAUCE_USERNAME
-      - TRAVIS_BUILD_ID
+      - TRAVIS_BUILD_NUMBER
+      - REDBOX_USERNAME
+      - REDBOX_PASSWORD

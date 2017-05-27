@@ -1,10 +1,21 @@
 sudo: required
 services:
 - docker
+cache: false
 before_install:
 - cd support/acceptance-testing
-- docker-compose rm -f
 install:
 - docker-compose build
 script:
 - docker-compose run acceptance gradle test
+before_deploy:
+- docker ps -a
+- docker cp `docker ps -aqf "name=_acceptance_"`:/home/groovy/acceptance/build/reports/test-results /tmp/
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: /tmp/test-results
+  repo: qcif/acceptance-testing
+  on:
+    branch: master

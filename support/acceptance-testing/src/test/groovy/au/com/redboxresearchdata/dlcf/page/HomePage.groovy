@@ -4,41 +4,40 @@ import geb.Page
 
 /**
  * @author <a href="matt@redboxresearchdata.com.au">Matt Mulholland</a>
- * Created on 29/01/2017.
+ * Created on 25/05/2017.
  */
 class HomePage extends Page {
-    static URL = ""
+    static url = "/default/rdmp/home"
+
     static at = { $("h1#main-title")?.text() ==~ /[Ww]elcome.*[DMP].*[Tt]ool/ }
 
     static content = {
-        loginLink(required: true) { $("div a[href*='login']") }
-        loginPanel(required: false) { $(".panel-heading")?.find("Local Credentials") }
-        loginName { loginPanel.find("#username") }
-        loginPass { loginPanel.find("input[id='password']") }
-        submit { loginPanel.find("input[id='login-submit']") }
-        logoutLink { $("#user-info #logout-now") }
-    }
-
-    def login(String username, String password) {
-        loginName = username
-        loginPass = password
-        submit.click()
-    }
-
-    def showLoginDialog() {
-        if (!loginPanel?.isDisplayed()) {
-            def result = loginLink.click()
-            print result
+        loginLink(required: false) { $("div a[href*='login']") }
+        logoutLink { $(".user-menu").has('a[href$="logout"]') }
+        welcomeMessage {
+            def selector = $('.user-menu').has('.fa-user')
+            assert selector?.text().trim() ==~ /^(?s)[Ww]elcome.*$/
+            return selector
         }
+    }
+
+    String previousPageName
+
+    @Override
+    void onLoad(Page previousPage) {
+        previousPageName = previousPage.class.simpleName
+    }
+
+    def enterLogin() {
+        getDriver().manage().window().maximize()
+        def result = loginLink.click()
+        print result
     }
 
     def isLoggedIn() {
         waitFor { logoutLink }.isDisplayed()
-        !loginPanel.isDisplayed()
+        welcomeMessage.isDisplayed()
         !loginLink.isDisplayed()
     }
 
-    def isLoginDisplayed() {
-        loginPanel.isDisplayed()
-    }
 }

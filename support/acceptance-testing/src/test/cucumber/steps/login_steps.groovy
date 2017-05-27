@@ -1,28 +1,43 @@
 package steps
 
+import au.com.redboxresearchdata.dlcf.page.BasePage
 import au.com.redboxresearchdata.dlcf.page.HomePage
+import au.com.redboxresearchdata.dlcf.page.LoginPage
 
 import static cucumber.api.groovy.EN.*
 
-Given(~/^I am on the home page$/) { ->
-    to HomePage
+Given(~/^I go to the home page$/) { ->
+    via BasePage
     at HomePage
 }
 
 When(~/^I click on login$/) { ->
-    page.showLoginDialog()
+    page.enterLogin()
+}
+
+Then(~/^I am on the login page$/) { ->
+    at LoginPage
+    assert page.previousPageName == 'HomePage'
 }
 
 Then(~/^I should see the login dialog$/) { ->
-    page.loginPanel.isDisplayed()
+    page.assertLoginDialog()
 }
 
-When(~/^I am on the login dialog$/) { ->
-    page.showLoginDialog()
+Given(~/^I go to the login page$/) { ->
+    to LoginPage
+    at LoginPage
 }
 
-When(~/^I enter username "([^"]*)" and password "([^"]*)"$/) { String arg1, String arg2 ->
-    page.login(arg1, arg2)
+When(~/^I enter test username and test password$/) { ->
+    def username = System.getenv("REDBOX_USERNAME")
+    def password = System.getenv("REDBOX_PASSWORD")
+    page.login(username, password)
+}
+
+Then (~/^I am on the home page$/) { ->
+    at HomePage
+    assert page.previousPageName == 'LoginPage'
 }
 
 Then(~/^I am logged in$/) { ->

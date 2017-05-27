@@ -1,13 +1,14 @@
 Feature: Login
 
   Scenario: Select the login dialog
-    Given I am on the home page
+    Given I go to the home page
     When I click on login
-    Then I should see the login dialog
+    Then I am on the login page
+    And I should see the login dialog
 
-#
-#  Scenario: Successful login as a user
-#    Given I am on the home page
-#    And I am on the login dialog
-#    When I enter username "foo" and password "bar"
-#    Then I am logged in
+
+  Scenario: Successful login as a user
+    Given I go to the login page
+    When I enter test username and test password
+    Then I am on the home page
+    And I am logged in
