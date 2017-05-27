@@ -21,8 +21,8 @@ import { Observable } from 'rxjs/Rx';
 import services = require('../../typescript/services/CoreService.js');
 import {Sails,} from "sails";
 import * as request from "request-promise";
-import * as NodeCache from "node-cache";
 
+declare var CacheService;
 declare var sails: Sails;
 declare var _this;
 
@@ -32,7 +32,7 @@ export module Services {
    *
    *
    * @author <a target='_' href='https://github.com/shilob'>Shilo Banihit</a>
-   * 
+   *
    */
   export class Vocab extends services.Services.Core.Service {
 
@@ -40,10 +40,8 @@ export module Services {
       'bootstrap',
       'getVocab'
     ];
-    protected cache;
 
     public bootstrap() {
-      this.cache = new NodeCache();
       return Observable.from(sails.config.vocab.bootStrapVocabs)
       .flatMap(vocabId => {
         return this.getVocab(vocabId);
@@ -53,8 +51,7 @@ export module Services {
 
     public getVocab = (vocabId): Observable<any> => {
       // Check cache
-      const cacheGet = Observable.bindNodeCallback(this.cache.get)(vocabId);
-      return cacheGet.flatMap(data => {
+      return CacheService.get(vocabId).flatMap(data => {
         if (data) {
           sails.log.verbose(`Returning cached vocab: ${vocabId}`);
           return Observable.of(data);
@@ -67,7 +64,7 @@ export module Services {
           items = _.map(allRawItems, rawItem => {
             return {uri: rawItem._about, notation: rawItem.notation, label: rawItem.prefLabel._value};
           });
-          this.cache.set(vocabId, items, sails.config.vocab.cacheExpiry);
+          CacheService.set(vocabId, items);
           return Observable.of(items);
         });
       });

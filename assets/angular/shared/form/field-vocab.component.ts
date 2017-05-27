@@ -40,6 +40,7 @@ export class VocabField extends FieldBase<any> {
   public completerService;
   public control;
   protected dataService: CompleterData;
+  public initialValue;
 
   constructor(options) {
     super(options);
@@ -54,6 +55,11 @@ export class VocabField extends FieldBase<any> {
       this.value = valueElem;
     }
     this.control = new FormControl(this.value || '');
+    if (this.value) {
+      const init = _.cloneDeep(this.value);
+      init.title = this.getTitle(this.value);
+      this.initialValue = init;
+    }
     return this.control;
   }
 
@@ -74,9 +80,13 @@ export class VocabField extends FieldBase<any> {
   initLookupData() {
     // Hack for creating the intended title...
     _.forEach(this.sourceData, data => {
-      data.title = `${data.notation} - ${data.label}`;
+      data.title = this.getTitle(data);
     });
     this.dataService = this.completerService.local(this.sourceData, 'label,notation', 'title');
+  }
+
+  getTitle(data): string {
+    return `${data.notation} - ${data.label}`;
   }
 }
 
@@ -105,7 +115,7 @@ export class VocabFieldLookupService extends BaseService {
   template: `
   <div [formGroup]='form' class="form-group">
     <label>{{field.label}}</label>
-    <ng2-completer [placeholder]="'Select a valid value'" [clearUnselected]="true" (selected)="onSelect($event)" [datasource]="field.dataService" [minSearchLength]="0" inputClass="form-control"></ng2-completer>
+    <ng2-completer [placeholder]="'Select a valid value'" [clearUnselected]="true" (selected)="onSelect($event)" [datasource]="field.dataService" [minSearchLength]="0" inputClass="form-control" [initialValue]="field.initialValue"></ng2-completer>
   </div>
   `,
 })

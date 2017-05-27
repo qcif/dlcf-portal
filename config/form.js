@@ -42,12 +42,36 @@ module.exports.form = {
                 label : "Overview",
                 fields: [
                  {
+                   class: 'HiddenValue',
+                   definition: {
+                     name: 'type',
+                     value: 'rdmp',
+                   }
+                 },
+                 {
+                   class: 'HiddenValue',
+                   definition: {
+                     name: 'stage',
+                     value: 'draft',
+                     groupName: 'workflow'
+                   }
+                 },
+                 {
+                   class: 'HiddenValue',
+                   definition: {
+                     name: 'stageLabel',
+                     value: 'Draft',
+                     groupName: 'workflow'
+                   }
+                 },
+                 {
                    class: 'TextField',
                    definition: {
                      name: 'projectTitle',
                      label: 'Project Title',
                      type: 'text',
-                     required: true
+                     required: true,
+                     groupName: 'metadata'
                    }
                  },
                  {
@@ -56,7 +80,8 @@ module.exports.form = {
                      name: 'description',
                      label: 'Project Description',
                      rows: 10,
-                     cols: 10
+                     cols: 10,
+                     groupName: 'metadata'
                    }
                  },
                  {
@@ -64,8 +89,12 @@ module.exports.form = {
                    definition: {
                      name: "startDate",
                      label: "Start Date",
-                     datePickerOpts: {format: 'mm/dd/yyyy', icon: 'fa fa-calendar', clearBtn: true},
-                     onChange: {setStartDate: ['endDate']}
+                     datePickerOpts: {format: 'dd/mm/yyyy', icon: 'fa fa-calendar'},
+                     timePickerOpts: false,
+                     hasClearButton: true,
+                     valueFormat: 'YYYY-MM-DD',
+                     onChange: {setStartDate: ['endDate']},
+                     groupName: 'metadata'
                    }
                  },
                  {
@@ -73,7 +102,11 @@ module.exports.form = {
                    definition: {
                      name: "endDate",
                      label: "End Date",
-                     datePickerOpts: {format: 'mm/dd/yyyy', icon: 'fa fa-calendar', clearBtn: true}
+                     datePickerOpts: {format: 'dd/mm/yyyy', icon: 'fa fa-calendar'},
+                     timePickerOpts: false,
+                     hasClearButton: true,
+                     valueFormat: 'YYYY-MM-DD',
+                     groupName: 'metadata'
                    }
                  },
                  {
@@ -92,7 +125,8 @@ module.exports.form = {
                           vocabId: 'anzsrc-for'
                         }
                       }
-                    ]
+                    ],
+                    groupName: 'metadata'
                   }
                  }
                 ]
@@ -135,7 +169,8 @@ module.exports.form = {
                            }
                          }
                        }
-                     ]
+                     ],
+                     groupName: 'metadata'
                    }
                   }
                 ]

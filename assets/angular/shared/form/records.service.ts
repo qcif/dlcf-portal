@@ -25,6 +25,7 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { FieldControlService } from './field-control.service';
 import { Observable } from 'rxjs/Observable';
+import * as _ from "lodash-lib";
 /**
  * Plan Client-side services
  *
@@ -33,31 +34,31 @@ import { Observable } from 'rxjs/Observable';
  * @author <a target='_' href='https://github.com/shilob'>Shilo Banihit</a>
  */
 @Injectable()
-export class PlansService extends BaseService {
+export class RecordsService extends BaseService {
 
   constructor (@Inject(Http) http, @Inject(FieldControlService) protected fcs: FieldControlService) {
     super(http);
   }
 
-  getPlanFields(planId: string = null, editable: boolean = true) {
-    if (planId) {
-
-    } else {
-      return this.getFormFieldsMeta(this.config.defaultForm, editable).then((fields) => {
-        return this.fcs.getLookupData(fields);
-      });
+  getPlanFields(oid: string = null, editable: boolean = true) {
+    if (_.isEmpty(oid)) {
+      oid = null;
     }
+    return this.getFormFieldsMeta(this.config.defaultForm, editable, oid).then((fields) => {
+      return this.fcs.getLookupData(fields);
+    });
   }
 
-  getFormFields(formName) {
-    return this.http.get(`${this.brandingAndPortallUrl}/plan/form/${formName}`, this.options)
+  getFormFields(formName, oid=null) {
+    const url = oid ? `${this.brandingAndPortallUrl}/record/form/${formName}/${oid}` : `${this.brandingAndPortallUrl}/record/form/${formName}`;
+    return this.http.get(url, this.options)
       .toPromise()
       .then((res) => this.extractData(res));
   }
 
-  getFormFieldsMeta(formName, editable) {
+  getFormFieldsMeta(formName, editable, oid=null) {
     let fields = null;
-    return this.getFormFields(formName).then(form => {
+    return this.getFormFields(formName, oid).then(form => {
       if (form) {
         fields = this.fcs.getFieldsMeta(form.fields);
       } else {
@@ -66,4 +67,22 @@ export class PlansService extends BaseService {
       return fields;
     });
   }
+
+  create(record: any) {
+    return this.http.post(`${this.brandingAndPortallUrl}/recordmeta`, record, this.getOptionsClient())
+    .toPromise()
+    .then((res) => this.extractData(res) as RecordActionResult);
+  }
+
+  update(oid: string, record: any) {
+    return this.http.post(`${this.brandingAndPortallUrl}/recordmeta/${oid}`, record, this.getOptionsClient())
+    .toPromise()
+    .then((res) => this.extractData(res) as RecordActionResult);
+  }
+}
+
+export class RecordActionResult {
+  success:boolean;
+  oid: string;
+  message: string;
 }

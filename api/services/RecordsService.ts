@@ -20,47 +20,51 @@
 import { Observable } from 'rxjs/Rx';
 import services = require('../../typescript/services/CoreService.js');
 import {Sails, Model} from "sails";
+import * as request from "request-promise";
 
 declare var sails: Sails;
-declare var Form: Model;
 declare var _this;
 
 export module Services {
   /**
-   * Forms related functions...
+   * Records related functions...
    *
    * @author <a target='_' href='https://github.com/shilob'>Shilo Banihit</a>
    *
    */
-  export class Forms extends services.Services.Core.Service {
+  export class Records extends services.Services.Core.Service {
 
     protected _exportedMethods: any = [
-      'bootstrap',
-      'getForm'
+      'create',
+      'updateMeta',
+      'getMeta'
     ];
 
-    public bootstrap = (defBrand): Observable<any> => {
-      return super.getObservable(Form.find({branding:defBrand.id})).flatMap(form => {
-        if (!form || form.length == 0) {
-          sails.log.verbose("Bootstrapping form definitions... ");
-          const defForm = sails.config.form[sails.config.form.defaultForm];
-          const formObj = {
-            name: sails.config.form.defaultForm,
-            fields: defForm.fields,
-            branding: defBrand.id
-          };
-          return super.getObservable(Form.create(formObj));
-        } else {
-          sails.log.verbose("Form definition(s) exist.");
-          return Observable.of(form);
-        }
-      });
+    public create(record): Observable<any> {
+      const options = this.getOptions(sails.config.record.api.create.url);
+      options.body = record;
+      sails.log.verbose(options);
+      return Observable.fromPromise(request[sails.config.record.api.create.method](options));
     }
 
-    public getForm = (name, brandId): Observable<any> => {
-      return super.getObservable(Form.findOne({name: name, branding: brandId}));
+    public updateMeta(oid, record): Observable<any> {
+      const options = this.getOptions(sails.config.record.api.updateMeta.url, oid);
+      options.body = record;
+      return Observable.fromPromise(request[sails.config.record.api.updateMeta.method](options));
+    }
+
+    public getMeta(oid) {
+      const options = this.getOptions(sails.config.record.api.getMeta.url, oid);
+      return Observable.fromPromise(request[sails.config.record.api.getMeta.method](options));
+    }
+
+    protected getOptions(url, oid=null) {
+      if (!_.isEmpty(oid)) {
+        url = url.replace('$oid', oid);
+      }
+      return {url:url, json: true, headers: {'Authorization': `Bearer ${sails.config.redbox.apiKey}`}};
     }
 
   }
 }
-module.exports = new Services.Forms().exports();
+module.exports = new Services.Records().exports();

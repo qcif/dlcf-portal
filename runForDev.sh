@@ -1,4 +1,6 @@
 #!/bin/bash
+# Uncomment below if you need to see the minified version....
+#export buildTarget="PROD"
 source dev_build/buildFns.sh
 sudo chown -R vagrant:vagrant *
 # Not really needed but I'm putting this in a for loop in case we want to add more arguments later

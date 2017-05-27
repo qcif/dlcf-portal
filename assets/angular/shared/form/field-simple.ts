@@ -18,7 +18,9 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import { FieldBase } from './field-base';
+import { FormControl } from '@angular/forms';
 import * as _ from "lodash-lib";
+import moment from 'moment-es6';
 
 /**
  * Text Field Model
@@ -71,14 +73,16 @@ export class Container extends FieldBase<string> {
     this.content = options['content'] || '';
     this.active = options['active'] || false;
     this.type = options['type'] || '';
+    this.hasControl = false;
   }
 }
 
-export class DateTime extends FieldBase<string> {
+export class DateTime extends FieldBase<any> {
   datePickerOpts: any;
   timePickerOpts: any;
   onChange: any; // e.g. { 'setStartDate': ['name of pickers']}
   hasClearButton: boolean;
+  valueFormat: string;
 
   constructor(options) {
     super(options);
@@ -86,8 +90,20 @@ export class DateTime extends FieldBase<string> {
     this.timePickerOpts = options['timePickerOpts'] || false;
     this.onChange = options['onChange'] || null;
     this.hasClearButton = options['hasClearButton'] || false;
+    this.valueFormat = options['valueFormat'] || 'YYYY-MM-DD';
     this.controlType = 'datetime';
+    this.value = this.value ? this.parseToDate(this.value) : this.value;
   }
+
+  formatValue(value) {
+    const origVal = moment(value);
+    return origVal.format(this.valueFormat);
+  }
+
+  parseToDate(value) {
+    return moment(value, this.valueFormat).toDate();
+  }
+
 }
 
 export class SimpleButton extends FieldBase<string> {
@@ -98,5 +114,13 @@ export class SimpleButton extends FieldBase<string> {
     super(options);
     this.onClick_RootFn = options['onClick_RootFn'] || null;
     this.type = options['type'] || 'button';
+    this.hasControl = false;
+  }
+}
+
+export class HiddenValue extends FieldBase<string> {
+  constructor(options) {
+    super(options);
+    this.controlType = 'hidden';
   }
 }

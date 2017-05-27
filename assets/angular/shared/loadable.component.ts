@@ -23,9 +23,10 @@ declare var jQuery: any;
  * Convenience class to wrap JQuery calls ...
  *
  * @author <a target='_' href='https://github.com/shilob'>Shilo Banihit</a>
- * 
+ *
  */
 export class LoadableComponent implements OnInit {
+  
   ngOnInit() {
     jQuery("#loading").hide();
   }

@@ -68,7 +68,7 @@
         "assets/angular/shared/form/field-simple.ts",
         "assets/angular/shared/form/field-vocab.component.ngfactory.ts",
         "assets/angular/shared/form/field-vocab.component.ts",
-        "assets/angular/shared/form/plans.service.ts",
+        "assets/angular/shared/form/records.service.ts",
         "assets/angular/shared/form/validators.ts",
         "assets/angular/shared/loadable.component.ts",
         "assets/angular/shared/modal/base-modal.ts",

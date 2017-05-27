@@ -20,7 +20,7 @@
 import { Injectable, Inject }   from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FieldBase } from './field-base';
-import { TextField, DropdownField, Container, TextArea, DateTime, SimpleButton } from './field-simple';
+import { TextField, DropdownField, Container, TextArea, DateTime, SimpleButton, HiddenValue } from './field-simple';
 import {
   TextFieldComponent,
   DropdownFieldComponent,
@@ -28,7 +28,8 @@ import {
   TextBlockComponent,
   TextAreaComponent,
   DateTimeComponent,
-  SimpleButtonComponent } from './field-simple.component';
+  SimpleButtonComponent,
+  HiddenValueComponent } from './field-simple.component';
 import { VocabField, VocabFieldComponent, VocabFieldLookupService } from './field-vocab.component';
 import { RepeatableContainer, RepeatableVocabComponent, RepeatableContributorComponent } from './field-repeatable.component';
 import { ContributorField, ContributorComponent } from './field-contributor.component';
@@ -48,7 +49,7 @@ import { CompleterService } from 'ng2-completer';
  */
 @Injectable()
 export class FieldControlService {
-  protected typesWithFormControls = ['textbox', 'dropdown', 'radio', 'checkbox', 'textarea', 'datetime'];
+
   protected classes = {
     'TextField': { 'meta': TextField, 'comp': TextFieldComponent },
     'TextArea': { 'meta': TextArea, 'comp': TextAreaComponent },
@@ -58,7 +59,8 @@ export class FieldControlService {
     'SimpleButton': { 'meta': SimpleButton, 'comp': SimpleButtonComponent },
     'VocabField': {'meta': VocabField, 'comp': VocabFieldComponent, 'lookupService': 'vocabFieldLookupService'},
     'RepeatableContainer': {'meta': RepeatableContainer, 'comp': [RepeatableVocabComponent, RepeatableContributorComponent]},
-    'ContributorField': {'meta': ContributorField, 'comp': ContributorComponent}
+    'ContributorField': {'meta': ContributorField, 'comp': ContributorComponent},
+    'HiddenValue': {'meta': HiddenValue, 'comp': HiddenValueComponent}
   };
   constructor(@Inject(VocabFieldLookupService) private vocabFieldLookupService, @Inject(CompleterService) private completerService) { }
 
@@ -74,24 +76,13 @@ export class FieldControlService {
 
   populateFormGroup(fields, group, fieldMap) {
     fields.forEach(field => {
-      fieldMap[field.name] = {field:field};
-      if (this.hasControl(field.controlType)) {
-        group[field.name] = field.getFormElem();
-        fieldMap[field.name].control = group[field.name];
+      if (field.fields && !field.hasGroup) {
+        this.populateFormGroup(field.fields, group, fieldMap);
       } else {
-        if (field.hasGroup) {
-          field.getGroup(group, fieldMap);
-        } else
-        if (field.fields) {
-          this.populateFormGroup(field.fields, group, fieldMap);
-        }
+        field.getGroup(group, fieldMap);
       }
     });
     return group;
-  }
-
-  hasControl(controlType) {
-    return _.includes(this.typesWithFormControls, controlType);
   }
 
   getFieldsMeta(fieldsArr) {

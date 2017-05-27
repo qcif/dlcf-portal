@@ -48,7 +48,7 @@ export module Services {
     public bootstrap = (): Observable<any> => {
       return super.getObservable(BrandingConfig.findOne(_this.dBrand))
                               .flatMap(defaultBrand => {
-                                if (defaultBrand == null || defaultBrand.length == 0) {
+                                if (_.isEmpty(defaultBrand)) {
                                   // create default brand
                                   sails.log.verbose("Default brand doesn't exist, creating...");
                                   return super.getObservable(BrandingConfig.create(_this.dBrand))

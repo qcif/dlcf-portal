@@ -24,7 +24,6 @@ export module Services.Core {
         return Observable.bindCallback(q[method].bind(q))();
     }
 
-    protected get
     /**
     * Wrapper for straightforward query, no chaining..
     */

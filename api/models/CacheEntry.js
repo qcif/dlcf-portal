@@ -1,7 +1,7 @@
 /**
- * Form.js
+ * CacheEntry.js
  *
- * @description :: Configuration for each Form
+ * @description :: Cache Entry - seen as temporary, please look at more permanent solutions for caching
  * @docs        :: http://sailsjs.org/documentation/concepts/models-and-orm/models
  */
 
@@ -12,11 +12,12 @@ module.exports = {
       unique: true,
       required: true
     },
-    fields: {
+    data: {
       type: 'json'
     },
-    branding: {
-      model: 'brandingconfig',
+    // When entry was added, in seconds since epoch
+    ts_added: {
+      type: 'integer',
       required: true
     }
   }

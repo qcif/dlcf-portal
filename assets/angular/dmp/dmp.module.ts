@@ -24,18 +24,18 @@ import { HttpModule } from '@angular/http';
 import { DmpEditComponent } from './dmp-edit.component';
 import { DmpFieldComponent } from './dmp-field.component';
 import { FieldControlService } from '../shared/form/field-control.service';
-import { PlansService } from '../shared/form/plans.service';
+import { RecordsService } from '../shared/form/records.service';
 import { NKDatetimeModule } from 'ng2-datetime/ng2-datetime';
-import { TextFieldComponent, DropdownFieldComponent, TabContainerComponent, TextBlockComponent, TextAreaComponent, DateTimeComponent, SimpleButtonComponent, HtmlRawComponent } from '../shared/form/field-simple.component';
+import { TextFieldComponent, DropdownFieldComponent, TabContainerComponent, TextBlockComponent, TextAreaComponent, DateTimeComponent, SimpleButtonComponent, HtmlRawComponent, HiddenValueComponent } from '../shared/form/field-simple.component';
 import { VocabField, VocabFieldComponent, VocabFieldLookupService } from '../shared/form/field-vocab.component';
 import { RepeatableVocabComponent, RepeatableContributorComponent } from '../shared/form/field-repeatable.component';
 import { ContributorComponent } from '../shared/form/field-contributor.component';
 import { Ng2CompleterModule } from "ng2-completer";
 @NgModule({
   imports:      [ BrowserModule, HttpModule, ReactiveFormsModule, NKDatetimeModule, FormsModule, Ng2CompleterModule ],
-  declarations: [ DmpEditComponent, DmpFieldComponent, TextFieldComponent, DropdownFieldComponent, TabContainerComponent, TextBlockComponent, TextAreaComponent, DateTimeComponent, SimpleButtonComponent, VocabFieldComponent, RepeatableVocabComponent, ContributorComponent, RepeatableContributorComponent, HtmlRawComponent ],
-  providers:    [ FieldControlService, PlansService, VocabFieldLookupService ],
+  declarations: [ DmpEditComponent, DmpFieldComponent, TextFieldComponent, DropdownFieldComponent, TabContainerComponent, TextBlockComponent, TextAreaComponent, DateTimeComponent, SimpleButtonComponent, VocabFieldComponent, RepeatableVocabComponent, ContributorComponent, RepeatableContributorComponent, HtmlRawComponent, HiddenValueComponent ],
+  providers:    [ FieldControlService, RecordsService, VocabFieldLookupService ],
   bootstrap:    [ DmpEditComponent ],
-  entryComponents: [ TextFieldComponent, DropdownFieldComponent, TabContainerComponent, TextBlockComponent, TextAreaComponent, DateTimeComponent, SimpleButtonComponent, VocabFieldComponent, RepeatableVocabComponent, ContributorComponent, RepeatableContributorComponent, HtmlRawComponent ]
+  entryComponents: [ TextFieldComponent, DropdownFieldComponent, TabContainerComponent, TextBlockComponent, TextAreaComponent, DateTimeComponent, SimpleButtonComponent, VocabFieldComponent, RepeatableVocabComponent, ContributorComponent, RepeatableContributorComponent, HtmlRawComponent, HiddenValueComponent ]
 })
 export class DmpModule { }
