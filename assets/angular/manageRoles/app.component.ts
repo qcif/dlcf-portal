@@ -78,6 +78,7 @@ export class AppComponent extends LoadableComponent {
           });
           _.map(this.users, (user)=> {user.roleStr = _.join(user.roles, ', ')});
           this.filteredUsers = this.users;
+          this.setLoading(false);
         });
       }
     });

@@ -22,6 +22,7 @@ import services = require('../../typescript/services/CoreService.js');
 import {Sails, Model} from "sails";
 import * as request from "request-promise";
 
+declare var FormsService, RolesService, UsersService;
 declare var sails: Sails;
 declare var _this;
 
@@ -37,17 +38,20 @@ export module Services {
     protected _exportedMethods: any = [
       'create',
       'updateMeta',
-      'getMeta'
+      'getMeta',
+      'hasEditAccess'
     ];
 
-    public create(record): Observable<any> {
+    public create(brand, record, formName=sails.config.form.defaultForm): Observable<any> {
+      // TODO: validate metadata with the form...
       const options = this.getOptions(sails.config.record.api.create.url);
       options.body = record;
       sails.log.verbose(options);
       return Observable.fromPromise(request[sails.config.record.api.create.method](options));
     }
 
-    public updateMeta(oid, record): Observable<any> {
+    public updateMeta(brand, oid, record): Observable<any> {
+      // TODO: validate metadata with the form...
       const options = this.getOptions(sails.config.record.api.updateMeta.url, oid);
       options.body = record;
       return Observable.fromPromise(request[sails.config.record.api.updateMeta.method](options));
@@ -58,12 +62,33 @@ export module Services {
       return Observable.fromPromise(request[sails.config.record.api.getMeta.method](options));
     }
 
+
     protected getOptions(url, oid=null) {
       if (!_.isEmpty(oid)) {
         url = url.replace('$oid', oid);
       }
       return {url:url, json: true, headers: {'Authorization': `Bearer ${sails.config.redbox.apiKey}`}};
     }
+
+    /**
+     * Fine-grained access to the record
+     */
+    public hasEditAccess(brand, user, record) {
+      const isInUserEdit = _.find(record.authorization.edit, username=> {
+        return username == user.username;
+      });
+      if (isInUserEdit !== undefined) {
+        return true;
+      }
+      const isInRoleEdit = _.find(record.authorization.editRoles, roleName => {
+        const role = RolesService.getRole(brand, roleName);
+        return role && UsersService.hasRole(user, role);
+      });
+      sails.log.verbose(isInRoleEdit);
+      return isInRoleEdit !== undefined;
+    }
+
+
 
   }
 }

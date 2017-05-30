@@ -32,14 +32,15 @@ export module Services {
    *
    *
    * @author <a target='_' href='https://github.com/shilob'>Shilo Banihit</a>
-   * 
+   *
    */
   export class Users extends services.Services.Core.Service {
 
     protected _exportedMethods: any = [
       'bootstrap',
       'updateUserRoles',
-      'getUserWithId'
+      'getUserWithId',
+      'hasRole'
     ];
 
     protected localAuthInit = () => {
@@ -214,6 +215,12 @@ export module Services {
         } else {
           return Observable.throw(new Error('No such user with id:' + userid));
         }
+      });
+    }
+
+    public hasRole(user, targetRole) {
+      return _.find(user.roles, (role)=> {
+        return role.id == targetRole.id;
       });
     }
 

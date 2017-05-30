@@ -50,7 +50,7 @@ export class RecordsService extends BaseService {
   }
 
   getFormFields(formName, oid=null) {
-    const url = oid ? `${this.brandingAndPortallUrl}/record/form/${formName}/${oid}` : `${this.brandingAndPortallUrl}/record/form/${formName}`;
+    const url = oid ? `${this.brandingAndPortallUrl}/record/form/auto/${oid}` : `${this.brandingAndPortallUrl}/record/form/${formName}`;
     return this.http.get(url, this.options)
       .toPromise()
       .then((res) => this.extractData(res));
@@ -59,10 +59,11 @@ export class RecordsService extends BaseService {
   getFormFieldsMeta(formName, editable, oid=null) {
     let fields = null;
     return this.getFormFields(formName, oid).then(form => {
-      if (form) {
+      if (form && form.fields) {
         fields = this.fcs.getFieldsMeta(form.fields);
       } else {
-        console.error("Error, form not found:" + formName);
+        console.error("Error loading form:" + formName);
+        throw form;
       }
       return fields;
     });
@@ -78,6 +79,22 @@ export class RecordsService extends BaseService {
     return this.http.post(`${this.brandingAndPortallUrl}/recordmeta/${oid}`, record, this.getOptionsClient())
     .toPromise()
     .then((res) => this.extractData(res) as RecordActionResult);
+  }
+
+  next(oid: string, record: any) {
+    return this.http.post(`${this.brandingAndPortallUrl}/record/workflow/next/${oid}`, record, this.getOptionsClient())
+    .toPromise()
+    .then((res) => this.extractData(res) as RecordActionResult);
+  }
+
+  back(oid: string, record: any) {
+    return this.http.post(`${this.brandingAndPortallUrl}/record/workflow/back/${oid}`, record, this.getOptionsClient())
+    .toPromise()
+    .then((res) => this.extractData(res) as RecordActionResult);
+  }
+
+  getDashboardUrl() {
+    return `${this.brandingAndPortallUrl}/dashboard`;
   }
 }
 

@@ -21,7 +21,8 @@
 declare var module;
 declare var sails;
 import { Observable } from 'rxjs/Rx';
-declare var FormsService, RecordsService;
+import moment from 'moment-es6';
+declare var FormsService, RecordsService, WorkflowStepsService;
 /**
  * Package that contains all Controllers.
  */
@@ -41,21 +42,20 @@ export module Controllers {
         'edit',
         'getForm',
         'create',
-        'update'
+        'update',
+        'stepForward',
+        'stepBack'
     ];
-
-    /**
-     **************************************************************************************************
-     **************************************** Override default methods ********************************
-     **************************************************************************************************
-     */
-
 
     /**
      **************************************************************************************************
      **************************************** Add custom methods **************************************
      **************************************************************************************************
      */
+
+    public bootstrap() {
+
+    }
 
     public edit(req, res) {
       const oid = req.param('oid') ? req.param('oid') : '';
@@ -67,25 +67,28 @@ export module Controllers {
       const name = req.param('name');
       const oid = req.param('oid');
       sails.log.verbose(`Getting form: ${name}, with oid: ${oid}`);
-      FormsService.getForm(name, brand.id)
-      .flatMap(form => {
-        if (!_.isEmpty(oid) && !_.isEmpty(form)) {
-          return RecordsService.getMeta(oid).flatMap(currentMeta => {
-            if (_.isEmpty(currentMeta)) {
-              Observable.throw(new Error(`Error, empty metadata for OID: ${oid}`));
-              return;
+      let obs = null;
+      if (_.isEmpty(oid)) {
+        obs = FormsService.getForm(name, brand.id);
+      } else {
+        // defaults to retrieve the form of the current workflow state...
+        obs = RecordsService.getMeta(oid).flatMap(currentRec => {
+          if (_.isEmpty(currentRec)) {
+            return Observable.throw(new Error(`Error, empty metadata for OID: ${oid}`));
+          }
+          if (!RecordsService.hasEditAccess(brand, req.user, currentRec)) {
+            return Observable.throw(new Error(`User doesn't have access to this record.`));
+          }
+          return FormsService.getForm(currentRec.form, brand.id).flatMap(form=> {
+            if (_.isEmpty(form)) {
+              return Observable.throw(new Error(`Error, getting form ${currentRec.form} for OID: ${oid}`));
             }
-            this.mergeFields(form.fields, currentMeta.metadata);
+            this.mergeFields(form.fields, currentRec.metadata);
             return Observable.of(form);
           });
-        } else {
-          return Observable.of(form);
-        }
-      })
-      .flatMap(form => {
-        return Observable.of(form);
-      })
-      .subscribe(form => {
+        });
+      }
+      obs.subscribe(form => {
         if (!_.isEmpty(form)) {
           this.ajaxOk(req, res, null, form);
         } else {
@@ -96,43 +99,40 @@ export module Controllers {
         sails.log.error(error);
         this.ajaxFail(req, res, error.message);
       });
-
     }
 
     public create(req, res) {
       const brand = BrandingService.getBrand(req.session.branding);
-      const record = req.body;
+      const metadata = req.body;
+      const record = {};
       record.brandId = brand.id;
-      record.authorization = {creator: req.user.username};
-      // TODO: validate metadata with permissions in the form
-      RecordsService.create(record).subscribe(response => {
-        if (response && response.code == "200") {
-          response.success = true;
-          this.ajaxOk(req, res, null, response);
-        } else {
-          this.ajaxFail(req, res, null, response);
-        }
-      }, error => {
-        this.ajaxFail(req, res, `Failed to save record: ${error}`);
-      });
+      record.createdBy = req.user.username;
+      record.createDate = moment().format();
+      record.authorization = {view: [req.user.username], edit: [req.user.username]};
+      record.metadata = metadata;
+      WorkflowStepsService.getFirst(brand).subscribe(wfStep => {
+        this.updateWorkflowStep(record, wfStep);
+        RecordsService.create(brand, record).subscribe(response => {
+          if (response && response.code == "200") {
+            response.success = true;
+            this.ajaxOk(req, res, null, response);
+          } else {
+            this.ajaxFail(req, res, null, response);
+          }
+        }, error => {
+          this.ajaxFail(req, res, `Failed to save record: ${error}`);
+        });
+      })
     }
 
     public update(req, res) {
       const brand = BrandingService.getBrand(req.session.branding);
-      const record = req.body;
+      const metadata = req.body;
       const oid = req.param('oid');
 
-      RecordsService.getMeta(oid).flatMap(currentMeta => {
-        if (_.isEmpty(currentMeta)) {
-          return Observable.throw(new Error(`Failed to update meta, cannot find existing record with oid: ${oid}`));
-        }
-        if (currentMeta.brandId != brand.id) {
-          return Observable.throw(new Error(`Failed to update meta, brand's don't match: ${currentMeta.brandId} != ${brand.id}, with oid: ${oid}`));
-        }
-        // TODO: validate metadata with permissions in the form
-        currentMeta.metadata = record.metadata;
-        currentMeta.authorization.lastSavedBy = req.user.username;
-        return RecordsService.updateMeta(oid, currentMeta);
+      this.getRecord(oid).flatMap(currentRec => {
+        currentRec.metadata = metadata;
+        return this.updateMetadata(brand, oid, currentRec, req.user.username);
       })
       .subscribe(response => {
         if (response && response.code == "200") {
@@ -148,21 +148,92 @@ export module Controllers {
       });
     }
 
-    protected flattenFields(fields, fieldArr) {
-      _.map(fields, (f)=> {
-        fieldArr.push(f);
-        if (f.fields) {
-          this.flattenFields(f.fields, fieldArr);
+    protected updateWorkflowStep(currentRec, nextStep) {
+      if (nextStep) {
+        currentRec.workflow = nextStep.config.workflow;
+        currentRec.form = nextStep.config.form;
+        currentRec.authorization.viewRoles = nextStep.config.authorization.viewRoles;
+        currentRec.authorization.editRoles = nextStep.config.authorization.editRoles;
+      }
+    }
+
+    protected getRecord(oid) {
+      return RecordsService.getMeta(oid).flatMap(currentRec => {
+        if (_.isEmpty(currentRec)) {
+          return Observable.throw(new Error(`Failed to update meta, cannot find existing record with oid: ${oid}`));
         }
+        return Observable.of(currentRec);
+      });
+    }
+
+    protected updateMetadata(brand, oid, currentRec, username) {
+      if (currentRec.brandId != brand.id) {
+        return Observable.throw(new Error(`Failed to update meta, brand's don't match: ${currentRec.brandId} != ${brand.id}, with oid: ${oid}`));
+      }
+      currentRec.lastSavedBy = username;
+      currentRec.lastSaveDate = moment().format();
+      return RecordsService.updateMeta(brand, oid, currentRec);
+    }
+
+    public stepForward(req, res) {
+      const brand = BrandingService.getBrand(req.session.branding);
+      const metadata = req.body;
+      const oid = req.param('oid');
+
+      return this.getRecord(oid).flatMap(currentRec => {
+        return WorkflowStepsService.get(brand, currentRec.workflow.next)
+        .flatMap(nextStep => {
+          sails.log.verbose("Current rec:");
+          sails.log.verbose(currentRec);
+          sails.log.verbose("Nex step:");
+          sails.log.verbose(nextStep);
+          this.updateWorkflowStep(currentRec, nextStep);
+          return this.updateMetadata(brand, oid, currentRec, req.user.username);
+        });
+      })
+      .subscribe(response => {
+        if (response && response.code == "200") {
+          response.success = true;
+          this.ajaxOk(req, res, null, response);
+        } else {
+          this.ajaxFail(req, res, null, response);
+        }
+      }, error => {
+        sails.log.error("Error updating meta:");
+        sails.log.error(error);
+        this.ajaxFail(req, res, error.message);
+      });
+    }
+
+    public stepBack(req, res) {
+      const brand = BrandingService.getBrand(req.session.branding);
+      const metadata = req.body;
+      const oid = req.param('oid');
+
+      return this.getRecord(oid).flatMap(currentRec => {
+        return WorkflowStepsService.get(brand, currentRec.workflow.next).flatMap(nextStep => {
+          this.updateWorkflowStep(currentRec, nextStep);
+          return this.updateMetadata(brand, oid, currentRec, req.user.username);
+        });
+      })
+      .subscribe(response => {
+        if (response && response.code == "200") {
+          response.success = true;
+          this.ajaxOk(req, res, null, response);
+        } else {
+          this.ajaxFail(req, res, null, response);
+        }
+      }, error => {
+        sails.log.error("Error updating meta:");
+        sails.log.error(error);
+        this.ajaxFail(req, res, error.message);
       });
     }
 
     protected mergeFields(fields, metadata) {
       _.forEach(fields, field => {
-        if (field.definition && field.definition.groupName == 'metadata') {
-          if (_.has(metadata, field.definition.name)) {
-            field.definition.value = metadata[field.definition.name];
-          }
+        if (_.has(metadata, field.definition.name)) {
+          field.definition.value = metadata[field.definition.name];
         }
         if (field.definition.fields) {
           this.mergeFields(field.definition.fields, metadata);

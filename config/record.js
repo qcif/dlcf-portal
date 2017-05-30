@@ -4,16 +4,5 @@ module.exports.record = {
     search: {method: 'get', url: "http://redbox:9000/redbox/api/v1/search"},
     getMeta: {method: 'get', url: "http://redbox:9000/redbox/api/v1/recordmetadata/$oid"},
     updateMeta: {method: 'post', url: "http://redbox:9000/redbox/api/v1/recordmetadata/$oid"}
-  },
-  template:{
-    generic: {
-      type: "",
-      metadata: {},
-      workflow: {
-        "@id": "@type",
-        "stage": "",
-        "label": ""
-      }
-    }
   }
 };

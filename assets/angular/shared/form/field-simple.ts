@@ -109,10 +109,12 @@ export class DateTime extends FieldBase<any> {
 export class SimpleButton extends FieldBase<string> {
   onClick_RootFn: any;
   type: string;
+  isDisabledFn: any;
 
   constructor(options) {
     super(options);
     this.onClick_RootFn = options['onClick_RootFn'] || null;
+    this.isDisabledFn = options['isDisabledFn'] || null;
     this.type = options['type'] || 'button';
     this.hasControl = false;
   }

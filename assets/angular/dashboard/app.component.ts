@@ -43,9 +43,9 @@ export class AppComponent extends LoadableComponent  {
         this.initSubs.unsubscribe();
         dashboardService.getDraftPlans(1).then(draftPlans => { this.draftPlans = draftPlans; });
         dashboardService.getActivePlans(1).then(activePlans => { this.activePlans = activePlans; });
+        this.setLoading(false);
       }
     });
-
 
   }
 

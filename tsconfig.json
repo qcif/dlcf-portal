@@ -49,6 +49,7 @@
         "api/services/RolesService.ts",
         "api/services/UsersService.ts",
         "api/services/VocabService.ts",
+        "api/services/WorkflowStepsService.ts",
         "assets/angular/dashboard/app.component.ngfactory.ts",
         "assets/angular/dashboard/app.component.ts",
         "assets/angular/dashboard/app.module.ngfactory.ts",

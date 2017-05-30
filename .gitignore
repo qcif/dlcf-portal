@@ -135,3 +135,7 @@ CoreService.js
 VocabService.js
 assets/angular/**/*.ngfactory*
 .project
+CacheService.js
+FormsService.js
+RecordsService.js
+WorkflowStepsService.js

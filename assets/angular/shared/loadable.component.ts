@@ -17,7 +17,6 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import { OnInit } from '@angular/core';
 declare var jQuery: any;
 /**
  * Convenience class to wrap JQuery calls ...
@@ -25,9 +24,25 @@ declare var jQuery: any;
  * @author <a target='_' href='https://github.com/shilob'>Shilo Banihit</a>
  *
  */
-export class LoadableComponent implements OnInit {
-  
-  ngOnInit() {
-    jQuery("#loading").hide();
+export class LoadableComponent  {
+  isLoading: boolean;
+
+  constructor() {
+    this.isLoading = true;
+    this.synchLoading();
   }
+
+  setLoading(loading: boolean=true) {
+    this.isLoading = loading;
+    this.synchLoading();
+  }
+
+  synchLoading() {
+    if (this.isLoading) {
+      jQuery("#loading").show();
+    } else {
+      jQuery("#loading").hide();
+    }
+  }
+
 }

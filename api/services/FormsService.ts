@@ -36,31 +36,50 @@ export module Services {
 
     protected _exportedMethods: any = [
       'bootstrap',
-      'getForm'
+      'getForm',
+      'flattenFields'
     ];
 
     public bootstrap = (defBrand): Observable<any> => {
       return super.getObservable(Form.find({branding:defBrand.id})).flatMap(form => {
         if (!form || form.length == 0) {
           sails.log.verbose("Bootstrapping form definitions... ");
-          const defForm = sails.config.form[sails.config.form.defaultForm];
+          const formDefs = [];
+          _.forOwn(sails.config.form.forms, (formDef, formName) => {
+            formDefs.push(formName);
+          });
+          return Observable.from(formDefs);
+        } else {
+          sails.log.verbose("Form definition(s) exist.");
+          return Observable.of(null);
+        }
+      })
+      .flatMap(formName => {
+        if (formName) {
           const formObj = {
-            name: sails.config.form.defaultForm,
-            fields: defForm.fields,
+            name: formName,
+            fields: sails.config.form.forms[formName].fields,
             branding: defBrand.id
           };
           return super.getObservable(Form.create(formObj));
-        } else {
-          sails.log.verbose("Form definition(s) exist.");
-          return Observable.of(form);
         }
-      });
+        return Observable.of(null);
+      })
+      .last();
     }
 
     public getForm = (name, brandId): Observable<any> => {
       return super.getObservable(Form.findOne({name: name, branding: brandId}));
     }
 
+    public flattenFields(fields, fieldArr) {
+      _.map(fields, (f)=> {
+        fieldArr.push(f);
+        if (f.fields) {
+          this.flattenFields(f.fields, fieldArr);
+        }
+      });
+    }
   }
 }
 module.exports = new Services.Forms().exports();

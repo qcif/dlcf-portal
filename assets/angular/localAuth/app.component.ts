@@ -54,6 +54,7 @@ export class AppComponent extends LoadableComponent {
         this.getErrors();
       }
     });
+    this.setLoading(false);
   }
 
   onLogin(event:any) {

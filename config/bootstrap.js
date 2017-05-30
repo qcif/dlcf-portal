@@ -39,6 +39,9 @@ module.exports.bootstrap = function(cb) {
     .flatMap(whatever => {
       return sails.services.vocabservice.bootstrap();
     })
+    .flatMap(whatever => {
+      return sails.services.workflowstepsservice.bootstrap(sails.services.brandingservice.getDefault());
+    })
     .subscribe(retval => {
       sails.log.verbose("Bootstrap complete!");
       // It's very important to trigger this callback method when you are finished

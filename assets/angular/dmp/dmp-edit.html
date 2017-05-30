@@ -10,12 +10,12 @@
       </div>
       <div class="form-row">
         <div class="pull-right col-md-10">
-          <div class="bg-info" *ngIf="status.saving">{{status.saving.msg}}<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>
-</div>
-          <div class="bg-danger" *ngIf="status.error">{{status.error.msg}}</div>
-          <div class="bg-success" *ngIf="status.success">{{status.success.msg}}</div>
+          <p class="bg-info" *ngIf="status.saving">{{status.saving.msg}}<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i></p>
+          <p class="bg-danger" *ngIf="status.error">{{status.error.msg}}</p>
+          <p class="bg-success" *ngIf="status.success">{{status.success.msg}}</p>
         </div>
       </div>
     </form>
   </div>
 </div>
+<p class="bg-danger col-md-offset-1 col-md-10 text-center" *ngIf="criticalError">{{criticalError}}</p>

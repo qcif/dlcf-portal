@@ -89,6 +89,8 @@ module.exports.routes = {
   'get /:branding/:portal/record/form/:name/:oid': 'typescript/RecordController.getForm',
   'post /:branding/:portal/recordmeta': 'typescript/RecordController.create',
   'post /:branding/:portal/recordmeta/:oid': 'typescript/RecordController.update',
+  'post /:branding/:portal/record/workflow/next/:oid': 'typescript/RecordController.stepForward',
+  'post /:branding/:portal/record/workflow/back/:oid': 'typescript/RecordController.stepForward',
   'get /:branding/:portal/vocab/:vocabId': 'typescript/VocabController.get',
   'get /dynamic/:asset': 'typescript/DynamicAssetController.get'
 };
