@@ -30,12 +30,13 @@ import { TextFieldComponent, DropdownFieldComponent, TabContainerComponent, Text
 import { VocabField, VocabFieldComponent, VocabFieldLookupService } from '../shared/form/field-vocab.component';
 import { RepeatableVocabComponent, RepeatableContributorComponent } from '../shared/form/field-repeatable.component';
 import { ContributorComponent } from '../shared/form/field-contributor.component';
+import { WorkflowStepButtonComponent } from '../shared/form/workflow-button.component';
 import { Ng2CompleterModule } from "ng2-completer";
 @NgModule({
   imports:      [ BrowserModule, HttpModule, ReactiveFormsModule, NKDatetimeModule, FormsModule, Ng2CompleterModule ],
-  declarations: [ DmpEditComponent, DmpFieldComponent, TextFieldComponent, DropdownFieldComponent, TabContainerComponent, TextBlockComponent, TextAreaComponent, DateTimeComponent, SimpleButtonComponent, VocabFieldComponent, RepeatableVocabComponent, ContributorComponent, RepeatableContributorComponent, HtmlRawComponent, HiddenValueComponent ],
+  declarations: [ DmpEditComponent, DmpFieldComponent, TextFieldComponent, DropdownFieldComponent, TabContainerComponent, TextBlockComponent, TextAreaComponent, DateTimeComponent, SimpleButtonComponent, VocabFieldComponent, RepeatableVocabComponent, ContributorComponent, RepeatableContributorComponent, HtmlRawComponent, HiddenValueComponent, WorkflowStepButtonComponent ],
   providers:    [ FieldControlService, RecordsService, VocabFieldLookupService ],
   bootstrap:    [ DmpEditComponent ],
-  entryComponents: [ TextFieldComponent, DropdownFieldComponent, TabContainerComponent, TextBlockComponent, TextAreaComponent, DateTimeComponent, SimpleButtonComponent, VocabFieldComponent, RepeatableVocabComponent, ContributorComponent, RepeatableContributorComponent, HtmlRawComponent, HiddenValueComponent ]
+  entryComponents: [ TextFieldComponent, DropdownFieldComponent, TabContainerComponent, TextBlockComponent, TextAreaComponent, DateTimeComponent, SimpleButtonComponent, VocabFieldComponent, RepeatableVocabComponent, ContributorComponent, RepeatableContributorComponent, HtmlRawComponent, HiddenValueComponent, WorkflowStepButtonComponent ]
 })
 export class DmpModule { }

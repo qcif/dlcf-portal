@@ -5,6 +5,13 @@ module.exports.form = {
   defaultForm: "default-1.0-draft",
   forms: {
     "default-1.0-draft": {
+      type: 'rdmp',
+      messages: {
+        "saving": "Saving, please wait...",
+        "validationFail": "There are issues in the form.",
+        "saveSuccess": "Saved successfully.",
+        "saveError": "Error while saving: "
+      },
       fields: [
         {
           class: "Container",
@@ -42,13 +49,6 @@ module.exports.form = {
                   id: "overview",
                   label : "Overview",
                   fields: [
-                   {
-                     class: 'HiddenValue',
-                     definition: {
-                       name: 'type',
-                       value: 'rdmp',
-                     }
-                   },
                    {
                      class: 'TextField',
                      definition: {
@@ -103,7 +103,11 @@ module.exports.form = {
                         {
                           class: 'VocabField',
                           definition: {
-                            vocabId: 'anzsrc-for'
+                            vocabId: 'anzsrc-for',
+                            "required" : true,
+                            "validationMessages" : {
+                                "required" : "Please select a valid value."
+                            }
                           }
                         }
                       ]
@@ -131,6 +135,7 @@ module.exports.form = {
                            class: 'ContributorField',
                            showHeader:true,
                            definition: {
+                             required: true,
                              roles: [
                                "Chief Investigator",
                                "Data manager",
@@ -176,12 +181,12 @@ module.exports.form = {
                       }
                     },
                     {
-                      class: 'SimpleButton',
+                      class: 'WorkflowStepButton',
                       definition: {
                         label: "Make the plan active",
                         cssClasses: "btn btn-primary",
-                        onClick_RootFn: 'stepForward',
-                        isDisabledFn: 'isSaving'
+                        isDisabledFn: 'isSaving',
+                        targetStep: 'active'
                       }
                     }
                   ]
@@ -193,6 +198,13 @@ module.exports.form = {
       ]
     },
     "default-1.0-active": {
+      type: 'rdmp',
+      messages: {
+        "saving": "Saving, please wait...",
+        "validationFail": "There are issues in the form.",
+        "saveSuccess": "Saved successfully.",
+        "saveError": "Error while saving: "
+      },
       fields: [
         {
           class: "Container",
@@ -230,13 +242,6 @@ module.exports.form = {
                   id: "overview",
                   label : "Overview",
                   fields: [
-                   {
-                     class: 'HiddenValue',
-                     definition: {
-                       name: 'type',
-                       value: 'rdmp',
-                     }
-                   },
                    {
                      class: 'TextField',
                      definition: {
@@ -291,7 +296,11 @@ module.exports.form = {
                         {
                           class: 'VocabField',
                           definition: {
-                            vocabId: 'anzsrc-for'
+                            vocabId: 'anzsrc-for',
+                            required : true,
+                            validationMessages: {
+                              required: "Please select a valid value."
+                            }
                           }
                         }
                       ]
@@ -319,6 +328,7 @@ module.exports.form = {
                            class: 'ContributorField',
                            showHeader:true,
                            definition: {
+                             required: true,
                              roles: [
                                "Chief Investigator",
                                "Data manager",
@@ -364,12 +374,12 @@ module.exports.form = {
                       }
                     },
                     {
-                      class: 'SimpleButton',
+                      class: 'WorkflowStepButton',
                       definition: {
                         label: "Retire the plan",
                         cssClasses: "btn btn-primary",
-                        onClick_RootFn: 'stepForward',
-                        isDisabledFn: 'isSaving'
+                        isDisabledFn: 'isSaving',
+                        targetStep: 'retire'
                       }
                     }
                   ]
@@ -381,6 +391,13 @@ module.exports.form = {
       ]
     },
     "default-1.0-retired": {
+      type: 'rdmp',
+      messages: {
+        "saving": "Saving, please wait...",
+        "validationFail": "There are issues in the form.",
+        "saveSuccess": "Saved successfully.",
+        "saveError": "Error while saving: "
+      },
       fields: [
         {
           class: "Container",
@@ -418,13 +435,6 @@ module.exports.form = {
                   id: "overview",
                   label : "Overview",
                   fields: [
-                   {
-                     class: 'HiddenValue',
-                     definition: {
-                       name: 'type',
-                       value: 'rdmp',
-                     }
-                   },
                    {
                      class: 'TextField',
                      definition: {
@@ -479,7 +489,11 @@ module.exports.form = {
                         {
                           class: 'VocabField',
                           definition: {
-                            vocabId: 'anzsrc-for'
+                            vocabId: 'anzsrc-for',
+                            "required" : true,
+                            "validationMessages" : {
+                                "required" : "Please select a valid value."
+                            }
                           }
                         }
                       ]
@@ -507,6 +521,7 @@ module.exports.form = {
                            class: 'ContributorField',
                            showHeader:true,
                            definition: {
+                             required: true,
                              roles: [
                                "Chief Investigator",
                                "Data manager",

@@ -18,6 +18,12 @@ module.exports = {
     branding: {
       model: 'brandingconfig',
       required: true
+    },
+    type: {
+      type: 'string'
+    },
+    messages: {
+      type: 'json'
     }
   }
 };

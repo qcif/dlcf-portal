@@ -31,8 +31,8 @@ export class RbValidator {
   /**
   * Forces validation on empty / null values
   */
-  static noEmpty(control: AbstractControl ): {[key: string]: any} {
-    return (control && (control.value === undefined || control.value == null || control.value.length == 0)) ? {'empty': true} : null;
+  static isEmpty(control: AbstractControl ): {[key: string]: any} {
+    return (control && (_.isEmpty(control.value) || control.value.length == 0));
   }
 
   /**
@@ -42,19 +42,20 @@ export class RbValidator {
   */
   static noEmptyInGroup(field: any, dependentFieldNames: string[]): ValidatorFn {
     return (control: AbstractControl ): {[key: string]: any} => {
-      const group = field.formGroup;
+      const group = field.formModel;
       if (group) {
-        const status = {hasEmptyValues: false, empty: []};
+        const status = {empty: false, emptyFields: []};
         _.forEach(dependentFieldNames, (f)=> {
-          const isEmpty = RbValidator.noEmpty(group.controls[f]);
+          const isEmpty = RbValidator.isEmpty(group.controls[f]);
           if (isEmpty) {
-            status.empty.push(f);
+            status.emptyFields.push(f);
           }
-          status.hasEmptyValues = status.hasEmptyValues || (isEmpty != null);
+          status.empty = status.empty || (isEmpty != null);
         });
-        return status.hasEmptyValues ? {'empty': true, emptyFields:status.empty} : null;
+        const retval = status.empty ? status : null;
+        return retval;
       }
-      return null;
+      console.log(`Group doesn't exist yet: ${field.name}`);
     };
   }
 }

@@ -40,12 +40,15 @@ export class RecordsService extends BaseService {
     super(http);
   }
 
-  getPlanFields(oid: string = null, editable: boolean = true) {
+  getForm(oid: string = null, editable: boolean = true) {
     if (_.isEmpty(oid)) {
       oid = null;
     }
-    return this.getFormFieldsMeta(this.config.defaultForm, editable, oid).then((fields) => {
-      return this.fcs.getLookupData(fields);
+    return this.getFormFieldsMeta(this.config.defaultForm, editable, oid).then((form) => {
+      return this.fcs.getLookupData(form.fieldsMeta).flatMap(fields => {
+        form.fieldsMata = fields;
+        return Observable.of(form);
+      });
     });
   }
 
@@ -57,15 +60,14 @@ export class RecordsService extends BaseService {
   }
 
   getFormFieldsMeta(formName, editable, oid=null) {
-    let fields = null;
     return this.getFormFields(formName, oid).then(form => {
       if (form && form.fields) {
-        fields = this.fcs.getFieldsMeta(form.fields);
+        form.fieldsMeta = this.fcs.getFieldsMeta(form.fields);
       } else {
         console.error("Error loading form:" + formName);
         throw form;
       }
-      return fields;
+      return form;
     });
   }
 
@@ -81,14 +83,8 @@ export class RecordsService extends BaseService {
     .then((res) => this.extractData(res) as RecordActionResult);
   }
 
-  next(oid: string, record: any) {
-    return this.http.post(`${this.brandingAndPortallUrl}/record/workflow/next/${oid}`, record, this.getOptionsClient())
-    .toPromise()
-    .then((res) => this.extractData(res) as RecordActionResult);
-  }
-
-  back(oid: string, record: any) {
-    return this.http.post(`${this.brandingAndPortallUrl}/record/workflow/back/${oid}`, record, this.getOptionsClient())
+  stepTo(oid: string, record: any, targetStep: string) {
+    return this.http.post(`${this.brandingAndPortallUrl}/record/workflow/step/${targetStep}/${oid}`, record, this.getOptionsClient())
     .toPromise()
     .then((res) => this.extractData(res) as RecordActionResult);
   }

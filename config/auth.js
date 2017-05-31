@@ -78,9 +78,11 @@ module.exports.auth = {
     usernameField: 'sub',
     postLoginRedir: '/',
     opts: {
-      issuer: 'https://rapid.aaf.edu.au',
-      ignoreNotBefore: true,
-      clockTolerance: 120,
+      jsonWebTokenOptions: {
+        issuer: 'https://rapid.aaf.edu.au',
+        ignoreNotBefore: true,
+        clockTolerance: 120,
+      },
       passReqToCallback: true
     },
     templatePath: 'aaf.ejs'

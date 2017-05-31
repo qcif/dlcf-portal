@@ -59,7 +59,9 @@ export module Services {
           const formObj = {
             name: formName,
             fields: sails.config.form.forms[formName].fields,
-            branding: defBrand.id
+            branding: defBrand.id,
+            type: sails.config.form.forms[formName].type,
+            messages: sails.config.form.forms[formName].messages
           };
           return super.getObservable(Form.create(formObj));
         }

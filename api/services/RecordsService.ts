@@ -22,7 +22,7 @@ import services = require('../../typescript/services/CoreService.js');
 import {Sails, Model} from "sails";
 import * as request from "request-promise";
 
-declare var FormsService, RolesService, UsersService;
+declare var FormsService, RolesService, UsersService, WorkflowStepsService;
 declare var sails: Sails;
 declare var _this;
 
@@ -78,14 +78,22 @@ export module Services {
         return username == user.username;
       });
       if (isInUserEdit !== undefined) {
-        return true;
+        return Observable.of(true);
       }
       const isInRoleEdit = _.find(record.authorization.editRoles, roleName => {
         const role = RolesService.getRole(brand, roleName);
         return role && UsersService.hasRole(user, role);
       });
-      sails.log.verbose(isInRoleEdit);
-      return isInRoleEdit !== undefined;
+      if (isInRoleEdit !== undefined) {
+        return Observable.of(true);
+      }
+      return WorkflowStepsService.get(brand, record.workflow.stage).flatMap(wfStep => {
+        const wfHasRoleEdit = _.find(wfStep.config.authorization.editRoles, roleName => {
+          const role = RolesService.getRole(brand, roleName);
+          return role && UsersService.hasRole(user, role);
+        });
+        return Observable.of(wfHasRoleEdit !== undefined);
+      });
     }
 
 

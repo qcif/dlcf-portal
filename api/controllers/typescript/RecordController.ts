@@ -43,8 +43,7 @@ export module Controllers {
         'getForm',
         'create',
         'update',
-        'stepForward',
-        'stepBack'
+        'stepTo'
     ];
 
     /**
@@ -62,6 +61,16 @@ export module Controllers {
       return this.sendView(req, res, 'record/edit', {oid: oid});
     }
 
+    protected hasEditAccess(brand, user, currentRec) {
+      return RecordsService.hasEditAccess(brand, user, currentRec)
+      .flatMap(hasEditAccess => {
+        if (!hasEditAccess) {
+          return Observable.throw(new Error(`User doesn't have access to this record.`));
+        }
+        return Observable.of(true);
+      });
+    }
+
     public getForm(req, res) {
       const brand = BrandingService.getBrand(req.session.branding);
       const name = req.param('name');
@@ -76,15 +85,15 @@ export module Controllers {
           if (_.isEmpty(currentRec)) {
             return Observable.throw(new Error(`Error, empty metadata for OID: ${oid}`));
           }
-          if (!RecordsService.hasEditAccess(brand, req.user, currentRec)) {
-            return Observable.throw(new Error(`User doesn't have access to this record.`));
-          }
-          return FormsService.getForm(currentRec.form, brand.id).flatMap(form=> {
-            if (_.isEmpty(form)) {
-              return Observable.throw(new Error(`Error, getting form ${currentRec.form} for OID: ${oid}`));
-            }
-            this.mergeFields(form.fields, currentRec.metadata);
-            return Observable.of(form);
+          return this.hasEditAccess(brand, req.user, currentRec)
+          .flatMap(hasEditAccess => {
+            return FormsService.getForm(currentRec.form, brand.id).flatMap(form=> {
+              if (_.isEmpty(form)) {
+                return Observable.throw(new Error(`Error, getting form ${currentRec.form} for OID: ${oid}`));
+              }
+              this.mergeFields(form.fields, currentRec.metadata);
+              return Observable.of(form);
+            });
           });
         });
       }
@@ -97,7 +106,11 @@ export module Controllers {
       }, error => {
         sails.log.error("Error getting form definition:");
         sails.log.error(error);
-        this.ajaxFail(req, res, error.message);
+        let message = error.message;
+        if (error.error && error.error.code == 500) {
+          message = "Problems retrieving this record, are you sure it exists?"
+        }
+        this.ajaxFail(req, res, message);
       });
     }
 
@@ -110,7 +123,9 @@ export module Controllers {
       record.createDate = moment().format();
       record.authorization = {view: [req.user.username], edit: [req.user.username]};
       record.metadata = metadata;
-      WorkflowStepsService.getFirst(brand).subscribe(wfStep => {
+      record.metadata.type = 'rdmp';
+      WorkflowStepsService.getFirst(brand)
+      .subscribe(wfStep => {
         this.updateWorkflowStep(record, wfStep);
         RecordsService.create(brand, record).subscribe(response => {
           if (response && response.code == "200") {
@@ -131,8 +146,11 @@ export module Controllers {
       const oid = req.param('oid');
 
       this.getRecord(oid).flatMap(currentRec => {
-        currentRec.metadata = metadata;
-        return this.updateMetadata(brand, oid, currentRec, req.user.username);
+        return this.hasEditAccess(brand, req.user, currentRec)
+        .flatMap(hasEditAccess => {
+          currentRec.metadata = metadata;
+          return this.updateMetadata(brand, oid, currentRec, req.user.username);
+        });
       })
       .subscribe(response => {
         if (response && response.code == "200") {
@@ -152,8 +170,6 @@ export module Controllers {
       if (nextStep) {
         currentRec.workflow = nextStep.config.workflow;
         currentRec.form = nextStep.config.form;
-        currentRec.authorization.viewRoles = nextStep.config.authorization.viewRoles;
-        currentRec.authorization.editRoles = nextStep.config.authorization.editRoles;
       }
     }
 
@@ -175,45 +191,24 @@ export module Controllers {
       return RecordsService.updateMeta(brand, oid, currentRec);
     }
 
-    public stepForward(req, res) {
+    public stepTo(req, res) {
       const brand = BrandingService.getBrand(req.session.branding);
       const metadata = req.body;
       const oid = req.param('oid');
+      const targetStep = req.param('targetStep');
 
       return this.getRecord(oid).flatMap(currentRec => {
-        return WorkflowStepsService.get(brand, currentRec.workflow.next)
-        .flatMap(nextStep => {
-          sails.log.verbose("Current rec:");
-          sails.log.verbose(currentRec);
-          sails.log.verbose("Nex step:");
-          sails.log.verbose(nextStep);
-          this.updateWorkflowStep(currentRec, nextStep);
-          return this.updateMetadata(brand, oid, currentRec, req.user.username);
-        });
-      })
-      .subscribe(response => {
-        if (response && response.code == "200") {
-          response.success = true;
-          this.ajaxOk(req, res, null, response);
-        } else {
-          this.ajaxFail(req, res, null, response);
-        }
-      }, error => {
-        sails.log.error("Error updating meta:");
-        sails.log.error(error);
-        this.ajaxFail(req, res, error.message);
-      });
-    }
-
-    public stepBack(req, res) {
-      const brand = BrandingService.getBrand(req.session.branding);
-      const metadata = req.body;
-      const oid = req.param('oid');
-
-      return this.getRecord(oid).flatMap(currentRec => {
-        return WorkflowStepsService.get(brand, currentRec.workflow.next).flatMap(nextStep => {
-          this.updateWorkflowStep(currentRec, nextStep);
-          return this.updateMetadata(brand, oid, currentRec, req.user.username);
+        return this.hasEditAccess(brand, req.user, currentRec)
+        .flatMap(hasEditAccess => {
+          return WorkflowStepsService.get(brand, targetStep)
+          .flatMap(nextStep => {
+            sails.log.verbose("Current rec:");
+            sails.log.verbose(currentRec);
+            sails.log.verbose("Next step:");
+            sails.log.verbose(nextStep);
+            this.updateWorkflowStep(currentRec, nextStep);
+            return this.updateMetadata(brand, oid, currentRec, req.user.username);
+          });
         });
       })
       .subscribe(response => {

@@ -23,6 +23,8 @@ import { Container } from './field-simple';
 import { FormArray } from '@angular/forms';
 import { ContributorComponent } from './field-contributor.component';
 import * as _ from "lodash-lib";
+import { ChangeDetectorRef } from '@angular/core';
+
 /**
  * Repeatable Field Container
  *
@@ -46,7 +48,7 @@ export class RepeatableContainer extends Container {
   }
 
   getInitArrayEntry() {
-    return [this.fields[0].getFormElem()];
+    return [this.fields[0].createFormModel()];
   }
 
   getGroup(group, fieldMap) {
@@ -70,7 +72,7 @@ export class RepeatableContainer extends Container {
         return fieldClone;
       });
       const elems = _.map(this.fields, field => {
-        return field.getFormElem();
+        return field.createFormModel();
       });
       this.control = new FormArray(elems);
     }
@@ -103,7 +105,7 @@ export class RepeatableContainer extends Container {
   addElem() {
     const newElem = this.createNewElem(this.fields[0]);
     this.fields.push(newElem);
-    this.control.push(newElem.getFormElem());
+    this.control.push(newElem.createFormModel());
     return newElem;
   }
 
@@ -111,9 +113,16 @@ export class RepeatableContainer extends Container {
     _.remove(this.fields, (val, idx) => { return idx == index });
     this.control.removeAt(index);
   }
+
+  public triggerValidation() {
+    _.forEach(this.fields, f => {
+      f.triggerValidation();
+    });
+  }
 }
 
 export class RepeatableComponent extends SimpleComponent {
+  
   addElem(event) {
     this.field.addElem();
   }

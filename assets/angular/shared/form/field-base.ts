@@ -40,6 +40,8 @@ export class FieldBase<T> {
   options: any;
   groupName: string;
   hasControl: boolean;
+  formModel: any;
+  validationMessages: any;
 
   constructor(options = {}) {
     this.setOptions(options);
@@ -69,6 +71,7 @@ export class FieldBase<T> {
     }
     this.options = options;
     this.hasControl = true;
+    this.validationMessages = options['validationMessages'] || {};
   }
 
   get isValid() {
@@ -78,15 +81,16 @@ export class FieldBase<T> {
     return false;
   }
 
-  public getFormElem(): any {
-    return this.required ? new FormControl(this.value || '', Validators.required)
+  public createFormModel(): any {
+    this.formModel = this.required ? new FormControl(this.value || '', Validators.required)
                                       : new FormControl(this.value || '');
+    return this.formModel;
   }
 
   public getGroup(group, fieldMap) : any {
     let retval = null;
     fieldMap[this.name] = {field:this};
-    let control = this.getFormElem();
+    let control = this.createFormModel();
     fieldMap[this.name].control = control;
     if (this.hasGroup && this.groupName) {
       if (group[this.groupName]) {
@@ -104,5 +108,12 @@ export class FieldBase<T> {
       }
     }
     return retval;
+  }
+
+  public triggerValidation() {
+    if (this.formModel) {
+      this.formModel.markAsTouched();
+      this.formModel.updateValueAndValidity();
+    }
   }
 }

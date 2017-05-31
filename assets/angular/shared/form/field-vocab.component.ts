@@ -20,7 +20,7 @@
 import { Input, Component, Injectable , Inject, OnInit} from '@angular/core';
 import { SimpleComponent } from './field-simple.component';
 import { FieldBase } from './field-base';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as _ from "lodash-lib";
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
@@ -38,7 +38,6 @@ export class VocabField extends FieldBase<any> {
   public vocabId: string;
   public sourceData: any;
   public completerService;
-  public control;
   protected dataService: CompleterData;
   public initialValue;
 
@@ -49,18 +48,21 @@ export class VocabField extends FieldBase<any> {
     this.controlType = 'textbox';
   }
 
-  getFormElem(valueElem = undefined) {
+  createFormModel(valueElem = undefined) {
     const group = {};
     if (valueElem) {
       this.value = valueElem;
     }
-    this.control = new FormControl(this.value || '');
+    this.formModel = new FormControl(this.value || '');
     if (this.value) {
       const init = _.cloneDeep(this.value);
       init.title = this.getTitle(this.value);
       this.initialValue = init;
     }
-    return this.control;
+    if (this.required) {
+      this.formModel.setValidators([Validators.required]);
+    }
+    return this.formModel;
   }
 
   postInit(value) {
@@ -88,6 +90,7 @@ export class VocabField extends FieldBase<any> {
   getTitle(data): string {
     return `${data.notation} - ${data.label}`;
   }
+
 }
 
 @Injectable()
@@ -116,6 +119,7 @@ export class VocabFieldLookupService extends BaseService {
   <div [formGroup]='form' class="form-group">
     <label>{{field.label}}</label>
     <ng2-completer [placeholder]="'Select a valid value'" [clearUnselected]="true" (selected)="onSelect($event)" [datasource]="field.dataService" [minSearchLength]="0" inputClass="form-control" [initialValue]="field.initialValue"></ng2-completer>
+    <div class="text-danger" *ngIf="field.formModel.touched && field.formModel.hasError('required')">{{field.validationMessages.required}}</div>
   </div>
   `,
 })
@@ -127,9 +131,9 @@ export class VocabFieldComponent extends SimpleComponent {
 
   onSelect(selected) {
     if (selected) {
-      this.field.control.setValue({uri:selected.originalObject.uri, label: selected.originalObject.label, notation: selected.originalObject.notation});
+      this.field.formModel.setValue({uri:selected.originalObject.uri, label: selected.originalObject.label, notation: selected.originalObject.notation});
     } else {
-      this.field.control.setValue(null);
+      this.field.formModel.setValue(null);
     }
   }
 }

@@ -194,11 +194,11 @@ export class DateTimeComponent extends SimpleComponent implements OnInit {
   `,
 })
 export class SimpleButtonComponent extends SimpleComponent {
-  onClick(event) {
+  public onClick(event) {
     this.fieldMap._rootComp[this.field.onClick_RootFn]();
   }
 
-  isDisabled() {
+  public isDisabled() {
     if (this.field.isDisabledFn) {
       return this.fieldMap._rootComp[this.field.isDisabledFn]();
     }

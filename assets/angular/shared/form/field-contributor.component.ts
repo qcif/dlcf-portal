@@ -31,13 +31,12 @@ import { RbValidator } from './validators';
  *
  */
 export class ContributorField extends FieldBase<any> {
-  formGroup: FormGroup;
   nameColHdr: string;
   emailColHdr: string;
   roleColHdr: string;
   showHeader: boolean;
   roles: string[];
-  validationMessages: any;
+
   groupFieldNames: string[];
   validators: any;
   enabledValidators: boolean;
@@ -54,28 +53,26 @@ export class ContributorField extends FieldBase<any> {
     this.validationMessages = options['validationMessages'] || {required: { email: 'Email required', name: 'Name is required', role: 'Select a role'}, invalid: { email: 'Email format is incorrect'}};
     this.groupFieldNames = ['name', 'email', 'role'];
     this.validators = {
-      name: [RbValidator.noEmptyInGroup(this, this.groupFieldNames)],
-      email: [RbValidator.noEmptyInGroup(this, this.groupFieldNames), Validators.email],
-      role: [RbValidator.noEmptyInGroup(this, this.groupFieldNames)]
+      name: [Validators.required],
+      email: [Validators.required, Validators.email],
+      role: [Validators.required]
     };
   }
 
-  getFormElem(valueElem = undefined): any {
+  createFormModel(valueElem = undefined): any {
     if (valueElem) {
       this.value = valueElem;
     }
-    this.formGroup = new FormGroup({name: new FormControl(this.value.name || null),
+    this.formModel = new FormGroup({name: new FormControl(this.value.name || null),
                                  email: new FormControl(this.value.email || null),
                                  role: new FormControl(this.value.role || null)});
-    _.forEach(this.formGroup.controls, (c) => {
-      c.valueChanges.subscribe(this.toggleValidator(c));
-    });
-    return this.formGroup;
+    this.enableValidators();
+    return this.formModel;
   }
 
   toggleValidator(c) {
     return (value) => {
-      if (value || _.find(this.formGroup.controls, c => { return c.value })) {
+      if (value || _.find(this.formModel.controls, c => { return c.value })) {
         this.enableValidators();
       } else {
         this.disableValidators();
@@ -89,8 +86,7 @@ export class ContributorField extends FieldBase<any> {
     }
     this.enabledValidators = true;
     _.forEach(this.groupFieldNames, f => {
-      this.formGroup.controls[f].setValidators(this.validators[f]);
-      this.formGroup.controls[f].updateValueAndValidity();
+      this.formModel.controls[f].setValidators(this.validators[f]);
     });
   }
 
@@ -99,7 +95,7 @@ export class ContributorField extends FieldBase<any> {
       return;
     }
     this.enabledValidators = false;
-    _.forEach(this.formGroup.controls, c => {
+    _.forEach(this.formModel.controls, c => {
       c.setValidators(null);
       c.setErrors(null);
     });
@@ -118,12 +114,38 @@ export class ContributorField extends FieldBase<any> {
     return this.value;
   }
 
+  get isValid() {
+    let validity = false;
+    _.forEach(this.groupFieldNames, f => {
+      validity = validity && this.formModel.controls[f].valid;
+    });
+    return validity;
+  }
+
+  public triggerValidation() {
+    _.forEach(this.groupFieldNames, f => {
+      this.formModel.controls[f].updateValueAndValidity();
+      this.formModel.controls[f].markAsTouched();
+    });
+  }
+
+  public getValidationError() {
+    let errObj = null;
+    if (this.formModel) {
+      _.forEach(this.groupFieldNames, f => {
+        if (!_.isEmpty(this.formModel.controls[f].errors)) {
+          errObj = this.formModel.controls[f].errors;
+        }
+      });
+    }
+    return errObj;
+  }
 }
 
 @Component({
   selector: 'rb-contributor',
   template: `
-  <div [formGroup]='field.formGroup' class="form-group" >
+  <div [formGroup]='field.formModel' class="form-group" >
     <div class="row" *ngIf="field.showHeader">
       <div class="col-md-4"><label>{{field.nameColHdr}}</label></div>
       <div class="col-md-4"><label>{{field.emailColHdr}}</label></div>
@@ -132,27 +154,22 @@ export class ContributorField extends FieldBase<any> {
     <div class="row">
       <div class="col-md-4">
         <input formControlName="name" type="text" class="form-control"/>
-        <div class="text-danger" *ngIf="isEmpty('name')">{{field.validationMessages.required.name}}</div>
+        <div class="text-danger" *ngIf="field.formModel.controls['name'].touched && field.formModel.controls['name'].hasError('required')">{{field.validationMessages.required.name}}</div>
       </div>
       <div class="col-md-4">
         <input formControlName="email" type="text" class="form-control" />
-        <div class="text-danger" *ngIf="field.formGroup.controls['email'].hasError('email')">{{field.validationMessages.invalid.email}}</div>
-        <div class="text-danger" *ngIf="isEmpty('email')">{{field.validationMessages.required.email}}</div>
+        <div class="text-danger" *ngIf="field.formModel.controls['email'].touched && field.formModel.controls['email'].hasError('email')">{{field.validationMessages.invalid.email}}</div>
+        <div class="text-danger" *ngIf="field.formModel.controls['email'].touched && field.formModel.controls['email'].hasError('required')">{{field.validationMessages.required.email}}</div>
       </div>
       <div class="col-md-4">
         <select formControlName="role" class="form-control">
           <option *ngFor="let role of field.roles" [value]="role">{{role}}</option>
         </select>
-        <div class="text-danger" *ngIf="isEmpty('role')">{{field.validationMessages.required.role}}</div>
+        <div class="text-danger" *ngIf="field.formModel.controls['role'].touched && field.formModel.controls['role'].hasError('required')">{{field.validationMessages.required.role}}</div>
       </div>
     </div>
   </div>
   `,
 })
 export class ContributorComponent extends SimpleComponent {
-
-  isEmpty(fieldName) {
-    return this.field.formGroup.controls[fieldName].errors && _.find(this.field.formGroup.controls[fieldName].errors.emptyFields, (f) => { return f == fieldName});
-  }
-
 }

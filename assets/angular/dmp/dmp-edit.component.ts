@@ -44,6 +44,7 @@ export class DmpEditComponent extends LoadableComponent {
   payLoad: any;
   status: any;
   criticalError: any;
+  formDef: any;
 
   constructor(
     elm: ElementRef,
@@ -57,10 +58,11 @@ export class DmpEditComponent extends LoadableComponent {
         this.fieldMap = {_rootComp:this};
         this.oid = elm.nativeElement.getAttribute('oid');
         console.log("Loading form with OID:"+ this.oid);
-        this.RecordsService.getPlanFields(this.oid).then(obs => {
-          obs.subscribe(fields => {
-            if (fields) {
-              this.fields = fields;
+        this.RecordsService.getForm(this.oid).then(obs => {
+          obs.subscribe(form => {
+            this.formDef = form;
+            if (form.fieldsMeta) {
+              this.fields = form.fieldsMeta;
               this.rebuildForm();
             }
           });
@@ -76,8 +78,11 @@ export class DmpEditComponent extends LoadableComponent {
     });
   }
 
-  onSubmit(successCb) {
-    this.setSaving();
+  onSubmit(nextStep = false, targetStep=null) {
+    if (!this.isValid()) {
+      return;
+    }
+    this.setSaving(this.formDef.messages.saving);
     this.form.value.metadata = this.formatValues(this.form.value.metadata);
     this.payLoad = JSON.stringify(this.form.value);
     console.log("Saving the following values:");
@@ -89,15 +94,15 @@ export class DmpEditComponent extends LoadableComponent {
         console.log(res);
         if (res.success) {
           this.oid = res.oid;
-          this.setSuccess('Saved successfully.');
-          if (successCb) {
-            this[successCb]();
+          this.setSuccess(this.formDef.messages.saveSuccess);
+          if (nextStep) {
+            this.stepTo(targetStep);
           }
         } else {
-          this.setError(`Error while saving: ${res.message}`);
+          this.setError(`${this.formDef.messages.saveError} ${res.message}`);
         }
       }).catch(err=>{
-        this.setError(`Error while saving: ${err}`);
+        this.setError(`${this.formDef.messages.saveError} ${res.message}`);
       });
     } else {
       this.RecordsService.update(this.oid, this.payLoad).then(res=>{
@@ -105,15 +110,12 @@ export class DmpEditComponent extends LoadableComponent {
         console.log("Update Response:");
         console.log(res);
         if (res.success) {
-          this.setSuccess('Saved successfully.');
-          if (successCb) {
-            this[successCb]();
-          }
+          this.setSuccess(this.formDef.messages.saveSuccess);
         } else {
-          this.setError(`Error while saving: ${res.message}`);
+          this.setError(`${this.formDef.messages.saveError} ${res.message}`);
         }
       }).catch(err=>{
-        this.setError(`Error while saving: ${err}`);
+        this.setError(`${this.formDef.messages.saveError} ${err}`);
       });
     }
   }
@@ -159,48 +161,49 @@ export class DmpEditComponent extends LoadableComponent {
     this.setLoading(false);
   }
 
-  stepForward() {
+  triggerValidation() {
+    _.forOwn(this.fieldMap, (fieldEntry, fieldName) => {
+      if (!_.isEmpty(fieldName) && !_.startsWith(fieldName, '_')) {
+        fieldEntry.field.triggerValidation();
+      }
+    });
+  }
+
+  isValid() {
+    this.triggerValidation();
+    if (!this.form.valid) {
+      this.setError('There are issues in the form.');
+      this.setError(this.formDef.messages.validationFail);
+      return false;
+    }
+    return true;
+  }
+
+  stepTo(targetStep) {
+    if (!this.isValid()) {
+      return;
+    }
     if (_.isEmpty(this.oid)) {
-      this.onSubmit('nextStep');
+      this.onSubmit(true, targetStep);
     } else {
-      this.setSaving();
+      this.setSaving(this.formDef.messages.saving);
       this.form.value.metadata = this.formatValues(this.form.value.metadata);
       this.payLoad = JSON.stringify(this.form.value);
       console.log(this.payLoad);
-      this.RecordsService.next(this.oid, this.payLoad).then(res => {
+      this.RecordsService.stepTo(this.oid, this.payLoad, targetStep).then(res => {
         this.clearSaving();
         console.log("Update Response:");
         console.log(res);
         if (res.success) {
-          this.setSuccess('Saved successfully.');
+          this.setSuccess(this.formDef.messages.saveSuccess);
           window.location.href = this.RecordsService.getDashboardUrl();
         } else {
-          this.setError(`Error while saving: ${res.message}`);
+          this.setError(`${this.formDef.messages.saveError} ${res.message}`);
         }
       }).catch(err=>{
-        this.setError(`Error while saving: ${err}`);
+        this.setError(`${this.formDef.messages.saveError} ${err}`);
       });
     }
-  }
-
-  stepBack() {
-    this.setSaving();
-    this.form.value.metadata = this.formatValues(this.form.value.metadata);
-    this.payLoad = JSON.stringify(this.form.value);
-    console.log(this.payLoad);
-    this.RecordsService.back(this.oid, this.payLoad).then(res => {
-      this.clearSaving();
-      console.log("Update Response:");
-      console.log(res);
-      if (res.success) {
-        this.setSuccess('Saved successfully.');
-        window.location.href = this.RecordsService.getDashboardUrl();
-      } else {
-        this.setError(`Error while saving: ${res.message}`);
-      }
-    }).catch(err=>{
-      this.setError(`Error while saving: ${err}`);
-    });
   }
 
   formatValues(data) {
