@@ -74,7 +74,7 @@ export module Controllers {
           req.session.redirUrl = req.path;
         }
         var branding = req.param('branding') ? req.param('branding') : sails.config.auth.defaultBrand;
-        var portal = req.param('portal') ? req.param('portal') : sails.config.auth.defaultRole;
+        var portal = req.param('portal') ? req.param('portal') : sails.config.auth.defaultPortal;
         res.redirect('/' + branding + '/' + portal + '/' + sails.config.auth.loginPath);
       }
 
