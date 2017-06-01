@@ -120,10 +120,9 @@ export module Controllers {
       const record = {};
       record.brandId = brand.id;
       record.createdBy = req.user.username;
-      record.createDate = moment().format();
       record.authorization = {view: [req.user.username], edit: [req.user.username]};
       record.metadata = metadata;
-      record.metadata.type = 'rdmp';
+      record.type = 'rdmp';
       WorkflowStepsService.getFirst(brand)
       .subscribe(wfStep => {
         this.updateWorkflowStep(record, wfStep);

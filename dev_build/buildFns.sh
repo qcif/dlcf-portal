@@ -41,7 +41,7 @@ function bundleNg2App() {
   cd "${ng2dir}/${ng2app}"
   if [ -e "rollup-config.js" ]; then
     ../../../node_modules/.bin/rollup -c rollup-config.js
-    if [ $buildTarget == 'PROD' ]; then
+    if [ "$buildTarget" == "PROD" ]; then
       ../../../node_modules/.bin/uglifyjs -c -o dist-bundle-min.js -- dist-bundle.js
       mv dist-bundle-min.js dist-bundle.js
     fi
