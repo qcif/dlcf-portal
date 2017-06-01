@@ -70,6 +70,8 @@
         "assets/angular/shared/form/field-vocab.component.ts",
         "assets/angular/shared/form/records.service.ts",
         "assets/angular/shared/form/validators.ts",
+        "assets/angular/shared/form/workflow-button.component.ngfactory.ts",
+        "assets/angular/shared/form/workflow-button.component.ts",
         "assets/angular/shared/loadable.component.ts",
         "assets/angular/shared/modal/base-modal.ts",
         "assets/angular/shared/roles-service.ts",

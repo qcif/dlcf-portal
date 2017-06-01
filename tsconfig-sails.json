@@ -48,6 +48,7 @@
         "api/services/RecordsService.ts",
         "api/services/RolesService.ts",
         "api/services/UsersService.ts",
-        "api/services/VocabService.ts"
+        "api/services/VocabService.ts",
+        "api/services/WorkflowStepsService.ts"
     ]
 }

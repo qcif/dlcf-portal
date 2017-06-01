@@ -5,6 +5,7 @@ module.exports.form = {
   defaultForm: "default-1.0-draft",
   forms: {
     "default-1.0-draft": {
+      name: 'default-1.0-draft',
       type: 'rdmp',
       messages: {
         "saving": "Saving, please wait...",
@@ -198,6 +199,7 @@ module.exports.form = {
       ]
     },
     "default-1.0-active": {
+      name: 'default-1.0-active',
       type: 'rdmp',
       messages: {
         "saving": "Saving, please wait...",
@@ -391,6 +393,7 @@ module.exports.form = {
       ]
     },
     "default-1.0-retired": {
+      name: 'default-1.0-retired',
       type: 'rdmp',
       messages: {
         "saving": "Saving, please wait...",

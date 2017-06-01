@@ -31,12 +31,14 @@ import * as _ from "lodash-lib";
  */
 @Component({
   moduleId: module.id,
-  selector: 'dmp-edit',
-  templateUrl: './dmp-edit.html'
+  selector: 'dmp-form',
+  templateUrl: './dmp-form.html'
 })
 
-export class DmpEditComponent extends LoadableComponent {
+export class DmpFormComponent extends LoadableComponent {
   @Input() oid: string;
+  @Input() editMode: boolean;
+
   fields: any[] = [];
   form: FormGroup;
   initSubs: any;
@@ -57,8 +59,9 @@ export class DmpEditComponent extends LoadableComponent {
         this.initSubs.unsubscribe();
         this.fieldMap = {_rootComp:this};
         this.oid = elm.nativeElement.getAttribute('oid');
-        console.log("Loading form with OID:"+ this.oid);
-        this.RecordsService.getForm(this.oid).then(obs => {
+        this.editMode = elm.nativeElement.getAttribute('editMode') == "true";
+        console.log(`Loading form with OID: ${this.oid}, on edit mode:${this.editMode}`);
+        this.RecordsService.getForm(this.oid, this.editMode).then(obs => {
           obs.subscribe(form => {
             this.formDef = form;
             if (form.fieldsMeta) {
