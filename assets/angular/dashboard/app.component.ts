@@ -1,4 +1,4 @@
-import { Component, Injectable, Inject } from '@angular/core';
+import { Component, Injectable, Inject, ElementRef } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { FormArray, FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { UserSimpleService } from '../shared/user.service-simple';
@@ -22,21 +22,21 @@ declare var jQuery: any;
 // TODO: find a way to remove jQuery dependency
 @Injectable()
 export class AppComponent extends LoadableComponent  {
+  branding: string;
+  portal: string;
   draftPlans: PlanTable;
   activePlans: PlanTable;
-  hiddenUsers = ['admin'];
-  currentUser: any = { username: '', name: '', email: '', roles: [] };
-  saveMsg = "";
   saveMsgType = "info";
   initSubs;
 
 
 
-  constructor( @Inject(DashboardService) protected dashboardService: DashboardService, @Inject(DOCUMENT) protected document: any) {
+  constructor( @Inject(DashboardService) protected dashboardService: DashboardService, @Inject(DOCUMENT) protected document: any,elementRef: ElementRef) {
     super();
     this.draftPlans = new PlanTable();
-
     this.activePlans = new PlanTable();
+    this.branding = elementRef.nativeElement.getAttribute('branding');
+    this.portal = elementRef.nativeElement.getAttribute('portal');
 
     this.initSubs = dashboardService.waitForInit(200).subscribe(initStat => {
       if (initStat) {

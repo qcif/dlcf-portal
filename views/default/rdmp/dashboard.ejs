@@ -10,15 +10,11 @@
     <br/>
   </div>
 
-
-
-
-
   <div class="main container clearfix">
     <div class="col-md-offset-5 col-md-3">
       <img src="/images/loading.svg" id="loading">
     </div>
-    <dashboard></dashboard>
+    <dashboard branding="<%= typeof branding == 'undefined'? data.branding : branding %>" portal="<%= typeof portal == 'undefined'? data.portal : portal %>"></dashboard>
 <% if (!sails.config.ng2.use_bundled) { %>
   <script src="/dynamic/systemjs-config.js?appName=dashboard"></script>
   <script>

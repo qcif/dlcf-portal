@@ -53,7 +53,7 @@ module.exports.form = {
                    {
                      class: 'TextField',
                      definition: {
-                       name: 'projectTitle',
+                       name: 'title',
                        label: 'Project Title',
                        type: 'text',
                        required: true
@@ -247,7 +247,7 @@ module.exports.form = {
                    {
                      class: 'TextField',
                      definition: {
-                       name: 'projectTitle',
+                       name: 'title',
                        label: 'Project Title',
                        type: 'text',
                        required: true

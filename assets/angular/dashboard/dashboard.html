@@ -1,7 +1,7 @@
 
 <div class="row"></div>
   <h2>My draft plans</h2>
-
+  <div *ngIf="draftPlans.totalItems > 0">
   <table class="table">
   <thead>
       <tr>
@@ -12,17 +12,21 @@
   </thead>
   <tbody *ngFor="let plan of draftPlans.items">
       <tr>
-          <td><a href='/default/rdmp/record/{{ plan.oid }}/view'>{{ plan.title }}</a><span class="dashboard-controls"><a class="glyphicon glyphicon-pencil" href="#" tooltip="Edit" ></a></span></td>
+          <td><a href='/{{ branding }}/{{ portal }}/record/view/{{ plan.oid }}'>{{ plan.title }}</a><span class="dashboard-controls"><a class="glyphicon glyphicon-pencil" href="/{{ branding }}/{{ portal }}/record/edit/{{ plan.oid }}" tooltip="Edit" ></a></span></td>
           <td>{{ plan.dateCreated }}</td>
           <td>{{ plan.dateModified }}</td>
       </tr>
   </tbody>
 </table>
-<pagination [directionLinks]="false" [boundaryLinks]="true" [totalItems]="draftPlans.totalItems"
+
+<pagination *ngIf="draftPlans.totalItems > 0" [directionLinks]="false" [boundaryLinks]="true" [totalItems]="draftPlans.totalItems"
           [(ngModel)]="draftPlans.currentPage" (pageChanged)="draftTablePageChanged($event)" class="pagination-sm"></pagination>
-
+</div>
+<div *ngIf="draftPlans.totalItems <= 0">
+  You currently don't have any draft plans.
+</div>
 <h2>My active plans</h2>
-
+<div *ngIf="activePlans.totalItems > 0">
 <table class="table">
 <thead>
     <tr>
@@ -33,7 +37,7 @@
 </thead>
 <tbody *ngFor="let plan of activePlans.items">
     <tr>
-        <td><a href='/default/rdmp/record/{{ plan.oid }}/view'>{{ plan.title }}</a><span class="dashboard-controls"><a class="glyphicon glyphicon-pencil" href="#" tooltip="Edit" ></a></span></td>
+        <td><a href='/{{ branding }}/{{ portal }}/record/view/{{ plan.oid }}'>{{ plan.title }}</a><span class="dashboard-controls"><a class="glyphicon glyphicon-pencil" href="/{{ branding }}/{{ portal }}/record/edit/{{ plan.oid }}" tooltip="Edit" ></a></span></td>
         <td>{{ plan.dateCreated }}</td>
         <td>{{ plan.dateModified }}</td>
     </tr>
@@ -41,3 +45,7 @@
 </table>
 <pagination [directionLinks]="false" [boundaryLinks]="true" [totalItems]="activePlans.totalItems"
           [(ngModel)]="activePlans.currentPage" (pageChanged)="activeTablePageChanged($event)" class="pagination-sm"></pagination>
+</div>
+<div *ngIf="activePlans.totalItems <= 0">
+  You currently don't have any active plans.
+</div>

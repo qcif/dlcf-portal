@@ -40,14 +40,8 @@ module.exports.routes = {
       'view': 'homepage'
     }
   },
-  '/:branding/:portal/dashboard': {
-    controller: 'typescript/RenderViewController',
-    action: 'render',
-    locals:{
-      'view': 'dashboard'
-    }
-  },
-  '/:branding/:portal/record/:oid/view': {
+
+  '/:branding/:portal/record/view/:oid': {
     controller: 'typescript/RenderViewController',
     action: 'render',
     locals:{
@@ -90,6 +84,10 @@ module.exports.routes = {
   'post /:branding/:portal/recordmeta/': 'typescript/RecordController.create',
   'put /:branding/:portal/recordmeta/:oid': 'typescript/RecordController.update',
   'post /:branding/:portal/record/workflow/step/:targetStep/:oid': 'typescript/RecordController.stepTo',
+  'get /:branding/:portal/dashboard': 'typescript/DashboardController.render',
+  'get /:branding/:portal/listPlans': 'typescript/DashboardController.getPlanList',
+  'post /:branding/:portal/record/workflow/next/:oid': 'typescript/RecordController.stepForward',
+  'post /:branding/:portal/record/workflow/back/:oid': 'typescript/RecordController.stepForward',
   'get /:branding/:portal/vocab/:vocabId': 'typescript/VocabController.get',
   'get /dynamic/:asset': 'typescript/DynamicAssetController.get'
 };
