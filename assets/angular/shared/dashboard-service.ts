@@ -32,8 +32,8 @@ export class DashboardService extends BaseService {
   formatDates(response:object){
     var items = response["items"];
     for (var i=0;i<items.length;i++){
-      items[i]["dateCreated"] = moment(items[i]["dateCreated"]).local().format('DD/MM/YYYY hh:mm a')
-      items[i]["dateModified"] = moment(items[i]["dateModified"]).local().format('DD/MM/YYYY hh:mm a')
+      items[i]["dateCreated"] = moment(items[i]["dateCreated"]).local().format('LLL')
+      items[i]["dateModified"] = moment(items[i]["dateModified"]).local().format('LLL')
     }
     return response;
   }

@@ -114,7 +114,7 @@ export module Controllers {
           item["oid"] = doc["storage_id"];
           item["title"] = doc["title"];
           item["dateCreated"] =  doc["date_object_created"];
-          item["dateModified"] = doc["date_object_created"];
+          item["dateModified"] = doc["date_object_modified"];
           items.push(item);
         }
 
