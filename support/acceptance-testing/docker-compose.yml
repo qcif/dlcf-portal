@@ -20,7 +20,7 @@ services:
       - sails_ng2__force_bundle=true
     links:
       - mongodb:mongodb
-      - redbox:mongodb
+      - redbox:redbox
     entrypoint: /bin/bash -c "cd /opt/rds-rdmp-portal && node app.js"
   seleniumhub:
     image: selenium/hub:3.4.0
