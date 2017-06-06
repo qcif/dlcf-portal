@@ -1,5 +1,13 @@
 version: '2'
 services:
+  mongodb:
+    image: mvertes/alpine-mongo:latest
+    ports:
+       - "27017:27017"
+  redbox:
+    image: qcifengineering/dlcf-redbox:latest
+    ports:
+       - "9000:9000"
   dlcfportal:
     image: qcifengineering/dlcf-portal:latest
     ports:
@@ -12,22 +20,27 @@ services:
       - sails_ng2__force_bundle=true
     links:
       - mongodb:mongodb
-      - redbox:redbox
+      - redbox:mongodb
     entrypoint: /bin/bash -c "cd /opt/rds-rdmp-portal && node app.js"
-  mongodb:
-    image: mvertes/alpine-mongo:latest
-    ports:
-       - "27017:27017"
-  redbox:
-    image: qcifengineering/dlcf-redbox:latest
-    ports:
-       - "9000:9000"
+  seleniumhub:
+    image: selenium/hub:3.4.0
+  seleniumnodechrome:
+    image: selenium/node-chrome:3.4.0
+    environment:
+      - HUB_PORT_4444_TCP_ADDR=seleniumhub
+      - HUB_PORT_4444_TCP_PORT=4444
+    links:
+      - seleniumhub:seleniumhub
+      - dlcfportal:dlcfportal
   acceptance:
     build: .
     image: qcifengineering/acceptance-testing-dlcf
+    depends_on:
+      - seleniumnodechrome
     links:
-      - dlcfportal
-    command: ['gradle', 'test']
+      - seleniumhub:seleniumhub
+      - dlcfportal:dlcfportal
+    command: ['gradle', 'remotechromeTest']
     environment:
       - GEB_BUILD_LOCAL_BASE_URL=http://dlcfportal:1500
       - SAUCE_ACCESS_KEY
@@ -35,3 +48,4 @@ services:
       - TRAVIS_BUILD_NUMBER
       - REDBOX_USERNAME
       - REDBOX_PASSWORD
+      - DOCKER_HUB_URL=http://seleniumhub:4444/wd/hub

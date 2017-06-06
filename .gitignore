@@ -139,3 +139,4 @@ CacheService.js
 FormsService.js
 RecordsService.js
 WorkflowStepsService.js
+support/acceptance-testing/reports/

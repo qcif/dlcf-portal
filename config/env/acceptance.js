@@ -21,14 +21,14 @@ module.exports = {
   //   connection: 'someMongodbServer'
   // }
   bootstrapTimeout: 60000,
-  hookTimeout: 60000,
+  hookTimeout: 120000,
   log: {
     level: 'debug'
   },
   appUrl:'http://dlcfportal:1500',
   db: {
     waitRetries: 5,
-    waitSleep: 10000
+    waitSleep: 20000
   },
   auth: {
     active: ["aaf", "local"],

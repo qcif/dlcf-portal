@@ -1,6 +1,7 @@
 version: '2'
 services:
   dlcfportal:
+    build: .
     image: qcifengineering/dlcf-portal:latest
     ports:
        - "1500:1500"
