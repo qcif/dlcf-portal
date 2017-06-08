@@ -140,3 +140,4 @@ FormsService.js
 RecordsService.js
 WorkflowStepsService.js
 support/acceptance-testing/reports/
+support/acceptance-testing/build/
