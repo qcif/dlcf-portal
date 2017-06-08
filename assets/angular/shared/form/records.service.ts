@@ -72,13 +72,13 @@ export class RecordsService extends BaseService {
   }
 
   create(record: any) {
-    return this.http.post(`${this.brandingAndPortallUrl}/recordmeta`, record, this.getOptionsClient())
+    return this.http.post(`${this.brandingAndPortallUrl}/recordmeta/`, record, this.getOptionsClient())
     .toPromise()
     .then((res) => this.extractData(res) as RecordActionResult);
   }
 
   update(oid: string, record: any) {
-    return this.http.post(`${this.brandingAndPortallUrl}/recordmeta/${oid}`, record, this.getOptionsClient())
+    return this.http.put(`${this.brandingAndPortallUrl}/recordmeta/${oid}`, record, this.getOptionsClient())
     .toPromise()
     .then((res) => this.extractData(res) as RecordActionResult);
   }

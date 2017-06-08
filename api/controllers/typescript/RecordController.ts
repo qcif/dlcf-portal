@@ -87,9 +87,10 @@ export module Controllers {
           }
           return this.hasEditAccess(brand, req.user, currentRec)
           .flatMap(hasEditAccess => {
-            return FormsService.getForm(currentRec.form, brand.id).flatMap(form=> {
+            const formName = currentRec.metaMetadata.form;
+            return FormsService.getForm(formName, brand.id).flatMap(form=> {
               if (_.isEmpty(form)) {
-                return Observable.throw(new Error(`Error, getting form ${currentRec.form} for OID: ${oid}`));
+                return Observable.throw(new Error(`Error, getting form ${formName} for OID: ${oid}`));
               }
               this.mergeFields(form.fields, currentRec.metadata);
               return Observable.of(form);
@@ -117,13 +118,12 @@ export module Controllers {
     public create(req, res) {
       const brand = BrandingService.getBrand(req.session.branding);
       const metadata = req.body;
-      const record = {};
-      record.brandId = brand.id;
-      record.createdBy = req.user.username;
-      record.createDate = moment().format();
+      const record = {metaMetadata: {}};
       record.authorization = {view: [req.user.username], edit: [req.user.username]};
+      record.metaMetadata.brandId = brand.id;
+      record.metaMetadata.createdBy = req.user.username;
+      record.metaMetadata.type = 'rdmp';
       record.metadata = metadata;
-      record.metadata.type = 'rdmp';
       WorkflowStepsService.getFirst(brand)
       .subscribe(wfStep => {
         this.updateWorkflowStep(record, wfStep);
@@ -169,7 +169,8 @@ export module Controllers {
     protected updateWorkflowStep(currentRec, nextStep) {
       if (nextStep) {
         currentRec.workflow = nextStep.config.workflow;
-        currentRec.form = nextStep.config.form;
+        // TODO: validate data with form fields
+        currentRec.metaMetadata.form = nextStep.config.form;
       }
     }
 
