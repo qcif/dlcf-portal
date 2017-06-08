@@ -20,16 +20,17 @@
 import { Injectable, Inject }   from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FieldBase } from './field-base';
-import { TextField, DropdownField, Container, TextArea, DateTime, SimpleButton, HiddenValue } from './field-simple';
+import { TextField, DropdownField, Container, TextArea, DateTime, AnchorOrButton, HiddenValue, LinkValue } from './field-simple';
 import {
   TextFieldComponent,
   DropdownFieldComponent,
-  TabContainerComponent,
+  TabOrAccordionContainerComponent,
   TextBlockComponent,
   TextAreaComponent,
   DateTimeComponent,
-  SimpleButtonComponent,
-  HiddenValueComponent } from './field-simple.component';
+  AnchorOrButtonComponent,
+  HiddenValueComponent,
+  LinkValueComponent} from './field-simple.component';
 import { VocabField, VocabFieldComponent, VocabFieldLookupService } from './field-vocab.component';
 import { RepeatableContainer, RepeatableVocabComponent, RepeatableContributorComponent } from './field-repeatable.component';
 import { ContributorField, ContributorComponent } from './field-contributor.component';
@@ -56,13 +57,14 @@ export class FieldControlService {
     'TextArea': { 'meta': TextArea, 'comp': TextAreaComponent },
     'DateTime': { 'meta': DateTime, 'comp': DateTimeComponent },
     'DropdownField': { 'meta': DropdownField, 'comp': DropdownFieldComponent },
-    'Container': {'meta': Container, 'comp': [TabContainerComponent, TextBlockComponent] },
-    'SimpleButton': { 'meta': SimpleButton, 'comp': SimpleButtonComponent },
+    'Container': {'meta': Container, 'comp': [TabOrAccordionContainerComponent, TextBlockComponent] },
+    'AnchorOrButton': { 'meta': AnchorOrButton, 'comp': AnchorOrButtonComponent },
     'VocabField': {'meta': VocabField, 'comp': VocabFieldComponent, 'lookupService': 'vocabFieldLookupService'},
     'RepeatableContainer': {'meta': RepeatableContainer, 'comp': [RepeatableVocabComponent, RepeatableContributorComponent]},
     'ContributorField': {'meta': ContributorField, 'comp': ContributorComponent},
     'HiddenValue': {'meta': HiddenValue, 'comp': HiddenValueComponent},
-    'WorkflowStepButton': {'meta': WorkflowStepButton, 'comp': WorkflowStepButtonComponent}
+    'WorkflowStepButton': {'meta': WorkflowStepButton, 'comp': WorkflowStepButtonComponent},
+    'LinkValueComponent': {'meta': LinkValue, 'comp': LinkValueComponent }
   };
   constructor(@Inject(VocabFieldLookupService) private vocabFieldLookupService, @Inject(CompleterService) private completerService) { }
 

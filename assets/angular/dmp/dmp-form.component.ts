@@ -51,7 +51,8 @@ export class DmpFormComponent extends LoadableComponent {
   constructor(
     elm: ElementRef,
     @Inject(RecordsService) protected RecordsService: RecordsService,
-    @Inject(FieldControlService) protected fcs: FieldControlService) {
+    @Inject(FieldControlService) protected fcs: FieldControlService
+  ) {
     super();
     this.status = {};
     this.initSubs = RecordsService.waitForInit(200).subscribe(initStat => {
@@ -86,8 +87,8 @@ export class DmpFormComponent extends LoadableComponent {
       return;
     }
     this.setSaving(this.formDef.messages.saving);
-    this.form.value.metadata = this.formatValues(this.form.value.metadata);
-    this.payLoad = JSON.stringify(this.form.value);
+    const values = this.formatValues(this.form.value);
+    this.payLoad = JSON.stringify(values);
     console.log("Saving the following values:");
     console.log(this.payLoad);
     if (_.isEmpty(this.oid)) {
@@ -190,8 +191,8 @@ export class DmpFormComponent extends LoadableComponent {
       this.onSubmit(true, targetStep);
     } else {
       this.setSaving(this.formDef.messages.saving);
-      this.form.value.metadata = this.formatValues(this.form.value.metadata);
-      this.payLoad = JSON.stringify(this.form.value);
+      const values = this.formatValues(this.form.value);
+      this.payLoad = JSON.stringify(values);
       console.log(this.payLoad);
       this.RecordsService.stepTo(this.oid, this.payLoad, targetStep).then(res => {
         this.clearSaving();
@@ -213,7 +214,7 @@ export class DmpFormComponent extends LoadableComponent {
     const formVals = _.cloneDeep(data);
     _.forOwn(formVals, (val, key) => {
       if (_.isFunction(this.fieldMap[key].instance.formatValue)) {
-        const newVal = this.fieldMap[key].instance.formatValue();
+        const newVal = this.fieldMap[key].instance.formatValue(formVals[key]);
         formVals[key] = newVal;
       }
     });

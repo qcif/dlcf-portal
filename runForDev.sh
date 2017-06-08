@@ -1,6 +1,6 @@
 #!/bin/bash
 # Uncomment below if you need to see the minified version....
-#export buildTarget="PROD"
+# export buildTarget="PROD"
 source dev_build/buildFns.sh
 sudo chown -R vagrant:vagrant *
 # Not really needed but I'm putting this in a for loop in case we want to add more arguments later
@@ -17,7 +17,7 @@ do
       docker run -it --rm -v $PWD:/opt/rds-rdmp-portal qcifengineering/dlcf-portal:latest /bin/bash -c "cd /opt/rds-rdmp-portal; npm install --only=dev; node_modules/.bin/grunt --gruntfile Gruntfile-ts-compile-all-cjs.js"
     fi
     if [ $var == "aot" ]; then
-      docker run -it --rm -v $PWD:/opt/rds-rdmp-portal qcifengineering/dlcf-portal:latest /bin/bash -c "cd /opt/rds-rdmp-portal; ./runForDev.sh aotCompile"
+      docker run -it --rm -v $PWD:/opt/rds-rdmp-portal qcifengineering/dlcf-portal:latest /bin/bash -c "cd /opt/rds-rdmp-portal; export buildTarget=\"${buildTarget}\"; ./runForDev.sh aotCompile"
       export ENV=development
       export FORCE_BUNDLE=1
     fi

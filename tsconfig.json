@@ -24,8 +24,7 @@
     "filesGlob": [
         "typescript/**/*.ts",
         "api/**/*.ts",
-        "assets/angular/**/*.ts"
-    ],
+        "assets/angular/**/*.ts"    ],
     "compileOnSave": true,
     "buildOnSave": false,
     "atom": {

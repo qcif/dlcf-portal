@@ -52,15 +52,15 @@ export class RecordsService extends BaseService {
     });
   }
 
-  getFormFields(formName, oid=null) {
-    const url = oid ? `${this.brandingAndPortallUrl}/record/form/auto/${oid}` : `${this.brandingAndPortallUrl}/record/form/${formName}`;
+  getFormFields(formName, oid=null, editable) {
+    const url = oid ? `${this.brandingAndPortallUrl}/record/form/auto/${oid}?edit=${editable}` : `${this.brandingAndPortallUrl}/record/form/${formName}?edit=${editable}`;
     return this.http.get(url, this.options)
       .toPromise()
       .then((res) => this.extractData(res));
   }
 
   getFormFieldsMeta(formName, editable, oid=null) {
-    return this.getFormFields(formName, oid).then(form => {
+    return this.getFormFields(formName, oid, editable).then(form => {
       if (form && form.fields) {
         form.fieldsMeta = this.fcs.getFieldsMeta(form.fields);
       } else {

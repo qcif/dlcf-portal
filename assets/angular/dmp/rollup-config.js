@@ -18,7 +18,7 @@ export default {
   plugins: [
       nodeResolve({jsnext: true, module: true}),
       commonjs({
-        include: '../../../node_modules/**'
+        include: ['../../../node_modules/**']
       })
   ]
 }

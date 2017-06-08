@@ -116,11 +116,15 @@ export class VocabFieldLookupService extends BaseService {
 @Component({
   selector: 'rb-vocab',
   template: `
-  <div [formGroup]='form' class="form-group">
+  <div *ngIf="field.editMode" [formGroup]='form' class="form-group">
     <label>{{field.label}}</label>
     <ng2-completer [placeholder]="'Select a valid value'" [clearUnselected]="true" (selected)="onSelect($event)" [datasource]="field.dataService" [minSearchLength]="0" inputClass="form-control" [initialValue]="field.initialValue"></ng2-completer>
     <div class="text-danger" *ngIf="field.formModel.touched && field.formModel.hasError('required')">{{field.validationMessages.required}}</div>
   </div>
+  <li *ngIf="!field.editMode" class="key-value-pair">
+    <span *ngIf="field.label" class="key">{{field.label}}</span>
+    <span class="value">{{field.value.notation}} - {{field.value.label}}</span>
+  </li>
   `,
 })
 export class VocabFieldComponent extends SimpleComponent {

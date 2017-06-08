@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { SimpleButtonComponent } from './field-simple.component';
+import { AnchorOrButtonComponent } from './field-simple.component';
 import { FieldBase } from './field-base';
-import { SimpleButton } from './field-simple';
+import { AnchorOrButton } from './field-simple';
 
-export class WorkflowStepButton extends SimpleButton {
+export class WorkflowStepButton extends AnchorOrButton {
   targetStep: string;
 
   constructor(options) {
@@ -19,7 +19,7 @@ export class WorkflowStepButton extends SimpleButton {
   <button type="{{field.type}}" [ngClass]="field.cssClasses" (click)="gotoTargetStep($event)" [disabled]="isDisabled()">{{field.label}}</button>
   `,
 })
-export class WorkflowStepButtonComponent extends SimpleButtonComponent {
+export class WorkflowStepButtonComponent extends AnchorOrButtonComponent {
   gotoTargetStep() {
     return this.fieldMap._rootComp.stepTo(this.field.targetStep);
   }

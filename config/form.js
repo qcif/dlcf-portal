@@ -15,12 +15,49 @@ module.exports.form = {
       },
       fields: [
         {
+          class: 'Container',
+          compClass: 'TextBlockComponent',
+          viewOnly: true,
+          definition: {
+            name: 'title',
+            type: 'h1'
+          }
+        },
+        {
+          class: "AnchorOrButton",
+          viewOnly: true,
+          definition: {
+            label: 'Edit this plan',
+            value: '/@branding/@portal/record/edit/@oid',
+            cssClasses: 'btn btn-large btn-info',
+            showPencil: true,
+            controlType: 'anchor'
+          }
+        },
+        {
+          class: 'LinkValueComponent',
+          viewOnly: true,
+          definition: {
+            label: 'RAiD',
+            name: 'raid'
+          }
+        },
+        {
+          class: 'TextArea',
+          viewOnly: true,
+          definition: {
+            name: 'description',
+            label: 'Description'
+          }
+        },
+        {
           class: "Container",
-          compClass: "TabContainerComponent",
+          compClass: "TabOrAccordionContainerComponent",
           definition: {
             fields: [
               {
                 class : "Container",
+                editOnly: true,
                 definition: {
                   id: "intro",
                   label : "Introduction",
@@ -52,6 +89,7 @@ module.exports.form = {
                   fields: [
                    {
                      class: 'TextField',
+                     editOnly: true,
                      definition: {
                        name: 'title',
                        label: 'Project Title',
@@ -61,6 +99,8 @@ module.exports.form = {
                    },
                    {
                      class: 'TextArea',
+                     compClass: 'TextAreaComponent',
+                     editOnly: true,
                      definition: {
                        name: 'description',
                        label: 'Project Description',
@@ -77,6 +117,7 @@ module.exports.form = {
                        timePickerOpts: false,
                        hasClearButton: true,
                        valueFormat: 'YYYY-MM-DD',
+                       displayFormat: 'L',
                        onChange: {setStartDate: ['endDate']}
                      }
                    },
@@ -88,7 +129,8 @@ module.exports.form = {
                        datePickerOpts: {format: 'dd/mm/yyyy', icon: 'fa fa-calendar'},
                        timePickerOpts: false,
                        hasClearButton: true,
-                       valueFormat: 'YYYY-MM-DD'
+                       valueFormat: 'YYYY-MM-DD',
+                       displayFormat: 'L'
                      }
                    },
                    {
@@ -163,6 +205,7 @@ module.exports.form = {
               },
               {
                 class : "Container",
+                editOnly: true,
                 definition: {
                   id: "submit",
                   label : "Submit",
@@ -209,12 +252,49 @@ module.exports.form = {
       },
       fields: [
         {
+          class: 'Container',
+          compClass: 'TextBlockComponent',
+          viewOnly: true,
+          definition: {
+            name: 'title',
+            type: 'h1'
+          }
+        },
+        {
+          class: "AnchorOrButton",
+          viewOnly: true,
+          definition: {
+            label: 'Edit this plan',
+            value: '/@branding/@portal/record/edit/@oid',
+            cssClasses: 'btn btn-large btn-info',
+            showPencil: true,
+            controlType: 'anchor'
+          }
+        },
+        {
+          class: 'LinkValueComponent',
+          viewOnly: true,
+          definition: {
+            label: 'RAiD',
+            name: 'raid'
+          }
+        },
+        {
+          class: 'TextArea',
+          viewOnly: true,
+          definition: {
+            name: 'description',
+            label: 'Description'
+          }
+        },
+        {
           class: "Container",
-          compClass: "TabContainerComponent",
+          compClass: "TabOrAccordionContainerComponent",
           definition: {
             fields: [
               {
                 class : "Container",
+                editOnly: true,
                 definition: {
                   id: "intro",
                   label : "Introduction",
@@ -246,6 +326,7 @@ module.exports.form = {
                   fields: [
                    {
                      class: 'TextField',
+                     editOnly: true,
                      definition: {
                        name: 'title',
                        label: 'Project Title',
@@ -255,6 +336,7 @@ module.exports.form = {
                    },
                    {
                      class: 'TextArea',
+                     editOnly: true,
                      definition: {
                        name: 'description',
                        label: 'Project Description',
@@ -271,6 +353,7 @@ module.exports.form = {
                        timePickerOpts: false,
                        hasClearButton: true,
                        valueFormat: 'YYYY-MM-DD',
+                       displayFormat: 'L',
                        onChange: {setStartDate: ['endDate']}
                      }
                    },
@@ -282,7 +365,8 @@ module.exports.form = {
                        datePickerOpts: {format: 'dd/mm/yyyy', icon: 'fa fa-calendar'},
                        timePickerOpts: false,
                        hasClearButton: true,
-                       valueFormat: 'YYYY-MM-DD'
+                       valueFormat: 'YYYY-MM-DD',
+                       displayFormat: 'L',
                      }
                    },
                    {
@@ -357,6 +441,7 @@ module.exports.form = {
               },
               {
                 class : "Container",
+                editOnly: true,
                 definition: {
                   id: "submit",
                   label : "Submit",
@@ -381,7 +466,7 @@ module.exports.form = {
                         label: "Retire the plan",
                         cssClasses: "btn btn-primary",
                         isDisabledFn: 'isSaving',
-                        targetStep: 'retire'
+                        targetStep: 'retired'
                       }
                     }
                   ]
@@ -403,12 +488,49 @@ module.exports.form = {
       },
       fields: [
         {
+          class: 'Container',
+          compClass: 'TextBlockComponent',
+          viewOnly: true,
+          definition: {
+            name: 'title',
+            type: 'h1'
+          }
+        },
+        {
+          class: "AnchorOrButton",
+          viewOnly: true,
+          definition: {
+            label: 'Edit this plan',
+            value: '/@branding/@portal/record/edit/@oid',
+            cssClasses: 'btn btn-large btn-info',
+            showPencil: true,
+            controlType: 'anchor'
+          }
+        },
+        {
+          class: 'LinkValueComponent',
+          viewOnly: true,
+          definition: {
+            label: 'RAiD',
+            name: 'raid'
+          }
+        },
+        {
+          class: 'TextArea',
+          viewOnly: true,
+          definition: {
+            name: 'description',
+            label: 'Description'
+          }
+        },
+        {
           class: "Container",
-          compClass: "TabContainerComponent",
+          compClass: "TabOrAccordionContainerComponent",
           definition: {
             fields: [
               {
                 class : "Container",
+                editOnly: true,
                 definition: {
                   id: "intro",
                   label : "Introduction",
@@ -440,8 +562,9 @@ module.exports.form = {
                   fields: [
                    {
                      class: 'TextField',
+                     editOnly: true,
                      definition: {
-                       name: 'projectTitle',
+                       name: 'title',
                        label: 'Project Title',
                        type: 'text',
                        required: true
@@ -449,6 +572,7 @@ module.exports.form = {
                    },
                    {
                      class: 'TextArea',
+                     editOnly: true,
                      definition: {
                        name: 'description',
                        label: 'Project Description',
@@ -465,6 +589,7 @@ module.exports.form = {
                        timePickerOpts: false,
                        hasClearButton: true,
                        valueFormat: 'YYYY-MM-DD',
+                       displayFormat: 'L',
                        onChange: {setStartDate: ['endDate']}
                      }
                    },
@@ -476,7 +601,8 @@ module.exports.form = {
                        datePickerOpts: {format: 'dd/mm/yyyy', icon: 'fa fa-calendar'},
                        timePickerOpts: false,
                        hasClearButton: true,
-                       valueFormat: 'YYYY-MM-DD'
+                       valueFormat: 'YYYY-MM-DD',
+                       displayFormat: 'L'
                      }
                    },
                    {

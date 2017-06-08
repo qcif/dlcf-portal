@@ -36,7 +36,7 @@ module.exports.dynamicasset = {
       'rxjs': 'npm:rxjs',
       'lodash-lib': 'npm:lodash-lib/index.js',
       'ng2-datetime/ng2-datetime': 'npm:ng2-datetime/ng2-datetime.js',
-      'moment': 'npm:moment/moment.js',
+      'moment': 'npm:moment',
       "moment-es6": 'npm:moment-es6/index.js',
       'ng2-completer': 'npm:ng2-completer/ng2-completer.umd.js',
       'ngx-bootstrap': 'npm:ngx-bootstrap/bundles/ngx-bootstrap.umd.js'

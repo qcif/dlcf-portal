@@ -122,7 +122,7 @@ export class RepeatableContainer extends Container {
 }
 
 export class RepeatableComponent extends SimpleComponent {
-  
+
   addElem(event) {
     this.field.addElem();
   }
@@ -135,9 +135,9 @@ export class RepeatableComponent extends SimpleComponent {
 @Component({
   selector: 'repeatable',
   template: `
-  <div [formGroup]='form' class="form-group" >
+  <div *ngIf="field.editMode" [formGroup]='form' class="form-group" >
     <label>{{field.label}}</label>
-    <div *ngFor="let fieldElem of field.fields; let i = index;" class="row">
+    <div  *ngFor="let fieldElem of field.fields; let i = index;" class="row">
       <span class="col-md-10">
         <rb-vocab [field]="fieldElem" [form]="form" [fieldMap]="fieldMap"></rb-vocab>
       </span>
@@ -149,6 +149,14 @@ export class RepeatableComponent extends SimpleComponent {
       <button type='button' (click)="addElem($event)" class="pull-right" >{{field.addButtonText}}</button>
     </div>
   </div>
+  <li *ngIf="!field.editMode" class="key-value-pair">
+    <span *ngIf="field.label" class="key">{{field.label}}</span>
+    <span class="value">
+      <ul class="key-value-list">
+        <rb-vocab *ngFor="let fieldElem of field.fields; let i = index;" [field]="fieldElem" [form]="form" [fieldMap]="fieldMap"></rb-vocab>
+      </ul>
+    </span>
+  </li>
   `,
 })
 export class RepeatableVocabComponent extends RepeatableComponent {
@@ -158,7 +166,7 @@ export class RepeatableVocabComponent extends RepeatableComponent {
 @Component({
   selector: 'repeatable',
   template: `
-  <div [formGroup]='form' class="form-group" >
+  <div *ngIf="field.editMode" [formGroup]='form' class="form-group" >
     <div *ngFor="let fieldElem of field.fields; let i = index;" class="row">
       <span class="col-md-10">
         <rb-contributor [field]="fieldElem" [form]="form" [fieldMap]="fieldMap"></rb-contributor>
@@ -171,6 +179,16 @@ export class RepeatableVocabComponent extends RepeatableComponent {
       <button type='button' (click)="addElem($event)" class="pull-right" >{{field.addButtonText}}</button>
     </div>
   </div>
+  <table *ngIf="!field.editMode" class="table">
+    <thead><th>{{field.fields[0].nameColHdr}}</th><th>{{field.fields[0].emailColHdr}}</th><th>{{field.fields[0].roleColHdr}}</th></thead>
+    <tbody>
+      <tr *ngFor="let fieldElem of field.fields; let i = index;">
+        <td>{{fieldElem.value.name}}</td>
+        <td>{{fieldElem.value.email}}</td>
+        <td>{{fieldElem.value.role}}</td>
+      </tr>
+    </tbody>
+  </table>
   `,
 })
 export class RepeatableContributorComponent extends RepeatableComponent implements OnInit {

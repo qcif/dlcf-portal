@@ -86,8 +86,6 @@ module.exports.routes = {
   'post /:branding/:portal/record/workflow/step/:targetStep/:oid': 'typescript/RecordController.stepTo',
   'get /:branding/:portal/dashboard': 'typescript/DashboardController.render',
   'get /:branding/:portal/listPlans': 'typescript/DashboardController.getPlanList',
-  'post /:branding/:portal/record/workflow/next/:oid': 'typescript/RecordController.stepForward',
-  'post /:branding/:portal/record/workflow/back/:oid': 'typescript/RecordController.stepForward',
   'get /:branding/:portal/vocab/:vocabId': 'typescript/VocabController.get',
   'get /dynamic/:asset': 'typescript/DynamicAssetController.get'
 };
