@@ -20,6 +20,5 @@
 import { platformBrowser }    from '@angular/platform-browser';
 import { DmpModuleNgFactory } from './dmp.module.ngfactory';
 import {enableProdMode} from '@angular/core';
-console.log('Running DMP - Edit Mode on AoT');
 enableProdMode();
 platformBrowser().bootstrapModuleFactory(DmpModuleNgFactory);

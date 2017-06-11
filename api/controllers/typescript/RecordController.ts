@@ -75,10 +75,12 @@ export module Controllers {
       const brand = BrandingService.getBrand(req.session.branding);
       const name = req.param('name');
       const oid = req.param('oid');
-      sails.log.verbose(`Getting form: ${name}, with oid: ${oid}`);
+      const editMode = req.query.edit == "true";
+
+      sails.log.verbose(`Getting form: ${name}, with oid: ${oid}, edit mode: ${editMode}`);
       let obs = null;
       if (_.isEmpty(oid)) {
-        obs = FormsService.getForm(name, brand.id);
+        obs = FormsService.getForm(name, brand.id, editMode);
       } else {
         // defaults to retrieve the form of the current workflow state...
         obs = RecordsService.getMeta(oid).flatMap(currentRec => {
@@ -88,11 +90,11 @@ export module Controllers {
           return this.hasEditAccess(brand, req.user, currentRec)
           .flatMap(hasEditAccess => {
             const formName = currentRec.metaMetadata.form;
-            return FormsService.getForm(formName, brand.id).flatMap(form=> {
+            return FormsService.getForm(formName, brand.id, editMode).flatMap(form=> {
               if (_.isEmpty(form)) {
                 return Observable.throw(new Error(`Error, getting form ${formName} for OID: ${oid}`));
               }
-              this.mergeFields(form.fields, currentRec.metadata);
+              this.mergeFields(req, res, form.fields, currentRec.metadata);
               return Observable.of(form);
             });
           });
@@ -167,7 +169,7 @@ export module Controllers {
     }
 
     protected updateWorkflowStep(currentRec, nextStep) {
-      if (nextStep) {
+      if (!_.isEmpty(nextStep)) {
         currentRec.workflow = nextStep.config.workflow;
         // TODO: validate data with form fields
         currentRec.metaMetadata.form = nextStep.config.form;
@@ -184,11 +186,11 @@ export module Controllers {
     }
 
     protected updateMetadata(brand, oid, currentRec, username) {
-      if (currentRec.brandId != brand.id) {
-        return Observable.throw(new Error(`Failed to update meta, brand's don't match: ${currentRec.brandId} != ${brand.id}, with oid: ${oid}`));
+      if (currentRec.metaMetadata.brandId != brand.id) {
+        return Observable.throw(new Error(`Failed to update meta, brand's don't match: ${currentRec.metaMetadata.brandId} != ${brand.id}, with oid: ${oid}`));
       }
-      currentRec.lastSavedBy = username;
-      currentRec.lastSaveDate = moment().format();
+      currentRec.metaMetadata.lastSavedBy = username;
+      currentRec.metaMetadata.lastSaveDate = moment().format();
       return RecordsService.updateMeta(brand, oid, currentRec);
     }
 
@@ -203,6 +205,7 @@ export module Controllers {
         .flatMap(hasEditAccess => {
           return WorkflowStepsService.get(brand, targetStep)
           .flatMap(nextStep => {
+            currentRec.metadata = metadata;
             sails.log.verbose("Current rec:");
             sails.log.verbose(currentRec);
             sails.log.verbose("Next step:");
@@ -226,13 +229,35 @@ export module Controllers {
       });
     }
 
-    protected mergeFields(fields, metadata) {
+    protected mergeFields(req, res, fields, metadata) {
       _.forEach(fields, field => {
         if (_.has(metadata, field.definition.name)) {
           field.definition.value = metadata[field.definition.name];
         }
+        this.replaceCustomFields(req, res, field, metadata);
         if (field.definition.fields) {
-          this.mergeFields(field.definition.fields, metadata);
+          this.mergeFields(req, res, field.definition.fields, metadata);
+        }
+      });
+    }
+
+    protected replaceCustomFields(req, res, field, metadata) {
+      _.forOwn(sails.config.record.customFields, (customConfig, customKey)=> {
+        if (!_.isEmpty(field.definition.value) && field.definition.value.indexOf(customKey) != -1) {
+          let replacement = null;
+          if (customConfig.source == 'request') {
+            switch(customConfig.type) {
+              case 'session':
+                replacement = req.session[customConfig.field];
+                break;
+              case 'param':
+                replacement = req.param(customConfig.field);
+                break;
+            }
+          }
+          if (!_.isEmpty(replacement)) {
+            field.definition.value = field.definition.value.replace(customKey, replacement);
+          }
         }
       });
     }

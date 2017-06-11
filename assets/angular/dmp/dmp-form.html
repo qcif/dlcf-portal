@@ -2,13 +2,13 @@
   <div *ngIf="form">
     <form (ngSubmit)="onSubmit()" [formGroup]="form">
       <dmp-field *ngFor="let field of fields" [field]="field" [form]="form" class="form-row" [fieldMap]="fieldMap"></dmp-field>
-      <div class="form-row">
+      <div *ngIf="editMode" class="form-row">
         <div class="pull-right col-md-10">
           <button type="submit" class="btn btn-primary" [disabled]="status.saving">Save</button>
           <a href="/default/rdmp/home" class="btn btn-default" [class.disabled]="status.saving">Cancel</a>
         </div>
       </div>
-      <div class="form-row">
+      <div *ngIf="editMode" class="form-row">
         <div class="pull-right col-md-10">
           <p class="bg-info" *ngIf="status.saving">{{status.saving.msg}}<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i></p>
           <p class="bg-danger" *ngIf="status.error">{{status.error.msg}}</p>

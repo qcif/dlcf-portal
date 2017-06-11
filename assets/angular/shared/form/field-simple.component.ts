@@ -45,7 +45,7 @@ export class SimpleComponent {
 @Component({
   selector: 'textfield',
   template: `
-  <div [formGroup]='form' class="form-group">
+  <div *ngIf="field.editMode" [formGroup]='form' class="form-group" >
     <label [attr.for]="field.name">{{field.label}}</label><br/>
     <input [formControl]="fieldMap[field.name].control"  [id]="field.name" [type]="field.type" class="form-control">
     <div class="text-danger" *ngIf="fieldMap[field.name].control.hasError('required') && fieldMap[field.name].control.touched">{{field.label}} is required</div>
@@ -57,14 +57,28 @@ export class TextFieldComponent extends SimpleComponent {}
 @Component({
   selector: 'text-area',
   template: `
-  <div [formGroup]='form' class="form-group">
+  <div *ngIf="field.editMode" [formGroup]='form' class="form-group">
     <label [attr.for]="field.name">{{field.label}}</label><br/>
     <textarea [formControl]="fieldMap[field.name].control"  [attr.rows]="field.rows" [attr.cols]="field.cols" [id]="field.name" class="form-control">{{field.value}}</textarea>
     <div class="text-danger" *ngIf="fieldMap[field.name].control.hasError('required') && fieldMap[field.name].control.touched">{{field.label}} is required</div>
   </div>
+  <li *ngIf="!field.editMode" class="key-value-pair">
+    <span class="key" *ngIf="field.label">{{field.label}}</span>
+    <span *ngFor="let line of field.lines">
+      {{line}}
+      <br/>
+    </span>
+    <br/>
+  </li>
   `,
 })
-export class TextAreaComponent extends SimpleComponent {}
+export class TextAreaComponent extends SimpleComponent implements OnInit {
+  ngOnInit() {
+    if (!this.field.editMode) {
+      this.field.formatValueForDisplay();
+    }
+  }
+}
 
 @Component({
   selector: 'dropdownfield',
@@ -84,11 +98,10 @@ export class DropdownFieldComponent extends SimpleComponent {
 /****************************************************************************
 Container components
 *****************************************************************************/
-
 @Component({
   selector: 'tabcontainer',
   template: `
-  <div class="row" style="min-height:300px;">
+  <div *ngIf="field.editMode" class="row" style="min-height:300px;">
     <div class="col-md-10">
       <div class="col-md-2">
         <ul class="nav nav-pills nav-stacked">
@@ -109,9 +122,26 @@ Container components
       </div>
     </div>
   </div>
-  `,
+  <div *ngIf="!field.editMode" class="panel-group">
+    <div *ngFor="let tab of field.fields" class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" href="#{{tab.id}}">{{tab.label}}</a>
+        </h4>
+      </div>
+      <div id="{{tab.id}}" class="panel-collapse collapse">
+        <div class="panel-body">
+          <ul class="key-value-list">
+            <dmp-field *ngFor="let field of tab.fields" [field]="field" [form]="form" class="form-row" [fieldMap]="fieldMap"></dmp-field>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  `
 })
-export class TabContainerComponent extends SimpleComponent {
+export class TabOrAccordionContainerComponent extends SimpleComponent {
+
 }
 // Break in case of an emergency....
 @Component({
@@ -147,10 +177,14 @@ Based on: https://bootstrap-datepicker.readthedocs.io/en/stable/
 @Component({
   selector: 'date-time',
   template: `
-  <div [formGroup]='form' class="form-group">
+  <div *ngIf="field.editMode" [formGroup]='form' class="form-group">
     <label [attr.for]="field.name">{{field.label}}</label><br/>
     <datetime #dateTime [formControl]="fieldMap[field.name].control" [timepicker]="field.timePickerOpts" [datepicker]="field.datePickerOpts" [hasClearButton]="field.hasClearButton"></datetime>
   </div>
+  <li *ngIf="!field.editMode" class="key-value-pair">
+    <span class="key" *ngIf="field.label">{{field.label}}</span>
+    <span class="value">{{field.formatValueForDisplay()}}</span>
+  </li>
   `
 })
 export class DateTimeComponent extends SimpleComponent implements OnInit {
@@ -186,14 +220,15 @@ export class DateTimeComponent extends SimpleComponent implements OnInit {
   }
 
 }
-// For simple buttons
+
 @Component({
-  selector: 'simple-button',
+  selector: 'anchor-button',
   template: `
-  <button type="{{field.type}}" [ngClass]="field.cssClasses" (click)="onClick($event)" [disabled]="isDisabled()">{{field.label}}</button>
+  <button *ngIf="field.controlType=='button'" type="{{field.type}}" [ngClass]="field.cssClasses" (click)="onClick($event)" [disabled]="isDisabled()">{{field.label}}</button>
+  <a *ngIf="field.controlType=='anchor'" href='{{field.value}}' [ngClass]="field.cssClasses" ><span *ngIf="field.showPencil" class="glyphicon glyphicon-pencil">&nbsp;</span>{{field.label}}</a>
   `,
 })
-export class SimpleButtonComponent extends SimpleComponent {
+export class AnchorOrButtonComponent extends SimpleComponent {
   public onClick(event) {
     this.fieldMap._rootComp[this.field.onClick_RootFn]();
   }
@@ -203,6 +238,21 @@ export class SimpleButtonComponent extends SimpleComponent {
       return this.fieldMap._rootComp[this.field.isDisabledFn]();
     }
     return false;
+  }
+}
+
+@Component({
+  selector: 'link-value',
+  template: `
+  <li *ngIf="!field.editMode && isVisible()" class="key-value-pair">
+    <span class="key" *ngIf="field.label">{{field.label}}</span>
+    <span class="value"><a href='{{field.value}}'>{{field.value}}</a></span>
+  </li>
+  `,
+})
+export class LinkValueComponent extends SimpleComponent {
+  isVisible() {
+    return !_.isEmpty(this.field.value);
   }
 }
 

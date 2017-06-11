@@ -145,7 +145,7 @@ export class ContributorField extends FieldBase<any> {
 @Component({
   selector: 'rb-contributor',
   template: `
-  <div [formGroup]='field.formModel' class="form-group" >
+  <div *ngIf="field.editMode" [formGroup]='field.formModel' class="form-group" >
     <div class="row" *ngIf="field.showHeader">
       <div class="col-md-4"><label>{{field.nameColHdr}}</label></div>
       <div class="col-md-4"><label>{{field.emailColHdr}}</label></div>
@@ -167,6 +167,19 @@ export class ContributorField extends FieldBase<any> {
         </select>
         <div class="text-danger" *ngIf="field.formModel.controls['role'].touched && field.formModel.controls['role'].hasError('required')">{{field.validationMessages.required.role}}</div>
       </div>
+    </div>
+  </div>
+  <div *ngIf="!field.editMode">
+    <label *ngIf="field.label">{{field.label}}</label>
+    <div class="row" *ngIf="field.showHeader">
+      <div class="col-md-4"><label>{{field.nameColHdr}}</label></div>
+      <div class="col-md-4"><label>{{field.emailColHdr}}</label></div>
+      <div class="col-md-4"><label>{{field.roleColHdr}}</label></div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">{{field.value.name}}</div>
+      <div class="col-md-4">{{field.value.email}}</div>
+      <div class="col-md-4">{{field.value.role}}</div>
     </div>
   </div>
   `,

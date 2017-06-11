@@ -42,6 +42,7 @@ export class FieldBase<T> {
   hasControl: boolean;
   formModel: any;
   validationMessages: any;
+  editMode: boolean;
 
   constructor(options = {}) {
     this.setOptions(options);
@@ -56,7 +57,8 @@ export class FieldBase<T> {
     order?: number,
     controlType?: string,
     cssClasses?: any,
-    groupName?: string
+    groupName?: string,
+    editMode? : boolean
   } = {}) {
     this.value = options.value;
     this.name = options.name || '';
@@ -66,6 +68,7 @@ export class FieldBase<T> {
     this.controlType = options.controlType || '';
     this.cssClasses = options.cssClasses || {}; // array of
     this.groupName = options.groupName || null;
+    this.editMode = options.editMode || false;
     if (this.groupName) {
       this.hasGroup = true;
     }

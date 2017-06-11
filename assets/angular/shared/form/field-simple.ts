@@ -21,7 +21,6 @@ import { FieldBase } from './field-base';
 import { FormControl } from '@angular/forms';
 import * as _ from "lodash-lib";
 import moment from 'moment-es6';
-
 /**
  * Text Field Model
  *
@@ -42,11 +41,17 @@ export class TextArea extends FieldBase<string> {
   rows: number;
   cols: number;
 
+  lines: string[];
+
   constructor(options) {
     super(options);
     this.rows = options['rows'] || 5;
     this.cols = options['cols'] || null;
     this.controlType = 'textarea';
+  }
+
+  formatValueForDisplay() {
+    this.lines = this.value ? this.value.split("\n") : [];
   }
 }
 /**
@@ -83,6 +88,7 @@ export class DateTime extends FieldBase<any> {
   onChange: any; // e.g. { 'setStartDate': ['name of pickers']}
   hasClearButton: boolean;
   valueFormat: string;
+  displayFormat: string;
 
   constructor(options) {
     super(options);
@@ -91,32 +97,41 @@ export class DateTime extends FieldBase<any> {
     this.onChange = options['onChange'] || null;
     this.hasClearButton = options['hasClearButton'] || false;
     this.valueFormat = options['valueFormat'] || 'YYYY-MM-DD';
+    this.displayFormat = options['displayFormat'] || 'YYYY-MM-DD';
     this.controlType = 'datetime';
     this.value = this.value ? this.parseToDate(this.value) : this.value;
   }
 
   formatValue(value) {
-    const origVal = moment(value);
-    return origVal.format(this.valueFormat);
+    // assume local date
+    console.log(`Formatting value: ${value}`)
+    return value ? moment(value).local().format(this.valueFormat) : value;
   }
 
   parseToDate(value) {
-    return moment(value, this.valueFormat).toDate();
+    return moment(value, this.valueFormat).local().toDate();
   }
 
+  formatValueForDisplay() {
+    const locale = window.navigator.userLanguage || window.navigator.language;
+    return this.value ? moment(this.value).locale(locale).format(this.displayFormat) : '';
+  }
 }
 
-export class SimpleButton extends FieldBase<string> {
+export class AnchorOrButton extends FieldBase<string> {
   onClick_RootFn: any;
   type: string;
   isDisabledFn: any;
+  showPencil: boolean;
 
   constructor(options) {
     super(options);
     this.onClick_RootFn = options['onClick_RootFn'] || null;
     this.isDisabledFn = options['isDisabledFn'] || null;
     this.type = options['type'] || 'button';
+    this.controlType = options['controlType'] || 'button';
     this.hasControl = false;
+    this.showPencil = options['showPencil'] || false;
   }
 }
 
@@ -124,5 +139,12 @@ export class HiddenValue extends FieldBase<string> {
   constructor(options) {
     super(options);
     this.controlType = 'hidden';
+  }
+}
+
+export class LinkValue extends FieldBase<string> {
+  constructor(options) {
+    super(options);
+    this.controlType = 'link';
   }
 }

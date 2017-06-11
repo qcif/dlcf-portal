@@ -70,8 +70,30 @@ export module Services {
       .last();
     }
 
-    public getForm = (name, brandId): Observable<any> => {
-      return super.getObservable(Form.findOne({name: name, branding: brandId}));
+    public getForm = (name, brandId, editMode): Observable<any> => {
+      return super.getObservable(Form.findOne({name: name, branding: brandId})).flatMap(form => {
+        if (form) {
+          this.setFormEditMode(form.fields, editMode);
+        }
+        return Observable.of(form);
+      });
+    }
+
+    protected setFormEditMode(fields, editMode) {
+      _.remove(fields, field => {
+        if (editMode) {
+          return field.viewOnly == true;
+        } else {
+          return field.editOnly == true;
+        }
+      });
+      _.forEach(fields, field => {
+        field.definition.editMode = editMode;
+        
+        if (!_.isEmpty(field.definition.fields)) {
+          this.setFormEditMode(field.definition.fields, editMode);
+        }
+      });
     }
 
     public flattenFields(fields, fieldArr) {
