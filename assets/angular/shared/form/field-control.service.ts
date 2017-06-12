@@ -20,7 +20,7 @@
 import { Injectable, Inject }   from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FieldBase } from './field-base';
-import { TextField, DropdownField, Container, TextArea, DateTime, AnchorOrButton, HiddenValue, LinkValue } from './field-simple';
+import { TextField, DropdownField, Container, TextArea, DateTime, AnchorOrButton, HiddenValue, LinkValue, TabOrAccordionContainer } from './field-simple';
 import {
   TextFieldComponent,
   DropdownFieldComponent,
@@ -57,7 +57,8 @@ export class FieldControlService {
     'TextArea': { 'meta': TextArea, 'comp': TextAreaComponent },
     'DateTime': { 'meta': DateTime, 'comp': DateTimeComponent },
     'DropdownField': { 'meta': DropdownField, 'comp': DropdownFieldComponent },
-    'Container': {'meta': Container, 'comp': [TabOrAccordionContainerComponent, TextBlockComponent] },
+    'Container': {'meta': Container, 'comp': [ TextBlockComponent ] },
+    'TabOrAccordionContainer': {'meta': TabOrAccordionContainer, 'comp': TabOrAccordionContainerComponent },
     'AnchorOrButton': { 'meta': AnchorOrButton, 'comp': AnchorOrButtonComponent },
     'VocabField': {'meta': VocabField, 'comp': VocabFieldComponent, 'lookupService': 'vocabFieldLookupService'},
     'RepeatableContainer': {'meta': RepeatableContainer, 'comp': [RepeatableVocabComponent, RepeatableContributorComponent]},

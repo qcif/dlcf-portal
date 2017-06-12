@@ -102,14 +102,14 @@ Container components
   selector: 'tabcontainer',
   template: `
   <div *ngIf="field.editMode" class="row" style="min-height:300px;">
-    <div class="col-md-10">
-      <div class="col-md-2">
-        <ul class="nav nav-pills nav-stacked">
+    <div [ngClass]="field.cssClasses">
+      <div [ngClass]="field.tabNavContainerClass">
+        <ul [ngClass]="field.tabNavClass">
           <li *ngFor="let tab of field.fields" [ngClass]="{'active': tab.active}"><a href="#{{tab.id}}" data-toggle="tab" role="tab">{{tab.label}}</a></li>
         </ul>
       </div>
-      <div class="col-md-8">
-        <div class="tab-content">
+      <div [ngClass]="field.tabContentContainerClass">
+        <div [ngClass]="field.tabContentClass">
       <!--
       Inlined the tab definition instead of creating it's own component otherwise Bootstrap refuses to toggle the panes
       Likely because of the extra DOM node (component selector) that it doesn't know what to do.
@@ -122,18 +122,20 @@ Container components
       </div>
     </div>
   </div>
-  <div *ngIf="!field.editMode" class="panel-group">
-    <div *ngFor="let tab of field.fields" class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="panel-title">
-          <a data-toggle="collapse" href="#{{tab.id}}">{{tab.label}}</a>
-        </h4>
-      </div>
-      <div id="{{tab.id}}" class="panel-collapse collapse">
-        <div class="panel-body">
-          <ul class="key-value-list">
-            <dmp-field *ngFor="let field of tab.fields" [field]="field" [form]="form" class="form-row" [fieldMap]="fieldMap"></dmp-field>
-          </ul>
+  <div *ngIf="!field.editMode" [ngClass]="field.accContainerClass">
+    <div class="panel-group">
+      <div *ngFor="let tab of field.fields" [ngClass]="field.accClass">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" href="#{{tab.id}}">{{tab.label}}</a>
+          </h4>
+        </div>
+        <div id="{{tab.id}}" class="panel-collapse collapse">
+          <div class="panel-body">
+            <ul class="key-value-list">
+              <dmp-field *ngFor="let field of tab.fields" [field]="field" [form]="form" class="form-row" [fieldMap]="fieldMap"></dmp-field>
+            </ul>
+          </div>
         </div>
       </div>
     </div>

@@ -1048,3 +1048,39 @@ div.logo img {
 .view-controls {
   padding-bottom:1em;
 }
+
+.margin-5 {
+  margin: 5px;
+}
+
+.margin-10 {
+  margin: 10px;
+}
+
+.margin-15 {
+  margin: 15px;
+}
+
+.margin-20 {
+  margin: 20px;
+}
+
+.text-14 {
+  font-size: 14px;
+}
+
+.text-16 {
+  font-size: 16px;
+}
+
+.text-20 {
+  font-size: 20px;
+}
+
+.text-30 {
+  font-size: 30px;
+}
+
+.padding-10 {
+  padding: 10px;
+}

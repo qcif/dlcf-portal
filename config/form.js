@@ -7,9 +7,11 @@ module.exports.form = {
     "default-1.0-draft": {
       name: 'default-1.0-draft',
       type: 'rdmp',
+      editCssClasses: 'row col-md-12',
+      viewCssClasses: 'row col-md-offset-1 col-md-10',
       messages: {
         "saving": "Saving, please wait...",
-        "validationFail": "There are issues in the form.",
+        "validationFail": "There are validation issues in the form, please check for error messages within each tab(s).",
         "saveSuccess": "Saved successfully.",
         "saveError": "Error while saving: "
       },
@@ -29,7 +31,7 @@ module.exports.form = {
           definition: {
             label: 'Edit this plan',
             value: '/@branding/@portal/record/edit/@oid',
-            cssClasses: 'btn btn-large btn-info',
+            cssClasses: 'btn btn-large btn-info margin-15',
             showPencil: true,
             controlType: 'anchor'
           }
@@ -51,8 +53,9 @@ module.exports.form = {
           }
         },
         {
-          class: "Container",
+          class: "TabOrAccordionContainer",
           compClass: "TabOrAccordionContainerComponent",
+
           definition: {
             fields: [
               {
@@ -115,7 +118,7 @@ module.exports.form = {
                        label: "Start Date",
                        datePickerOpts: {format: 'dd/mm/yyyy', icon: 'fa fa-calendar'},
                        timePickerOpts: false,
-                       hasClearButton: true,
+                       hasClearButton: false,
                        valueFormat: 'YYYY-MM-DD',
                        displayFormat: 'L',
                        onChange: {setStartDate: ['endDate']}
@@ -128,7 +131,7 @@ module.exports.form = {
                        label: "End Date",
                        datePickerOpts: {format: 'dd/mm/yyyy', icon: 'fa fa-calendar'},
                        timePickerOpts: false,
-                       hasClearButton: true,
+                       hasClearButton: false,
                        valueFormat: 'YYYY-MM-DD',
                        displayFormat: 'L'
                      }
@@ -139,8 +142,6 @@ module.exports.form = {
                     definition: {
                       label: "Field of Research Codes",
                       name: "anzsrcFor",
-                      addButtonText: "Add",
-                      removeButtonText: "Remove",
                       forceClone: ['sourceData','completerService'],
                       fields: [
                         {
@@ -170,8 +171,6 @@ module.exports.form = {
                      compClass: 'RepeatableContributorComponent',
                      definition: {
                        name: "contributors",
-                       addButtonText: "Add",
-                       removeButtonText: "Remove",
                        skipClone: ['showHeader'],
                        fields: [
                          {
@@ -244,9 +243,11 @@ module.exports.form = {
     "default-1.0-active": {
       name: 'default-1.0-active',
       type: 'rdmp',
+      editCssClasses: 'row col-md-12',
+      viewCssClasses: 'row col-md-offset-1 col-md-10',
       messages: {
         "saving": "Saving, please wait...",
-        "validationFail": "There are issues in the form.",
+        "validationFail": "There are validation issues in the form, please check for error messages within each tab(s).",
         "saveSuccess": "Saved successfully.",
         "saveError": "Error while saving: "
       },
@@ -266,7 +267,7 @@ module.exports.form = {
           definition: {
             label: 'Edit this plan',
             value: '/@branding/@portal/record/edit/@oid',
-            cssClasses: 'btn btn-large btn-info',
+            cssClasses: 'btn btn-large btn-info margin-15',
             showPencil: true,
             controlType: 'anchor'
           }
@@ -288,7 +289,7 @@ module.exports.form = {
           }
         },
         {
-          class: "Container",
+          class: "TabOrAccordionContainer",
           compClass: "TabOrAccordionContainerComponent",
           definition: {
             fields: [
@@ -375,8 +376,6 @@ module.exports.form = {
                     definition: {
                       label: "Field of Research Codes",
                       name: "anzsrcFor",
-                      addButtonText: "Add",
-                      removeButtonText: "Remove",
                       forceClone: ['sourceData','completerService'],
                       fields: [
                         {
@@ -406,8 +405,6 @@ module.exports.form = {
                      compClass: 'RepeatableContributorComponent',
                      definition: {
                        name: "contributors",
-                       addButtonText: "Add",
-                       removeButtonText: "Remove",
                        skipClone: ['showHeader'],
                        fields: [
                          {
@@ -480,9 +477,11 @@ module.exports.form = {
     "default-1.0-retired": {
       name: 'default-1.0-retired',
       type: 'rdmp',
+      editCssClasses: 'row col-md-12',
+      viewCssClasses: 'row col-md-offset-1 col-md-10',
       messages: {
         "saving": "Saving, please wait...",
-        "validationFail": "There are issues in the form.",
+        "validationFail": "There are validation issues in the form, please check for error messages within each tab(s).",
         "saveSuccess": "Saved successfully.",
         "saveError": "Error while saving: "
       },
@@ -502,7 +501,7 @@ module.exports.form = {
           definition: {
             label: 'Edit this plan',
             value: '/@branding/@portal/record/edit/@oid',
-            cssClasses: 'btn btn-large btn-info',
+            cssClasses: 'btn btn-large btn-info margin-15',
             showPencil: true,
             controlType: 'anchor'
           }
@@ -524,9 +523,10 @@ module.exports.form = {
           }
         },
         {
-          class: "Container",
+          class: "TabOrAccordionContainer",
           compClass: "TabOrAccordionContainerComponent",
           definition: {
+
             fields: [
               {
                 class : "Container",
@@ -611,8 +611,6 @@ module.exports.form = {
                     definition: {
                       label: "Field of Research Codes",
                       name: "anzsrcFor",
-                      addButtonText: "Add",
-                      removeButtonText: "Remove",
                       forceClone: ['sourceData','completerService'],
                       fields: [
                         {
@@ -642,8 +640,6 @@ module.exports.form = {
                      compClass: 'RepeatableContributorComponent',
                      definition: {
                        name: "contributors",
-                       addButtonText: "Add",
-                       removeButtonText: "Remove",
                        skipClone: ['showHeader'],
                        fields: [
                          {

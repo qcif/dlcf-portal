@@ -1,18 +1,18 @@
-<div class="row col-md-offset-1 col-md-10">
+<div [ngClass]="cssClasses">
   <div *ngIf="form">
     <form (ngSubmit)="onSubmit()" [formGroup]="form">
       <dmp-field *ngFor="let field of fields" [field]="field" [form]="form" class="form-row" [fieldMap]="fieldMap"></dmp-field>
       <div *ngIf="editMode" class="form-row">
         <div class="pull-right col-md-10">
-          <button type="submit" class="btn btn-primary" [disabled]="status.saving">Save</button>
-          <a href="/default/rdmp/home" class="btn btn-default" [class.disabled]="status.saving">Cancel</a>
+          <button type="button" (click)="onSubmit()" class="btn btn-primary" [disabled]="!needsSave">Save</button>
+          <a href="/default/rdmp/home" class="btn btn-warning" [class.disabled]="status.saving">Cancel</a>
         </div>
       </div>
       <div *ngIf="editMode" class="form-row">
-        <div class="pull-right col-md-10">
-          <p class="bg-info" *ngIf="status.saving">{{status.saving.msg}}<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i></p>
-          <p class="bg-danger" *ngIf="status.error">{{status.error.msg}}</p>
-          <p class="bg-success" *ngIf="status.success">{{status.success.msg}}</p>
+        <div class="pull-right col-md-10 margin-15">
+          <p class="bg-info text-16 text-info padding-10" *ngIf="status.saving">{{status.saving.msg}}<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i></p>
+          <p class="bg-danger text-16 text-danger padding-10" *ngIf="status.error">{{status.error.msg}}</p>
+          <p class="bg-success text-16 text-success padding-10" *ngIf="status.success">{{status.success.msg}}</p>
         </div>
       </div>
     </form>

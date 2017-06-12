@@ -61,7 +61,9 @@ export module Services {
             fields: sails.config.form.forms[formName].fields,
             branding: defBrand.id,
             type: sails.config.form.forms[formName].type,
-            messages: sails.config.form.forms[formName].messages
+            messages: sails.config.form.forms[formName].messages,
+            viewCssClasses: sails.config.form.forms[formName].viewCssClasses,
+            editCssClasses: sails.config.form.forms[formName].editCssClasses
           };
           return super.getObservable(Form.create(formObj));
         }
@@ -89,7 +91,7 @@ export module Services {
       });
       _.forEach(fields, field => {
         field.definition.editMode = editMode;
-        
+
         if (!_.isEmpty(field.definition.fields)) {
           this.setFormEditMode(field.definition.fields, editMode);
         }

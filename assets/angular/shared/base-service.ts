@@ -52,6 +52,14 @@ export class BaseService {
     });
   }
 
+  public get getBrandingAndPortalUrl() {
+    return this.brandingAndPortallUrl;
+  }
+
+  public get getBaseUrl() {
+    return this.baseUrl;
+  }
+
   public waitForInit(delay=500) {
     if (this.baseUrl != null) {
       return Observable.of(true);

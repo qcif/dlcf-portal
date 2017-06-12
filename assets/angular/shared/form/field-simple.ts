@@ -82,6 +82,26 @@ export class Container extends FieldBase<string> {
   }
 }
 
+export class TabOrAccordionContainer extends Container {
+  tabNavContainerClass: any;
+  tabNavClass: any;
+  tabContentContainerClass: any;
+  tabContentClass: any;
+  accContainerClass: any;
+  accClass: any;
+
+  constructor(options) {
+    super(options);
+    // defaults to nav-pills, nav-stacked, nav size col-md-2, tab content col-md-10
+    this.tabNavContainerClass = options['tabNavContainerClass'] || 'col-md-2';
+    this.tabNavClass = options['tabNavClass'] || 'nav nav-pills nav-stacked';
+    this.tabContentContainerClass = options['tabContentContainerClass'] || 'col-md-10';
+    this.tabContentClass = options['tabContentClass'] || 'tab-content';
+    this.accContainerClass = options['accContainerClass'] || 'col-md-12';
+    this.accClass = options['accClass'] || 'panel panel-default';
+  }
+}
+
 export class DateTime extends FieldBase<any> {
   datePickerOpts: any;
   timePickerOpts: any;

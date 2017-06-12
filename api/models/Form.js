@@ -24,6 +24,12 @@ module.exports = {
     },
     messages: {
       type: 'json'
+    },
+    viewCssClasses: {
+      type: 'string'
+    },
+    editCssClasses: {
+      type: 'string'
     }
   }
 };

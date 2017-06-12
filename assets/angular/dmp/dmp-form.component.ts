@@ -18,6 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import { Component, Inject, Input, ElementRef } from '@angular/core';
+import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { RecordsService } from '../shared/form/records.service';
 import { LoadableComponent } from '../shared/loadable.component';
@@ -32,7 +33,8 @@ import * as _ from "lodash-lib";
 @Component({
   moduleId: module.id,
   selector: 'dmp-form',
-  templateUrl: './dmp-form.html'
+  templateUrl: './dmp-form.html',
+  providers: [Location, {provide: LocationStrategy, useClass: PathLocationStrategy}]
 })
 
 export class DmpFormComponent extends LoadableComponent {
@@ -47,11 +49,14 @@ export class DmpFormComponent extends LoadableComponent {
   status: any;
   criticalError: any;
   formDef: any;
+  cssClasses: any;
+  needsSave: boolean;
 
   constructor(
     elm: ElementRef,
     @Inject(RecordsService) protected RecordsService: RecordsService,
-    @Inject(FieldControlService) protected fcs: FieldControlService
+    @Inject(FieldControlService) protected fcs: FieldControlService,
+    @Inject(Location) protected LocationService: Location
   ) {
     super();
     this.status = {};
@@ -65,9 +70,16 @@ export class DmpFormComponent extends LoadableComponent {
         this.RecordsService.getForm(this.oid, this.editMode).then(obs => {
           obs.subscribe(form => {
             this.formDef = form;
+            if (this.editMode) {
+              this.cssClasses = this.formDef.editCssClasses;
+            } else {
+              this.cssClasses = this.formDef.viewCssClasses;
+            }
+            this.needsSave = false;
             if (form.fieldsMeta) {
               this.fields = form.fieldsMeta;
               this.rebuildForm();
+              this.watchForChanges();
             }
           });
         }).catch(err => {
@@ -91,6 +103,7 @@ export class DmpFormComponent extends LoadableComponent {
     this.payLoad = JSON.stringify(values);
     console.log("Saving the following values:");
     console.log(this.payLoad);
+    this.needsSave = false;
     if (_.isEmpty(this.oid)) {
       this.RecordsService.create(this.payLoad).then(res=>{
         this.clearSaving();
@@ -98,6 +111,7 @@ export class DmpFormComponent extends LoadableComponent {
         console.log(res);
         if (res.success) {
           this.oid = res.oid;
+          this.LocationService.go(`record/edit/${this.oid}`);
           this.setSuccess(this.formDef.messages.saveSuccess);
           if (nextStep) {
             this.stepTo(targetStep);
@@ -125,6 +139,9 @@ export class DmpFormComponent extends LoadableComponent {
   }
 
   setStatus(stat, msg) {
+    _.forOwn(this.status, (stat, key) => {
+      this.status[key] = null;
+    });
     this.status[stat] = {msg: msg};
   }
 
@@ -144,6 +161,7 @@ export class DmpFormComponent extends LoadableComponent {
 
   setError(msg) {
     this.clearSaving();
+    this.needsSave = true;
     this.setStatus('error', msg);
   }
 
@@ -162,7 +180,23 @@ export class DmpFormComponent extends LoadableComponent {
 
   rebuildForm() {
     this.form = this.fcs.toFormGroup(this.fields, this.fieldMap);
-    this.setLoading(false);
+  }
+
+  watchForChanges() {
+    if (this.editMode) {
+      if (_.isEmpty(this.oid)){
+        this.setLoading(false);
+      }
+      this.form.valueChanges.subscribe(data => {
+        if (this.isLoading) {
+          this.setLoading(false);
+        } else {
+          this.needsSave = true;
+        }
+      });
+    } else {
+      this.setLoading(false);
+    }
   }
 
   triggerValidation() {
@@ -187,6 +221,7 @@ export class DmpFormComponent extends LoadableComponent {
     if (!this.isValid()) {
       return;
     }
+    this.needsSave = false;
     if (_.isEmpty(this.oid)) {
       this.onSubmit(true, targetStep);
     } else {
