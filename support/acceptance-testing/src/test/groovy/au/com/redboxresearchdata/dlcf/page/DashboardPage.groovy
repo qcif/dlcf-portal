@@ -7,9 +7,10 @@ import geb.Page
  * @date 24/5/17
  */
 class DashboardPage extends Page {
-  static url = "/default/rdmp/user/dashboard"
+  static url = "/default/rdmp/dashboard"
   static at = {
-    assertCreatePlanButtonExists()
+    $("h1#main-title")?.text() ==~ /[Ww]elcome.*[DMP].*[Tt]ool/
+//    assertCreatePlanButtonExists()
   }
   static content = {
     createButton {
@@ -33,9 +34,13 @@ class DashboardPage extends Page {
   def assertCreatePlanButtonExists() {
     waitFor { createButton }.isDisplayed()
   }
-
   def assertMyPlansExist() {
     waitFor { myPlans }.isDisplayed()
   }
 
+  def enterPlan() {
+    getDriver().manage().window().maximize()
+    def result = createButton.click()
+    print result
+  }
 }

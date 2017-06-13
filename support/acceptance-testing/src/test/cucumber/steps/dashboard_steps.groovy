@@ -18,3 +18,12 @@ And(~/^I should see my plans$/) { ->
   // Write code here that turns the phrase above into concrete actions
   page.assertMyPlansExist()
 }
+
+And(~/^I go to the [Dd]ashboard page$/) { ->
+  to DashboardPage
+  at DashboardPage
+}
+
+And(~/^I click on [Cc]reate [Aa] [Pp]lan$/) { ->
+  page.enterPlan()
+}
