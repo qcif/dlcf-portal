@@ -38,13 +38,11 @@ export class AppComponent extends LoadableComponent  {
     this.branding = elementRef.nativeElement.getAttribute('branding');
     this.portal = elementRef.nativeElement.getAttribute('portal');
 
-    this.initSubs = dashboardService.waitForInit(200).subscribe(initStat => {
-      if (initStat) {
-        this.initSubs.unsubscribe();
-        dashboardService.getDraftPlans(1).then(draftPlans => { this.draftPlans = draftPlans; });
-        dashboardService.getActivePlans(1).then(activePlans => { this.activePlans = activePlans; });
-        this.setLoading(false);
-      }
+    this.initSubs = dashboardService.waitForInit(initStat => {
+      this.initSubs.unsubscribe();
+      dashboardService.getDraftPlans(1).then(draftPlans => { this.draftPlans = draftPlans; });
+      dashboardService.getActivePlans(1).then(activePlans => { this.activePlans = activePlans; });
+      this.setLoading(false);
     });
 
   }

@@ -28,6 +28,7 @@ import 'rxjs/add/observable/of';
 import { Http } from '@angular/http';
 import { BaseService } from '../base-service';
 import { CompleterService, CompleterData } from 'ng2-completer';
+import { ConfigService } from '../config-service';
 /**
  * Vocabulary Field
  *
@@ -96,8 +97,8 @@ export class VocabField extends FieldBase<any> {
 @Injectable()
 export class VocabFieldLookupService extends BaseService {
 
-  constructor (@Inject(Http) http) {
-    super(http);
+  constructor (@Inject(Http) http, @Inject(ConfigService) protected configService) {
+    super(http, configService);
   }
 
   getLookupData(field: VocabField) {

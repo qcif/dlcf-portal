@@ -42,19 +42,21 @@ export class AppComponent extends LoadableComponent {
   form: FormGroup;
   loginMessage: string;
   isLoginDisabled: boolean;
-  constructor (@Inject(UserSimpleService) protected userService: UserSimpleService, @Inject(FormBuilder) fb: FormBuilder, @Inject(DOCUMENT) protected document:any) {
+  constructor (@Inject(UserSimpleService) protected userService: UserSimpleService, @Inject(FormBuilder) protected fb: FormBuilder, @Inject(DOCUMENT) protected document:any) {
     super();
-    this.form = fb.group({
-        "username": ["", Validators.required],
-        "password":["", Validators.required]
+    userService.waitForInit(whatever=> {
+      this.form = this.fb.group({
+          "username": ["", Validators.required],
+          "password":["", Validators.required]
+      });
+      this.form.valueChanges.subscribe(data => {
+        this.isLoginDisabled = this.form.status == 'INVALID';
+        if (this.isLoginDisabled) {
+          this.getErrors();
+        }
+      });
+      this.setLoading(false);
     });
-    this.form.valueChanges.subscribe(data => {
-      this.isLoginDisabled = this.form.status == 'INVALID';
-      if (this.isLoginDisabled) {
-        this.getErrors();
-      }
-    });
-    this.setLoading(false);
   }
 
   onLogin(event:any) {

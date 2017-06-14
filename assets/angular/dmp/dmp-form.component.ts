@@ -60,37 +60,35 @@ export class DmpFormComponent extends LoadableComponent {
   ) {
     super();
     this.status = {};
-    this.initSubs = RecordsService.waitForInit(200).subscribe(initStat => {
-      if (initStat) {
-        this.initSubs.unsubscribe();
-        this.fieldMap = {_rootComp:this};
-        this.oid = elm.nativeElement.getAttribute('oid');
-        this.editMode = elm.nativeElement.getAttribute('editMode') == "true";
-        console.log(`Loading form with OID: ${this.oid}, on edit mode:${this.editMode}`);
-        this.RecordsService.getForm(this.oid, this.editMode).then(obs => {
-          obs.subscribe(form => {
-            this.formDef = form;
-            if (this.editMode) {
-              this.cssClasses = this.formDef.editCssClasses;
-            } else {
-              this.cssClasses = this.formDef.viewCssClasses;
-            }
-            this.needsSave = false;
-            if (form.fieldsMeta) {
-              this.fields = form.fieldsMeta;
-              this.rebuildForm();
-              this.watchForChanges();
-            }
-          });
-        }).catch(err => {
-          console.log("Error loading form...");
-          console.log(err);
-          if (err.status == false) {
-              this.criticalError = err.message;
+    this.initSubs = RecordsService.waitForInit(initStat => {
+      this.initSubs.unsubscribe();
+      this.fieldMap = {_rootComp:this};
+      this.oid = elm.nativeElement.getAttribute('oid');
+      this.editMode = elm.nativeElement.getAttribute('editMode') == "true";
+      console.log(`Loading form with OID: ${this.oid}, on edit mode:${this.editMode}`);
+      this.RecordsService.getForm(this.oid, this.editMode).then(obs => {
+        obs.subscribe(form => {
+          this.formDef = form;
+          if (this.editMode) {
+            this.cssClasses = this.formDef.editCssClasses;
+          } else {
+            this.cssClasses = this.formDef.viewCssClasses;
           }
-          this.setLoading(false);
+          this.needsSave = false;
+          if (form.fieldsMeta) {
+            this.fields = form.fieldsMeta;
+            this.rebuildForm();
+            this.watchForChanges();
+          }
         });
-      }
+      }).catch(err => {
+        console.log("Error loading form...");
+        console.log(err);
+        if (err.status == false) {
+            this.criticalError = err.message;
+        }
+        this.setLoading(false);
+      });
     });
   }
 

@@ -22,7 +22,7 @@
         "typings/browser.d.ts",
         "assets/angular/*"
     ],
-    "filesGlob": [
+    "include": [
         "typescript/**/*.ts",
         "api/**/*.ts"
     ],
@@ -30,27 +30,5 @@
     "buildOnSave": false,
     "atom": {
         "rewriteTsconfig": false
-    },
-    "files": [
-        "typescript/controllers/CoreController.ts",
-        "typescript/services/CoreService.ts",
-        "api/controllers/typescript/AdminController.ts",
-        "api/controllers/typescript/BrandingController.ts",
-        "api/controllers/typescript/DashboardController.ts",
-        "api/controllers/typescript/DynamicAssetController.ts",
-        "api/controllers/typescript/RecordController.ts",
-        "api/controllers/typescript/RenderViewController.ts",
-        "api/controllers/typescript/UserController.ts",
-        "api/controllers/typescript/VocabController.ts",
-        "api/services/BrandingService.ts",
-        "api/services/CacheService.ts",
-        "api/services/DashboardService.ts",
-        "api/services/FormsService.ts",
-        "api/services/PathRulesService.ts",
-        "api/services/RecordsService.ts",
-        "api/services/RolesService.ts",
-        "api/services/UsersService.ts",
-        "api/services/VocabService.ts",
-        "api/services/WorkflowStepsService.ts"
-    ]
+    }
 }

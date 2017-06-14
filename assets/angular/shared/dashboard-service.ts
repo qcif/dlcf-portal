@@ -5,12 +5,13 @@ import 'rxjs/add/operator/toPromise';
 import moment from 'moment-es6';
 import { BaseService } from '../shared/base-service'
 import { PlanTable } from './dashboard-models'
+import { ConfigService } from './config-service';
 
 @Injectable()
 export class DashboardService extends BaseService {
 
-  constructor( @Inject(Http) http) {
-    super(http);
+  constructor( @Inject(Http) http, @Inject(ConfigService) protected configService) {
+    super(http, configService);
   }
 
   getActivePlans(pageNumber:number): Promise<PlanTable> {

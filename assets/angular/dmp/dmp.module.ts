@@ -32,10 +32,11 @@ import { RepeatableVocabComponent, RepeatableContributorComponent } from '../sha
 import { ContributorComponent } from '../shared/form/field-contributor.component';
 import { WorkflowStepButtonComponent } from '../shared/form/workflow-button.component';
 import { Ng2CompleterModule } from "ng2-completer";
+import { ConfigService } from '../shared/config-service';
 @NgModule({
   imports:      [ BrowserModule, HttpModule, ReactiveFormsModule, NKDatetimeModule, FormsModule, Ng2CompleterModule ],
   declarations: [ DmpFormComponent, DmpFieldComponent, TextFieldComponent, DropdownFieldComponent, TabOrAccordionContainerComponent, TextBlockComponent, TextAreaComponent, DateTimeComponent, AnchorOrButtonComponent, VocabFieldComponent, RepeatableVocabComponent, ContributorComponent, RepeatableContributorComponent, HtmlRawComponent, HiddenValueComponent, WorkflowStepButtonComponent, LinkValueComponent ],
-  providers:    [ FieldControlService, RecordsService, VocabFieldLookupService ],
+  providers:    [ FieldControlService, RecordsService, VocabFieldLookupService, ConfigService ],
   bootstrap:    [ DmpFormComponent ],
   entryComponents: [ TextFieldComponent, DropdownFieldComponent, TabOrAccordionContainerComponent, TextBlockComponent, TextAreaComponent, DateTimeComponent, AnchorOrButtonComponent, VocabFieldComponent, RepeatableVocabComponent, ContributorComponent, RepeatableContributorComponent, HtmlRawComponent, HiddenValueComponent, WorkflowStepButtonComponent, LinkValueComponent ]
 })

@@ -21,5 +21,8 @@ module.exports.record = {
       type: 'param',
       field: 'oid'
     }
+  },
+  export: {
+    maxRecords: 2147483647
   }
 };
