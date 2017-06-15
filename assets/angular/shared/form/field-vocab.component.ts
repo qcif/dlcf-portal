@@ -41,12 +41,20 @@ export class VocabField extends FieldBase<any> {
   public completerService;
   protected dataService: CompleterData;
   public initialValue;
+  public titleFieldArr: string[];
+  public titleFieldDelim: string;
+  public searchFields: string;
+  public fieldNames: string[];
 
   constructor(options) {
     super(options);
     this.hasLookup = true;
     this.vocabId = options['vocabId'] || '';
     this.controlType = 'textbox';
+    this.titleFieldArr = options['titleFieldArr'] || [];
+    this.searchFields = options['searchFields'] || '';
+    this.titleFieldDelim = options['titleFieldDelim'] || ' - ';
+    this.fieldNames = options['fieldNames'] || [];
   }
 
   createFormModel(valueElem = undefined) {
@@ -85,11 +93,23 @@ export class VocabField extends FieldBase<any> {
     _.forEach(this.sourceData, data => {
       data.title = this.getTitle(data);
     });
-    this.dataService = this.completerService.local(this.sourceData, 'label,notation', 'title');
+    this.dataService = this.completerService.local(this.sourceData, this.searchFields, 'title');
   }
 
   getTitle(data): string {
-    return `${data.notation} - ${data.label}`;
+    let title = '';
+    _.forEach(this.titleFieldArr, titleFld => {
+      title = `${title}${_.isEmpty(title) ? '' : this.titleFieldDelim}${data[titleFld]}`;
+    });
+    return title;
+  }
+
+  getValue(data) {
+    const valObj = {};
+    _.forEach(this.fieldNames, fldName => {
+      valObj[fldName] = data[fldName];
+    });
+    return valObj;
   }
 
 }
@@ -124,7 +144,7 @@ export class VocabFieldLookupService extends BaseService {
   </div>
   <li *ngIf="!field.editMode" class="key-value-pair">
     <span *ngIf="field.label" class="key">{{field.label}}</span>
-    <span class="value">{{field.value.notation}} - {{field.value.label}}</span>
+    <span class="value">{{field.getTitle(field.value)}}</span>
   </li>
   `,
 })
@@ -136,7 +156,7 @@ export class VocabFieldComponent extends SimpleComponent {
 
   onSelect(selected) {
     if (selected) {
-      this.field.formModel.setValue({uri:selected.originalObject.uri, label: selected.originalObject.label, notation: selected.originalObject.notation});
+      this.field.formModel.setValue(this.field.getValue(selected.originalObject));
     } else {
       this.field.formModel.setValue(null);
     }

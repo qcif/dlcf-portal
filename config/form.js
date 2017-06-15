@@ -151,12 +151,15 @@ module.exports.form = {
                             "required" : true,
                             "validationMessages" : {
                                 "required" : "Please select a valid value."
-                            }
+                            },
+                            fieldNames: ['uri', 'label', 'notation'],
+                            searchFields: 'notation,label',
+                            titleFieldArr: ['notation', 'label']
                           }
                         }
                       ]
                     }
-                   }
+                  }
                   ]
                 }
               },
@@ -385,7 +388,10 @@ module.exports.form = {
                             required : true,
                             validationMessages: {
                               required: "Please select a valid value."
-                            }
+                            },
+                            fieldNames: ['uri', 'label', 'notation'],
+                            searchFields: 'notation,label',
+                            titleFieldArr: ['notation', 'label']
                           }
                         }
                       ]
@@ -620,7 +626,10 @@ module.exports.form = {
                             "required" : true,
                             "validationMessages" : {
                                 "required" : "Please select a valid value."
-                            }
+                            },
+                            fieldNames: ['uri', 'label', 'notation'],
+                            searchFields: 'notation,label',
+                            titleFieldArr: ['notation', 'label']
                           }
                         }
                       ]

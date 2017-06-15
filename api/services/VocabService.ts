@@ -56,6 +56,9 @@ export module Services {
           sails.log.verbose(`Returning cached vocab: ${vocabId}`);
           return Observable.of(data);
         }
+        if (sails.config.vocab.nonAnds[vocabId]) {
+          return this.getNonAndsVocab(vocabId);
+        }
         const url = `${sails.config.vocab.rootUrl}${vocabId}/${sails.config.vocab.conceptUri}`;
         let items = null; // a flat array containing all the entries
         const rawItems = [];
@@ -84,7 +87,14 @@ export module Services {
       });
     }
 
-
+    protected getNonAndsVocab(vocabId) {
+      const url = sails.config.vocab.nonAnds[vocabId].url;
+      const options = {url: url, json:true};
+      return Observable.fromPromise(request.get(options)).flatMap(response => {
+        CacheService.set(vocabId, response);
+        return Observable.of(response);
+      });
+    }
   }
 }
 module.exports = new Services.Vocab().exports();

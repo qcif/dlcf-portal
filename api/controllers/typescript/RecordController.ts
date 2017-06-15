@@ -243,7 +243,7 @@ export module Controllers {
 
     protected replaceCustomFields(req, res, field, metadata) {
       _.forOwn(sails.config.record.customFields, (customConfig, customKey)=> {
-        if (!_.isEmpty(field.definition.value) && field.definition.value.indexOf(customKey) != -1) {
+        if (!_.isEmpty(field.definition.value) && _.isString(field.definition.value) && field.definition.value.indexOf(customKey) != -1) {
           let replacement = null;
           if (customConfig.source == 'request') {
             switch(customConfig.type) {
