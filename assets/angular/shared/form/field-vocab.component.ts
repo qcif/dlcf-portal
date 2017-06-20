@@ -45,6 +45,8 @@ export class VocabField extends FieldBase<any> {
   public titleFieldDelim: string;
   public searchFields: string;
   public fieldNames: string[];
+  public sourceType: string;
+  public lookupService: any;
 
   constructor(options) {
     super(options);
@@ -55,6 +57,7 @@ export class VocabField extends FieldBase<any> {
     this.searchFields = options['searchFields'] || '';
     this.titleFieldDelim = options['titleFieldDelim'] || ' - ';
     this.fieldNames = options['fieldNames'] || [];
+    this.sourceType = options['sourceType'] || 'vocab';
   }
 
   createFormModel(valueElem = undefined) {
@@ -89,11 +92,21 @@ export class VocabField extends FieldBase<any> {
   }
 
   initLookupData() {
-    // Hack for creating the intended title...
-    _.forEach(this.sourceData, data => {
-      data.title = this.getTitle(data);
-    });
-    this.dataService = this.completerService.local(this.sourceData, this.searchFields, 'title');
+    if (this.sourceType == "vocab") {
+      // Hack for creating the intended title...
+      _.forEach(this.sourceData, data => {
+        data.title = this.getTitle(data);
+      });
+      this.dataService = this.completerService.local(this.sourceData, this.searchFields, 'title');
+    } else if (this.sourceType == "collection") {
+      const url = this.lookupService.getCollectionRootUrl(this.vocabId);
+      console.log(`Using: ${url}`);
+      // at the moment, multiple titles arrays are not supported
+      // TODO: consider replacing with ngx-bootstrap typeahead
+      const title = this.titleFieldArr.length == 1 ? this.titleFieldArr[0] : 'title';
+      console.log(`Using title: ${title}`);
+      this.dataService = this.completerService.remote(url, this.searchFields, title);
+    }
   }
 
   getTitle(data): string {
@@ -123,14 +136,27 @@ export class VocabFieldLookupService extends BaseService {
 
   getLookupData(field: VocabField) {
     const vocabId  = field.vocabId;
-    const url = `${this.brandingAndPortallUrl}/${this.config.vocabRootUrl}/${vocabId}`;
-    return this.http.get(url, this.options)
-      .flatMap((res) => {
-        const data = this.extractData(res);
-        field.sourceData = data;
-        field.postInit(field.value);
-        return Observable.of(field);
-      });
+    // only retrieving static data when on vocab mode
+    if (field.sourceType == "vocab") {
+      const url = `${this.brandingAndPortallUrl}/${this.config.vocabRootUrl}/${vocabId}`;
+      return this.http.get(url, this.options)
+        .flatMap((res) => {
+          const data = this.extractData(res);
+          field.sourceData = data;
+          field.postInit(field.value);
+          return Observable.of(field);
+        });
+    }
+    field.postInit(field.value);
+    return Observable.of(field);
+  }
+
+  getCollectionRootUrl(collectionId: string) {
+    return `${this.brandingAndPortallUrl}/${this.config.collectionRootUri}/${collectionId}/?search=`;
+  }
+
+  findLookupData(field: VocabField, search: string) {
+
   }
 }
 

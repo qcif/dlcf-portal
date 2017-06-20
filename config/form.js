@@ -112,6 +112,22 @@ module.exports.form = {
                      }
                    },
                    {
+                     class: 'VocabField',
+                     definition: {
+                       name: 'institution',
+                       label: "Institution",
+                       vocabId: 'grid',
+                       sourceType: 'collection',
+                       "required" : true,
+                       "validationMessages" : {
+                           "required" : "Please select a valid value."
+                       },
+                       fieldNames: ['name', 'email_address', 'grid_id', 'wikipedia_url', 'established'],
+                       searchFields: 'name',
+                       titleFieldArr: ['name']
+                     }
+                   },
+                   {
                      class: 'DateTime',
                      definition: {
                        name: "startDate",
@@ -346,6 +362,22 @@ module.exports.form = {
                        label: 'Project Description',
                        rows: 10,
                        cols: 10
+                     }
+                   },
+                   {
+                     class: 'VocabField',
+                     definition: {
+                       name: 'institution',
+                       label: "Institution",
+                       vocabId: 'grid',
+                       sourceType: 'collection',
+                       "required" : true,
+                       "validationMessages" : {
+                           "required" : "Please select a valid value."
+                       },
+                       fieldNames: ['name', 'email_address', 'grid_id', 'wikipedia_url', 'established'],
+                       searchFields: 'name',
+                       titleFieldArr: ['name']
                      }
                    },
                    {
@@ -584,6 +616,22 @@ module.exports.form = {
                        label: 'Project Description',
                        rows: 10,
                        cols: 10
+                     }
+                   },
+                   {
+                     class: 'VocabField',
+                     definition: {
+                       name: 'institution',
+                       label: "Institution",
+                       vocabId: 'grid',
+                       sourceType: 'collection',
+                       "required" : true,
+                       "validationMessages" : {
+                           "required" : "Please select a valid value."
+                       },
+                       fieldNames: ['name', 'email_address', 'grid_id', 'wikipedia_url', 'established'],
+                       searchFields: 'name',
+                       titleFieldArr: ['name']
                      }
                    },
                    {

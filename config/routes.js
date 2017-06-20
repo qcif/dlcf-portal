@@ -87,6 +87,7 @@ module.exports.routes = {
   'get /:branding/:portal/dashboard': 'typescript/DashboardController.render',
   'get /:branding/:portal/listPlans': 'typescript/DashboardController.getPlanList',
   'get /:branding/:portal/vocab/:vocabId': 'typescript/VocabController.get',
+  'get /:branding/:portal/collection/:collectionId': 'typescript/VocabController.getCollection',
   'get /dynamic/:asset': 'typescript/DynamicAssetController.get',
   'get /:branding/:portal/export': 'typescript/ExportController.index',
   'get /:branding/:portal/export/record/download/:format': 'typescript/ExportController.downloadRecs'

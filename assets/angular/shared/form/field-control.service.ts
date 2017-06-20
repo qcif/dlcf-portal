@@ -69,7 +69,7 @@ export class FieldControlService {
     'LinkValueComponent': {'meta': LinkValue, 'comp': LinkValueComponent }
   };
   constructor(@Inject(VocabFieldLookupService) private vocabFieldLookupService, @Inject(CompleterService) private completerService,  @Inject(ConfigService) protected configService) {
-    
+
   }
 
   getEmptyFormGroup() {
@@ -126,6 +126,7 @@ export class FieldControlService {
       if (f.hasLookup) {
         const lookupServiceName = this.classes[f.constructor.name].lookupService;
         f.completerService = this.completerService;
+        f.lookupService = this[lookupServiceName];
         return this[lookupServiceName].getLookupData(f);
       } else {
         return Observable.of(null);

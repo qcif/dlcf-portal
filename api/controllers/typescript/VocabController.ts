@@ -39,7 +39,8 @@ export module Controllers {
      * Exported methods, accessible from internet.
      */
     protected _exportedMethods: any = [
-        'get'
+        'get',
+        'getCollection'
     ];
 
     /**
@@ -58,6 +59,14 @@ export module Controllers {
       const vocabId = req.param("vocabId");
       VocabService.getVocab(vocabId).subscribe(data => {
         this.ajaxOk(req, res, null, data);
+      });
+    }
+
+    public getCollection(req, res) {
+      const collectionId = req.param('collectionId');
+      const searchString = req.query.search;
+      VocabService.findCollection(collectionId, searchString).subscribe(collections => {
+        this.ajaxOk(req, res, null, collections, true);
       });
     }
     /**

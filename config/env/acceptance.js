@@ -20,8 +20,8 @@ module.exports = {
   // models: {
   //   connection: 'someMongodbServer'
   // }
-  bootstrapTimeout: 60000,
-  hookTimeout: 120000,
+  bootstrapTimeout: 480000,
+  _hookTimeout: 480000,
   log: {
     level: 'debug'
   },

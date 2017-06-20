@@ -39,7 +39,10 @@ export module Services {
       'create',
       'updateMeta',
       'getMeta',
-      'hasEditAccess'
+      'hasEditAccess',
+      'getOne',
+      'search',
+      'createBatch'
     ];
 
     public create(brand, record, formName=sails.config.form.defaultForm): Observable<any> {
@@ -63,9 +66,12 @@ export module Services {
     }
 
 
-    protected getOptions(url, oid=null) {
+    protected getOptions(url, oid=null, packageType=null) {
       if (!_.isEmpty(oid)) {
         url = url.replace('$oid', oid);
+      }
+      if (!_.isEmpty(packageType)) {
+        url = url.replace('$packageType', packageType);
       }
       return {url:url, json: true, headers: {'Authorization': `Bearer ${sails.config.redbox.apiKey}`}};
     }
@@ -96,7 +102,41 @@ export module Services {
       });
     }
 
+    public createBatch(type, data) {
+      const options = this.getOptions(sails.config.record.api.harvest.url, null, type);
+      data = _.map(data, dataItem => {
+        return {metadata: dataItem, metaMetadata: {type:type}};
+      });
+      options.body = {records: data};
+      sails.log.verbose(`Sending data:`);
+      sails.log.verbose(options.body);
+      return Observable.fromPromise(request[sails.config.record.api.harvest.method](options));
+    }
 
+    public search(type, searchField, searchStr) {
+      const url = `${this.getSearchTypeUrl(type, searchField, searchStr)}&start=0&rows=${sails.config.record.export.maxRecords}`;
+      sails.log.verbose(`Searching using: ${url}`);
+      const options = this.getOptions(url);
+      return Observable.fromPromise(request[sails.config.record.api.search.method](options))
+              .flatMap(response => {
+                return Observable.of(response.response.docs);
+              });
+    }
+
+    public getOne(type) {
+      const url = `${this.getSearchTypeUrl(type)}&start=0&rows=1`;
+      sails.log.verbose(`Getting one using url: ${url}`);
+      const options = this.getOptions(url);
+      return Observable.fromPromise(request[sails.config.record.api.search.method](options))
+            .flatMap(response => {
+              return Observable.of(response.response.docs);
+            });
+    }
+
+    protected getSearchTypeUrl(type, searchField=null, searchStr=null) {
+      const searchParam = searchField ? ` AND ${searchField}:${searchStr}` : '';
+      return `${sails.config.record.api.search.url}?q=metaMetadata_type:${type}${searchParam}&version=2.2&wt=json`;
+    }
 
   }
 }
