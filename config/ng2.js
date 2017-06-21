@@ -9,6 +9,7 @@ module.exports.ng2 = {
     "record/edit": ['/angular/dmp/dist-bundle.js'],
     "record/view": ['/angular/dmp/dist-bundle.js'],
     "admin/roles": ['/angular/manageRoles/dist-bundle.js'],
-    "dashboard": ['/angular/dashboard/dist-bundle.js']
+    "dashboard": ['/angular/dashboard/dist-bundle.js'],
+    "export/index": ['/angular/export/dist-bundle.js']
   }
 };

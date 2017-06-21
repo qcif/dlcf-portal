@@ -42,6 +42,7 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/last';
 import 'rxjs/add/observable/from';
 import { CompleterService } from 'ng2-completer';
+import { ConfigService } from '../config-service';
 
 /**
  * Field / Model Factory Service...
@@ -67,7 +68,9 @@ export class FieldControlService {
     'WorkflowStepButton': {'meta': WorkflowStepButton, 'comp': WorkflowStepButtonComponent},
     'LinkValueComponent': {'meta': LinkValue, 'comp': LinkValueComponent }
   };
-  constructor(@Inject(VocabFieldLookupService) private vocabFieldLookupService, @Inject(CompleterService) private completerService) { }
+  constructor(@Inject(VocabFieldLookupService) private vocabFieldLookupService, @Inject(CompleterService) private completerService,  @Inject(ConfigService) protected configService) {
+
+  }
 
   getEmptyFormGroup() {
     return new FormGroup({});
@@ -123,6 +126,7 @@ export class FieldControlService {
       if (f.hasLookup) {
         const lookupServiceName = this.classes[f.constructor.name].lookupService;
         f.completerService = this.completerService;
+        f.lookupService = this[lookupServiceName];
         return this[lookupServiceName].getLookupData(f);
       } else {
         return Observable.of(null);

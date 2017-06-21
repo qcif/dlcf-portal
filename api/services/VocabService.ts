@@ -19,12 +19,14 @@
 
 import { Observable } from 'rxjs/Rx';
 import services = require('../../typescript/services/CoreService.js');
-import {Sails,} from "sails";
+import {Sails, Model} from "sails";
 import * as request from "request-promise";
 
-declare var CacheService;
+
+declare var CacheService, RecordsService;
 declare var sails: Sails;
 declare var _this;
+declare var Institution: Model;
 
 export module Services {
   /**
@@ -38,13 +40,22 @@ export module Services {
 
     protected _exportedMethods: any = [
       'bootstrap',
-      'getVocab'
+      'getVocab',
+      'loadCollection',
+      'findCollection'
     ];
 
     public bootstrap() {
       return Observable.from(sails.config.vocab.bootStrapVocabs)
       .flatMap(vocabId => {
         return this.getVocab(vocabId);
+      })
+      .last()
+      .flatMap(vocab => {
+        return Observable.from(sails.config.vocab.bootStrapCollection);
+      })
+      .flatMap(collectionId => {
+        return this.loadCollection(collectionId);
       });
     }
 
@@ -55,6 +66,9 @@ export module Services {
         if (data) {
           sails.log.verbose(`Returning cached vocab: ${vocabId}`);
           return Observable.of(data);
+        }
+        if (sails.config.vocab.nonAnds && sails.config.vocab.nonAnds[vocabId]) {
+          return this.getNonAndsVocab(vocabId);
         }
         const url = `${sails.config.vocab.rootUrl}${vocabId}/${sails.config.vocab.conceptUri}`;
         let items = null; // a flat array containing all the entries
@@ -84,7 +98,64 @@ export module Services {
       });
     }
 
+    protected getNonAndsVocab(vocabId) {
+      const url = sails.config.vocab.nonAnds[vocabId].url;
+      const options = {url: url, json:true};
+      return Observable.fromPromise(request.get(options)).flatMap(response => {
+        CacheService.set(vocabId, response);
+        return Observable.of(response);
+      });
+    }
 
+    loadCollection(collectionId) {
+      const getMethod = sails.config.vocab.collection[collectionId].getMethod;
+      return this[getMethod](collectionId).flatMap(data => {
+        if (_.isEmpty(data)) {
+          const url = sails.config.vocab.collection[collectionId].url;
+          sails.log.verbose(`Loading collection: ${collectionId}, using url: ${url}`);
+          const methodName = sails.config.vocab.collection[collectionId].saveMethod;
+          const options = {url: url, json:true};
+          return Observable.fromPromise(request.get(options))
+          .flatMap(response => {
+            sails.log.verbose(`Got response retrieving data for collection: ${collectionId}, saving...`);
+            sails.log.verbose(`Number of items: ${response.length}`);
+            // Warning: this is done quick and dirty so we can ship this thing....
+            // ReDBox couldn't handle harvesting the 74K records sent to it, so a suggestion was made to batch up
+            // in every 1K records. IKR? call it a "Feature"
+            if (response.length > 1000) {
+              const itemsToSave = _.chunk(response, 1000);
+              return this[methodName](itemsToSave[0]);
+              // return Observable.from(itemsToSave).flatMap(chunk=> {
+              //   return this[methodName](chunk);
+              // });
+            } else {
+              return this[methodName](response);
+            }
+          });
+        } else {
+          sails.log.verbose(`Collection already loaded: ${collectionId}`);
+          return Observable.of(null);
+        }
+      });
+    }
+
+    findCollection(collectionId, searchString) {
+      return this[sails.config.vocab.collection[collectionId].searchMethod](searchString);
+    }
+
+    saveInst(instItems) {
+      // return super.getObservable(Institution.create(instItems));
+      return RecordsService.createBatch(sails.config.vocab.collection['grid'].type, instItems);
+    }
+
+    searchInst(searchString) {
+      // return super.getObservable(Institution.find({name: {contains: searchString}}));
+      return RecordsService.search(sails.config.vocab.collection['grid'].type, sails.config.vocab.collection['grid'].searchField, searchString);
+    }
+
+    getInst(collectionId) {
+      return RecordsService.getOne(sails.config.vocab.collection[collectionId].type);
+    }
   }
 }
 module.exports = new Services.Vocab().exports();

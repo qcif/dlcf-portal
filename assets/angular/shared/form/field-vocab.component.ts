@@ -28,6 +28,7 @@ import 'rxjs/add/observable/of';
 import { Http } from '@angular/http';
 import { BaseService } from '../base-service';
 import { CompleterService, CompleterData } from 'ng2-completer';
+import { ConfigService } from '../config-service';
 /**
  * Vocabulary Field
  *
@@ -40,12 +41,23 @@ export class VocabField extends FieldBase<any> {
   public completerService;
   protected dataService: CompleterData;
   public initialValue;
+  public titleFieldArr: string[];
+  public titleFieldDelim: string;
+  public searchFields: string;
+  public fieldNames: string[];
+  public sourceType: string;
+  public lookupService: any;
 
   constructor(options) {
     super(options);
     this.hasLookup = true;
     this.vocabId = options['vocabId'] || '';
     this.controlType = 'textbox';
+    this.titleFieldArr = options['titleFieldArr'] || [];
+    this.searchFields = options['searchFields'] || '';
+    this.titleFieldDelim = options['titleFieldDelim'] || ' - ';
+    this.fieldNames = options['fieldNames'] || [];
+    this.sourceType = options['sourceType'] || 'vocab';
   }
 
   createFormModel(valueElem = undefined) {
@@ -80,15 +92,37 @@ export class VocabField extends FieldBase<any> {
   }
 
   initLookupData() {
-    // Hack for creating the intended title...
-    _.forEach(this.sourceData, data => {
-      data.title = this.getTitle(data);
-    });
-    this.dataService = this.completerService.local(this.sourceData, 'label,notation', 'title');
+    if (this.sourceType == "vocab") {
+      // Hack for creating the intended title...
+      _.forEach(this.sourceData, data => {
+        data.title = this.getTitle(data);
+      });
+      this.dataService = this.completerService.local(this.sourceData, this.searchFields, 'title');
+    } else if (this.sourceType == "collection") {
+      const url = this.lookupService.getCollectionRootUrl(this.vocabId);
+      console.log(`Using: ${url}`);
+      // at the moment, multiple titles arrays are not supported
+      // TODO: consider replacing with ngx-bootstrap typeahead
+      const title = this.titleFieldArr.length == 1 ? this.titleFieldArr[0] : 'title';
+      console.log(`Using title: ${title}`);
+      this.dataService = this.completerService.remote(url, this.searchFields, title);
+    }
   }
 
   getTitle(data): string {
-    return `${data.notation} - ${data.label}`;
+    let title = '';
+    _.forEach(this.titleFieldArr, titleFld => {
+      title = `${title}${_.isEmpty(title) ? '' : this.titleFieldDelim}${data[titleFld]}`;
+    });
+    return title;
+  }
+
+  getValue(data) {
+    const valObj = {};
+    _.forEach(this.fieldNames, fldName => {
+      valObj[fldName] = data[fldName];
+    });
+    return valObj;
   }
 
 }
@@ -96,20 +130,33 @@ export class VocabField extends FieldBase<any> {
 @Injectable()
 export class VocabFieldLookupService extends BaseService {
 
-  constructor (@Inject(Http) http) {
-    super(http);
+  constructor (@Inject(Http) http, @Inject(ConfigService) protected configService) {
+    super(http, configService);
   }
 
   getLookupData(field: VocabField) {
     const vocabId  = field.vocabId;
-    const url = `${this.brandingAndPortallUrl}/${this.config.vocabRootUrl}/${vocabId}`;
-    return this.http.get(url, this.options)
-      .flatMap((res) => {
-        const data = this.extractData(res);
-        field.sourceData = data;
-        field.postInit(field.value);
-        return Observable.of(field);
-      });
+    // only retrieving static data when on vocab mode
+    if (field.sourceType == "vocab") {
+      const url = `${this.brandingAndPortallUrl}/${this.config.vocabRootUrl}/${vocabId}`;
+      return this.http.get(url, this.options)
+        .flatMap((res) => {
+          const data = this.extractData(res);
+          field.sourceData = data;
+          field.postInit(field.value);
+          return Observable.of(field);
+        });
+    }
+    field.postInit(field.value);
+    return Observable.of(field);
+  }
+
+  getCollectionRootUrl(collectionId: string) {
+    return `${this.brandingAndPortallUrl}/${this.config.collectionRootUri}/${collectionId}/?search=`;
+  }
+
+  findLookupData(field: VocabField, search: string) {
+
   }
 }
 
@@ -123,7 +170,7 @@ export class VocabFieldLookupService extends BaseService {
   </div>
   <li *ngIf="!field.editMode" class="key-value-pair">
     <span *ngIf="field.label" class="key">{{field.label}}</span>
-    <span class="value">{{field.value.notation}} - {{field.value.label}}</span>
+    <span class="value">{{field.getTitle(field.value)}}</span>
   </li>
   `,
 })
@@ -135,7 +182,7 @@ export class VocabFieldComponent extends SimpleComponent {
 
   onSelect(selected) {
     if (selected) {
-      this.field.formModel.setValue({uri:selected.originalObject.uri, label: selected.originalObject.label, notation: selected.originalObject.notation});
+      this.field.formModel.setValue(this.field.getValue(selected.originalObject));
     } else {
       this.field.formModel.setValue(null);
     }

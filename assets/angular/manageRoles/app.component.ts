@@ -55,32 +55,30 @@ export class AppComponent extends LoadableComponent {
 
   constructor (@Inject(RolesService) protected rolesService: RolesService, @Inject(FormBuilder) fb: FormBuilder, @Inject(DOCUMENT) protected document:any) {
     super();
-    this.initSubs = rolesService.waitForInit(200).subscribe(initStat => {
-      if (initStat) {
-        this.initSubs.unsubscribe();
-        rolesService.getBrandRoles().then(roles => {
-          this.roles = roles;
-          _.forEach(roles, (role) => {
-            this.searchFilter.roles.push({value:role.name, label:role.name, checked:false});
-            _.forEach(role.users, (user) => {
-              if (!_.includes(this.hiddenUsers, user.username)) {
-                // flattening the tree, match by username
-                var existingUser = _.find(this.users, (existingUser) => { return existingUser.username == user.username});
-                if (_.isEmpty(existingUser)) {
-                  existingUser = user;
-                  existingUser.roles = [role.name];
-                  this.users.push(existingUser);
-                } else {
-                  existingUser.roles.push(role.name);
-                }
+    this.initSubs = rolesService.waitForInit(initStat => {
+      this.initSubs.unsubscribe();
+      rolesService.getBrandRoles().then(roles => {
+        this.roles = roles;
+        _.forEach(roles, (role) => {
+          this.searchFilter.roles.push({value:role.name, label:role.name, checked:false});
+          _.forEach(role.users, (user) => {
+            if (!_.includes(this.hiddenUsers, user.username)) {
+              // flattening the tree, match by username
+              var existingUser = _.find(this.users, (existingUser) => { return existingUser.username == user.username});
+              if (_.isEmpty(existingUser)) {
+                existingUser = user;
+                existingUser.roles = [role.name];
+                this.users.push(existingUser);
+              } else {
+                existingUser.roles.push(role.name);
               }
-            });
+            }
           });
-          _.map(this.users, (user)=> {user.roleStr = _.join(user.roles, ', ')});
-          this.filteredUsers = this.users;
-          this.setLoading(false);
         });
-      }
+        _.map(this.users, (user)=> {user.roleStr = _.join(user.roles, ', ')});
+        this.filteredUsers = this.users;
+        this.setLoading(false);
+      });
     });
   }
 

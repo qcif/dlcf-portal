@@ -17,64 +17,49 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+import { Injectable, Inject} from '@angular/core';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/mergeMap';
 import * as _ from "lodash-lib";
-import { Subject } from 'rxjs/Subject';
 /**
- * Base class for all client-side services...
+ * Handles client-side global configuration
  *
  * @author <a target='_' href='https://github.com/shilob'>Shilo Banihit</a>
  *
  */
-export class BaseService {
-  protected http: any;
+@Injectable()
+export class ConfigService {
   protected config: any;
-  protected configService: any;
-  protected baseUrl:string;
-  protected brandingAndPortallUrl:string;
-  protected options: any;
-  protected static __config: any;
-  protected initSubject: any;
+  protected subjects: any;
 
-  constructor (http, configService) {
-    this.http = http;
-    this.configService = configService;
-    this.initSubject = new Subject();
-    this.configService.getConfig(config => {
-      this.config = config;
-      this.baseUrl = this.config.baseUrl;
-      this.brandingAndPortallUrl = `${this.baseUrl}/${this.config.branding}/${this.config.portal}`;
-      this.options = this.getOptionsClient();
-      this.emitInit();
-    });
+  constructor (@Inject(Http) protected http) {
+    this.subjects = {};
+    this.subjects['get'] = new Subject();
+    this.initConfig();
   }
 
-  public get getBrandingAndPortalUrl() {
-    return this.brandingAndPortallUrl;
-  }
-
-  public get getBaseUrl() {
-    return this.baseUrl;
-  }
-
-  public waitForInit(handler) {
-    const subs = this.initSubject.subscribe(handler);
-    this.emitInit();
+  getConfig(handler): any {
+    const subs = this.subjects['get'].subscribe(handler);
+    this.emitConfig();
     return subs;
   }
 
-  protected emitInit() {
+  emitConfig() {
     if (this.config) {
-      this.initSubject.next('');
+      this.subjects['get'].next(this.config);
     }
   }
 
-  getConfig() {
-    return this.config;
+  initConfig() {
+    this.http.get('/dynamic/apiClientConfig.json').subscribe(res => {
+      this.config = this.extractData(res);
+      console.log(`ConfigService, initialized. `);
+      this.emitConfig();
+    });
   }
 
   protected extractData(res: Response, parentField = null) {
@@ -84,15 +69,5 @@ export class BaseService {
     } else {
         return body || {};
     }
-  }
-
-  protected getOptions(headersObj) {
-    let headers = new Headers(headersObj);
-    return new RequestOptions({ headers: headers });
-  }
-
-  protected getOptionsClient(headersObj={}) {
-    headersObj['X-Source'] = 'jsclient';
-    return this.getOptions(headersObj);
   }
 }

@@ -23,6 +23,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { BaseService } from '../shared/base-service'
 import { SaveResult, Role, User, LoginResult } from './user-models'
+import { ConfigService } from './config-service';
 
 /**
  * Role related service
@@ -32,8 +33,8 @@ import { SaveResult, Role, User, LoginResult } from './user-models'
 @Injectable()
 export class RolesService extends BaseService {
 
-  constructor (@Inject(Http) http) {
-    super(http);
+  constructor (@Inject(Http) http, @Inject(ConfigService) protected configService) {
+    super(http, configService);
   }
 
   getBrandRoles() :Promise<Role[]> {

@@ -19,7 +19,7 @@
         "typescript/**",
         "node_modules/**"
     ],
-    "filesGlob": [
+    "include": [
         "assets/angular/**/*.ts"
     ],
     "angularCompilerOptions": {

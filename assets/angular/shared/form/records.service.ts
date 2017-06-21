@@ -26,6 +26,7 @@ import 'rxjs/add/operator/toPromise';
 import { FieldControlService } from './field-control.service';
 import { Observable } from 'rxjs/Observable';
 import * as _ from "lodash-lib";
+import { ConfigService } from '../config-service';
 /**
  * Plan Client-side services
  *
@@ -36,8 +37,8 @@ import * as _ from "lodash-lib";
 @Injectable()
 export class RecordsService extends BaseService {
 
-  constructor (@Inject(Http) http, @Inject(FieldControlService) protected fcs: FieldControlService) {
-    super(http);
+  constructor (@Inject(Http) http, @Inject(FieldControlService) protected fcs: FieldControlService, @Inject(ConfigService) protected configService) {
+    super(http, configService);
   }
 
   getForm(oid: string = null, editable: boolean = true) {

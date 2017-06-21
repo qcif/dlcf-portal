@@ -54,6 +54,11 @@ module.exports.auth = {
       path: '/*/*/dashboard',
       role: 'Researcher',
       can_update:true
+    },
+    {
+      path: '/*/*/export(/*)',
+      role: 'Admin',
+      can_update:true
     }
   ],
   // Bootstrap END

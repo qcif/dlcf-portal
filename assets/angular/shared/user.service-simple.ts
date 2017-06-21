@@ -23,7 +23,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { BaseService } from '../shared/base-service'
 import { User, LoginResult } from './user-models'
-
+import { ConfigService } from '../shared/config-service';
 /**
  * User related service...
  *
@@ -36,8 +36,8 @@ export class UserSimpleService extends BaseService {
   protected config: any;
   protected headers: any;
 
-  constructor (@Inject(Http) http) {
-    super(http);
+  constructor (@Inject(Http) http, @Inject(ConfigService) protected configService) {
+    super(http, configService);
   }
 
   getInfo(): Promise<User> {

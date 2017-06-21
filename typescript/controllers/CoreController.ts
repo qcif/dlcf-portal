@@ -226,36 +226,36 @@ export module Controllers.Core {
       res.view(resolvedView, mergedLocal);
     }
 
-    public respond(req, res, ajaxCb, normalCb) {
-      if (req.headers['x-source'] == 'jsclient') {
+    public respond(req, res, ajaxCb, normalCb, forceAjax) {
+      if (req.headers['x-source'] == 'jsclient' || forceAjax == true) {
         return ajaxCb(req, res);
       } else {
         return normalCb(req, res);
       }
     }
 
-    protected ajaxOk(req, res, msg='', data=null) {
+    protected ajaxOk(req, res, msg='', data=null, forceAjax=false) {
       if (!data) {
         data = {status:true, message:msg};
       }
-      this.ajaxRespond(req, res, data);
+      this.ajaxRespond(req, res, data, forceAjax);
     }
 
-    protected ajaxFail(req, res, msg='', data=null) {
+    protected ajaxFail(req, res, msg='', data=null, forceAjax=false) {
       if (!data) {
         data = {status:false, message:msg};
       }
-      this.ajaxRespond(req, res, data);
+      this.ajaxRespond(req, res, data, forceAjax);
     }
 
-    protected ajaxRespond(req, res, jsonObj=null) {
+    protected ajaxRespond(req, res, jsonObj=null, forceAjax) {
       var notAjaxMsg = "Got non-ajax request, don't know what do...";
       this.respond(req, res, (req, res) => {
         return res.json(jsonObj);
       }, (req, res)=> {
         sails.log.verbose(notAjaxMsg);
         res.notFound(notAjaxMsg);
-      });
+      }, forceAjax);
     }
 
     protected getNg2Apps(viewPath) {

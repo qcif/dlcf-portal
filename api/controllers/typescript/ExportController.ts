@@ -21,53 +21,52 @@
 declare var module;
 declare var sails;
 import { Observable } from 'rxjs/Rx';
-declare var VocabService;
+import moment from 'moment-es6';
+declare var RecordsService, DashboardService, BrandingService;
 /**
  * Package that contains all Controllers.
  */
 import controller = require('../../../typescript/controllers/CoreController.js');
 export module Controllers {
   /**
-   * Vocabulary related features....
+   * Responsible for all things related to exporting anything
    *
    * @author <a target='_' href='https://github.com/shilob'>Shilo Banihit</a>
-   *
    */
-  export class Vocab extends controller.Controllers.Core.Controller {
+  export class Export extends controller.Controllers.Core.Controller {
 
     /**
      * Exported methods, accessible from internet.
      */
     protected _exportedMethods: any = [
-        'get',
-        'getCollection'
+        'index',
+        'downloadRecs'
     ];
-
-    /**
-     **************************************************************************************************
-     **************************************** Override default methods ********************************
-     **************************************************************************************************
-     */
 
     /**
      **************************************************************************************************
      **************************************** Add custom methods **************************************
      **************************************************************************************************
      */
-
-    public get(req, res) {
-      const vocabId = req.param("vocabId");
-      VocabService.getVocab(vocabId).subscribe(data => {
-        this.ajaxOk(req, res, null, data);
-      });
+    public index(req, res) {
+      return this.sendView(req, res, 'export/index');
     }
 
-    public getCollection(req, res) {
-      const collectionId = req.param('collectionId');
-      const searchString = req.query.search;
-      VocabService.findCollection(collectionId, searchString).subscribe(collections => {
-        this.ajaxOk(req, res, null, collections, true);
-      });
+    public downloadRecs(req, res) {
+      const brand = BrandingService.getBrand(req.session.branding);
+      const format = req.param('format');
+      const before = _.isEmpty(req.query.before) ? null : req.query.before;
+      const after = _.isEmpty(req.query.after) ? null : req.query.after;
+      const filename = `Exported Records.${format}`;
+      if (format == 'csv') {
+        res.set('Content-Type', 'text/csv');
+        res.set('Content-Disposition', `attachment; filename="${filename}"`);
+        DashboardService.exportAllPlans(req.user.username, req.user.roles, brand, format, before, after).subscribe(response => {
+          return res.send(200, response);
+        });
+      } else {
+        return res.send(500, 'Unsupported export format');
+      }
     }
     /**
      **************************************************************************************************
@@ -77,4 +76,4 @@ export module Controllers {
   }
 }
 
-module.exports = new Controllers.Vocab().exports();
+module.exports = new Controllers.Export().exports();
