@@ -48,6 +48,13 @@ module.exports.routes = {
       'view': 'record/view'
     }
   },
+  '/:branding/:portal/record/view-orig/:oid': {
+    controller: 'typescript/RenderViewController',
+    action: 'render',
+    locals:{
+      'view': 'record/view-orig'
+    }
+  },
   '/:branding/:portal/styles/theme.css': {
     controller: 'typescript/BrandingController',
     action: 'renderCss'
@@ -88,7 +95,10 @@ module.exports.routes = {
   'get /:branding/:portal/listPlans': 'typescript/DashboardController.getPlanList',
   'get /:branding/:portal/vocab/:vocabId': 'typescript/VocabController.get',
   'get /:branding/:portal/collection/:collectionId': 'typescript/VocabController.getCollection',
+  'post /:branding/:portal/collection/:collectionId': 'typescript/VocabController.loadCollection',
   'get /dynamic/:asset': 'typescript/DynamicAssetController.get',
   'get /:branding/:portal/export': 'typescript/ExportController.index',
-  'get /:branding/:portal/export/record/download/:format': 'typescript/ExportController.downloadRecs'
+  'get /:branding/:portal/export/record/download/:format': 'typescript/ExportController.downloadRecs',
+  'get /:branding/:portal/asynch/start/:procId': 'typescript/AsynchController.start',
+  'get /:branding/:portal/asynch/progress/:progId': 'typescript/AsynchController.progress'
 };

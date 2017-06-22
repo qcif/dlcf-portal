@@ -40,7 +40,8 @@ export module Controllers {
      */
     protected _exportedMethods: any = [
         'get',
-        'getCollection'
+        'getCollection',
+        'loadCollection'
     ];
 
     /**
@@ -69,6 +70,16 @@ export module Controllers {
         this.ajaxOk(req, res, null, collections, true);
       });
     }
+
+    public loadCollection(req, res) {
+      const collectionId = req.param('collectionId');
+      VocabService.loadCollection(collectionId).subscribe(receipt => {
+        this.ajaxOk(req, res, null, {status: 'queued', message: 'All good.', receipt: receipt}, true);
+      }, error => {
+        this.ajaxFail(req, res, null, error, true);
+      });
+    }
+
     /**
      **************************************************************************************************
      **************************************** Override magic methods **********************************

@@ -105,7 +105,7 @@ export module Services {
     public createBatch(type, data) {
       const options = this.getOptions(sails.config.record.api.harvest.url, null, type);
       data = _.map(data, dataItem => {
-        return {metadata: dataItem, metaMetadata: {type:type}};
+        return {metadata: {metadata: dataItem, metaMetadata: {type:type}}};
       });
       options.body = {records: data};
       sails.log.verbose(`Sending data:`);
@@ -113,13 +113,21 @@ export module Services {
       return Observable.fromPromise(request[sails.config.record.api.harvest.method](options));
     }
 
-    public search(type, searchField, searchStr) {
+    public search(type, searchField, searchStr, returnFields) {
       const url = `${this.getSearchTypeUrl(type, searchField, searchStr)}&start=0&rows=${sails.config.record.export.maxRecords}`;
       sails.log.verbose(`Searching using: ${url}`);
       const options = this.getOptions(url);
       return Observable.fromPromise(request[sails.config.record.api.search.method](options))
               .flatMap(response => {
-                return Observable.of(response.response.docs);
+                const customResp = [];
+                _.forEach(response.response.docs, solrdoc => {
+                  const customDoc = {};
+                  _.forEach(returnFields, retField => {
+                    customDoc[retField] = solrdoc[retField][0];
+                  });
+                  customResp.push(customDoc);
+                });
+                return Observable.of(customResp);
               });
     }
 
@@ -134,7 +142,7 @@ export module Services {
     }
 
     protected getSearchTypeUrl(type, searchField=null, searchStr=null) {
-      const searchParam = searchField ? ` AND ${searchField}:${searchStr}` : '';
+      const searchParam = searchField ? ` AND ${searchField}:${searchStr}*` : '';
       return `${sails.config.record.api.search.url}?q=metaMetadata_type:${type}${searchParam}&version=2.2&wt=json`;
     }
 
