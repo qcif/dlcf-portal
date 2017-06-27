@@ -35,7 +35,7 @@ module.exports = {
   auth: {
     active: ["aaf", "local"],
     aaf: {
-      loginUrl: "https://rapid.test.aaf.edu.au/jwt/authnrequest/research/8-eKPr1SEHYbeG-wioaX-g",
+      loginUrl: "https://rapid.test.aaf.edu.au/jwt/authnrequest/research/HRPmRAGB6vO44YkivF4yZA",
       opts: {
         secretOrKey: 'Y30wY4xv1*6I7yUX%6v*Tzce8OEbVO&@R4hVb%2@Gehtx^xgOqQ97Slv!ZOkfHHmox&x0zAt*0o&4^8$9oW8WTf&r@&d31EFbQZr',
         jsonWebTokenOptions: {
