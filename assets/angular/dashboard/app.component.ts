@@ -28,7 +28,7 @@ export class AppComponent extends LoadableComponent  {
   activePlans: PlanTable;
   saveMsgType = "info";
   initSubs;
-
+  initTracker = {draftLoaded:false, activeLoaded: false};
 
 
   constructor( @Inject(DashboardService) protected dashboardService: DashboardService, @Inject(DOCUMENT) protected document: any,elementRef: ElementRef) {
@@ -37,14 +37,28 @@ export class AppComponent extends LoadableComponent  {
     this.activePlans = new PlanTable();
     this.branding = elementRef.nativeElement.getAttribute('branding');
     this.portal = elementRef.nativeElement.getAttribute('portal');
-
     this.initSubs = dashboardService.waitForInit(initStat => {
       this.initSubs.unsubscribe();
-      dashboardService.getDraftPlans(1).then(draftPlans => { this.draftPlans = draftPlans; });
-      dashboardService.getActivePlans(1).then(activePlans => { this.activePlans = activePlans; });
-      this.setLoading(false);
+      dashboardService.getDraftPlans(1).then(draftPlans => {
+        this.draftPlans = draftPlans;
+        this.initTracker.draftLoaded = true;
+        if (this.hasLoaded()) {
+          this.setLoading(false);
+        }
+      });
+      dashboardService.getActivePlans(1).then(activePlans => {
+         this.activePlans = activePlans;
+         this.initTracker.activeLoaded = true;
+         if (this.hasLoaded()) {
+           this.setLoading(false);
+         }
+       });
     });
 
+  }
+
+  protected hasLoaded() {
+    return this.initTracker.draftLoaded && this.initTracker.activeLoaded;
   }
 
   public draftTablePageChanged(event:any):void {

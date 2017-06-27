@@ -25,6 +25,7 @@ declare var sails: Sails;
 declare var User, Role, BrandingConfig: Model;
 declare var BrandingService, RolesService;
 declare var _this;
+declare const Buffer;
 
 export module Services {
   /**
@@ -100,7 +101,8 @@ export module Services {
         var brand = BrandingService.getBrand(req.session.branding);
         var aafDefRoles = _.map( RolesService.getNestedRoles(RolesService.getDefAuthenticatedRole(brand.roles).name, brand.roles), 'id');
         var aafUsernameField = sails.config.auth.aaf.usernameField;
-        User.findOne({username: jwt_payload[aafUsernameField]}, function(err, user) {
+        const userName = Buffer.from(jwt_payload[aafUsernameField]).toString('base64');
+        User.findOne({username: userName}, function(err, user) {
           sails.log.verbose("At AAF Strategy verify, payload:");
           sails.log.verbose(jwt_payload);
           sails.log.verbose("User:");
@@ -116,7 +118,7 @@ export module Services {
             sails.log.verbose("At AAF Strategy verify, creating new user...");
             // first time login, create with default role
             var userToCreate = {
-              username: jwt_payload[aafUsernameField],
+              username: userName,
               name: jwt_payload[aafAttributes].cn,
               email: jwt_payload[aafAttributes].mail,
               displayname: jwt_payload[aafAttributes].displayname,

@@ -1,7 +1,33 @@
 
-<div class="row"></div>
-  <h2>My draft plans</h2>
-  <div *ngIf="draftPlans.totalItems > 0">
+<div *ngIf="hasLoaded()">
+  <div class="row"></div>
+    <h2>My draft plans</h2>
+    <div *ngIf="draftPlans.totalItems > 0">
+    <table class="table">
+    <thead>
+        <tr>
+            <th>Plan Name</th>
+            <th>Created</th>
+            <th>Modified</th>
+        </tr>
+    </thead>
+    <tbody *ngFor="let plan of draftPlans.items">
+        <tr>
+            <td><a href='/{{ branding }}/{{ portal }}/record/view/{{ plan.oid }}'>{{ plan.title }}</a><span class="dashboard-controls"><a class="glyphicon glyphicon-pencil" href="/{{ branding }}/{{ portal }}/record/edit/{{ plan.oid }}" tooltip="Edit" ></a></span></td>
+            <td>{{ plan.dateCreated }}</td>
+            <td>{{ plan.dateModified }}</td>
+        </tr>
+    </tbody>
+  </table>
+
+  <pagination *ngIf="draftPlans.totalItems > 0" [directionLinks]="false" [boundaryLinks]="true" [totalItems]="draftPlans.totalItems"
+            [(ngModel)]="draftPlans.currentPage" (pageChanged)="draftTablePageChanged($event)" class="pagination-sm"></pagination>
+  </div>
+  <div *ngIf="draftPlans.totalItems <= 0">
+    You currently don't have any draft plans.
+  </div>
+  <h2>My active plans</h2>
+  <div *ngIf="activePlans.totalItems > 0">
   <table class="table">
   <thead>
       <tr>
@@ -10,42 +36,18 @@
           <th>Modified</th>
       </tr>
   </thead>
-  <tbody *ngFor="let plan of draftPlans.items">
+  <tbody *ngFor="let plan of activePlans.items">
       <tr>
           <td><a href='/{{ branding }}/{{ portal }}/record/view/{{ plan.oid }}'>{{ plan.title }}</a><span class="dashboard-controls"><a class="glyphicon glyphicon-pencil" href="/{{ branding }}/{{ portal }}/record/edit/{{ plan.oid }}" tooltip="Edit" ></a></span></td>
           <td>{{ plan.dateCreated }}</td>
           <td>{{ plan.dateModified }}</td>
       </tr>
   </tbody>
-</table>
-
-<pagination *ngIf="draftPlans.totalItems > 0" [directionLinks]="false" [boundaryLinks]="true" [totalItems]="draftPlans.totalItems"
-          [(ngModel)]="draftPlans.currentPage" (pageChanged)="draftTablePageChanged($event)" class="pagination-sm"></pagination>
-</div>
-<div *ngIf="draftPlans.totalItems <= 0">
-  You currently don't have any draft plans.
-</div>
-<h2>My active plans</h2>
-<div *ngIf="activePlans.totalItems > 0">
-<table class="table">
-<thead>
-    <tr>
-        <th>Plan Name</th>
-        <th>Created</th>
-        <th>Modified</th>
-    </tr>
-</thead>
-<tbody *ngFor="let plan of activePlans.items">
-    <tr>
-        <td><a href='/{{ branding }}/{{ portal }}/record/view/{{ plan.oid }}'>{{ plan.title }}</a><span class="dashboard-controls"><a class="glyphicon glyphicon-pencil" href="/{{ branding }}/{{ portal }}/record/edit/{{ plan.oid }}" tooltip="Edit" ></a></span></td>
-        <td>{{ plan.dateCreated }}</td>
-        <td>{{ plan.dateModified }}</td>
-    </tr>
-</tbody>
-</table>
-<pagination [directionLinks]="false" [boundaryLinks]="true" [totalItems]="activePlans.totalItems"
-          [(ngModel)]="activePlans.currentPage" (pageChanged)="activeTablePageChanged($event)" class="pagination-sm"></pagination>
-</div>
-<div *ngIf="activePlans.totalItems <= 0">
-  You currently don't have any active plans.
+  </table>
+  <pagination [directionLinks]="false" [boundaryLinks]="true" [totalItems]="activePlans.totalItems"
+            [(ngModel)]="activePlans.currentPage" (pageChanged)="activeTablePageChanged($event)" class="pagination-sm"></pagination>
+  </div>
+  <div *ngIf="activePlans.totalItems <= 0">
+    You currently don't have any active plans.
+  </div>
 </div>
