@@ -59,6 +59,11 @@ module.exports.auth = {
       path: '/*/*/export(/*)',
       role: 'Admin',
       can_update:true
+    },
+    {
+      path: '/*/*/asynch(/*)',
+      role: 'Admin',
+      can_update:true
     }
   ],
   // Bootstrap END

@@ -141,3 +141,5 @@ RecordsService.js
 WorkflowStepsService.js
 support/acceptance-testing/reports/
 support/acceptance-testing/build/
+DashboardService.js
+AsynchsService.js

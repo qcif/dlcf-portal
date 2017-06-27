@@ -14,7 +14,10 @@ module.exports.vocab = {
       searchMethod: "searchInst",
       getMethod: "getInst",
       type: 'gridInstitutes',
-      searchField: 'name'
+      searchField: 'text_name',
+      fields: ['name', 'email_address', 'grid_id', 'wikipedia_url', 'established'],
+      processingTime: 60000,
+      processingBuffer: 100
     }
   }
 };

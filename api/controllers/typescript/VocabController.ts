@@ -40,7 +40,8 @@ export module Controllers {
      */
     protected _exportedMethods: any = [
         'get',
-        'getCollection'
+        'getCollection',
+        'loadCollection'
     ];
 
     /**
@@ -59,6 +60,10 @@ export module Controllers {
       const vocabId = req.param("vocabId");
       VocabService.getVocab(vocabId).subscribe(data => {
         this.ajaxOk(req, res, null, data);
+      }, error => {
+        sails.log.error(`Failed to get vocab: ${vocabId}`);
+        sails.log.error(error);
+        this.ajaxFail(req, res, null, [], true);
       });
     }
 
@@ -67,8 +72,23 @@ export module Controllers {
       const searchString = req.query.search;
       VocabService.findCollection(collectionId, searchString).subscribe(collections => {
         this.ajaxOk(req, res, null, collections, true);
+      }, error => {
+        sails.log.error(`Failed to find collection: ${collectionId}, using: '${searchString}'`);
+        sails.log.error(error);
+        // return empty data...
+        this.ajaxFail(req, res, null, [], true);
       });
     }
+
+    public loadCollection(req, res) {
+      const collectionId = req.param('collectionId');
+      VocabService.loadCollection(collectionId).subscribe(receipt => {
+        this.ajaxOk(req, res, null, {status: 'queued', message: 'All good.', receipt: receipt}, true);
+      }, error => {
+        this.ajaxFail(req, res, null, error, true);
+      });
+    }
+
     /**
      **************************************************************************************************
      **************************************** Override magic methods **********************************

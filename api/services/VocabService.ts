@@ -17,13 +17,13 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import { Observable } from 'rxjs/Rx';
+import { Observable, Scheduler } from 'rxjs/Rx';
 import services = require('../../typescript/services/CoreService.js');
 import {Sails, Model} from "sails";
 import * as request from "request-promise";
 
 
-declare var CacheService, RecordsService;
+declare var CacheService, RecordsService, AsynchsService;
 declare var sails: Sails;
 declare var _this;
 declare var Institution: Model;
@@ -50,13 +50,7 @@ export module Services {
       .flatMap(vocabId => {
         return this.getVocab(vocabId);
       })
-      .last()
-      .flatMap(vocab => {
-        return Observable.from(sails.config.vocab.bootStrapCollection);
-      })
-      .flatMap(collectionId => {
-        return this.loadCollection(collectionId);
-      });
+      .last();
     }
 
 
@@ -107,10 +101,14 @@ export module Services {
       });
     }
 
-    loadCollection(collectionId) {
+    loadCollection(collectionId, progressId) {
       const getMethod = sails.config.vocab.collection[collectionId].getMethod;
+      const bufferCount = sails.config.vocab.collection[collectionId].processingBuffer;
+      const processWindow = sails.config.vocab.collection[collectionId].processingTime;
+      let collectionData = null;
       return this[getMethod](collectionId).flatMap(data => {
         if (_.isEmpty(data)) {
+          // return a receipt and then start the process of loading...
           const url = sails.config.vocab.collection[collectionId].url;
           sails.log.verbose(`Loading collection: ${collectionId}, using url: ${url}`);
           const methodName = sails.config.vocab.collection[collectionId].saveMethod;
@@ -119,19 +117,32 @@ export module Services {
           .flatMap(response => {
             sails.log.verbose(`Got response retrieving data for collection: ${collectionId}, saving...`);
             sails.log.verbose(`Number of items: ${response.length}`);
-            // Warning: this is done quick and dirty so we can ship this thing....
-            // ReDBox couldn't handle harvesting the 74K records sent to it, so a suggestion was made to batch up
-            // in every 1K records. IKR? call it a "Feature"
-            if (response.length > 1000) {
-              const itemsToSave = _.chunk(response, 1000);
-              return this[methodName](itemsToSave[0]);
-              // return Observable.from(itemsToSave).flatMap(chunk=> {
-              //   return this[methodName](chunk);
-              // });
-            } else {
-              return this[methodName](response);
-            }
-          });
+            const itemsToSave = _.chunk(response, bufferCount);
+            collectionData = itemsToSave;
+            // sails.log.verbose(collectionData);
+            const updateObj = { currentIdx: 0, targetIdx: collectionData.length };
+            return AsynchsService.update({id:progressId}, updateObj);
+          })
+          .flatMap(updateResp => {
+            sails.log.verbose(`Updated asynch progress...`);
+            return Observable.from(collectionData);
+          })
+          .map((buffer, i) => {
+            setTimeout(()=> {
+              sails.log.verbose(`Processing chunk: ${i}`);
+              return this.saveCollectionChunk(methodName, buffer, i)
+              .flatMap(saveResp => {
+                sails.log.verbose(`Updating chunk progress...${i}`);
+                if (i == collectionData.length) {
+                  sails.log.verbose(`Asynch completed.`);
+                  return AsynchsService.finish(progressId);
+                } else {
+                  return AsynchsService.update({id: progressId}, {currentIdx: i+1, status: 'processing'});
+                }
+              });
+            }, i * processWindow);
+          })
+          .concat()
         } else {
           sails.log.verbose(`Collection already loaded: ${collectionId}`);
           return Observable.of(null);
@@ -139,18 +150,24 @@ export module Services {
       });
     }
 
+    protected saveCollectionChunk(methodName, buffer, i) {
+      return this[methodName](buffer);
+    }
+
     findCollection(collectionId, searchString) {
       return this[sails.config.vocab.collection[collectionId].searchMethod](searchString);
     }
 
     saveInst(instItems) {
-      // return super.getObservable(Institution.create(instItems));
+      _.forEach(instItems, item => {
+        // added for Solr case-insensi search
+        item.text_name = item.name;
+      });
       return RecordsService.createBatch(sails.config.vocab.collection['grid'].type, instItems);
     }
 
-    searchInst(searchString) {
-      // return super.getObservable(Institution.find({name: {contains: searchString}}));
-      return RecordsService.search(sails.config.vocab.collection['grid'].type, sails.config.vocab.collection['grid'].searchField, searchString);
+    searchInst(searchString, fields) {
+      return RecordsService.search(sails.config.vocab.collection['grid'].type, sails.config.vocab.collection['grid'].searchField, searchString, sails.config.vocab.collection['grid'].fields);
     }
 
     getInst(collectionId) {
