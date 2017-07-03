@@ -84,9 +84,11 @@ export module Controllers {
 
       protected getPostLoginUrl(req, res) {
         if (req.session.redirUrl) {
-            return req.session.redirUrl;
+          return req.session.redirUrl;
         } else {
-            return sails.config.auth.local.postLoginRedir;
+          var branding = req.param('branding') ? req.param('branding') : sails.config.auth.defaultBrand;
+          var portal = req.param('portal') ? req.param('portal') : sails.config.auth.defaultPortal;
+          return `/${branding}/${portal}${sails.config.auth.local.postLoginRedir}`;
         }
       }
 

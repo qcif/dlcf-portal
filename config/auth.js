@@ -80,13 +80,13 @@ module.exports.auth = {
       adminPw: 'rbadmin'
     },
     templatePath: 'local.ejs',
-    postLoginRedir: '/',
+    postLoginRedir: '/dashboard',
   },
   aaf: {
     defaultRole: 'Researcher',
     attributesField: 'https://aaf.edu.au/attributes',
     usernameField: 'sub',
-    postLoginRedir: '/',
+    postLoginRedir: '/dashboard',
     opts: {
       jsonWebTokenOptions: {
         issuer: 'https://rapid.aaf.edu.au',

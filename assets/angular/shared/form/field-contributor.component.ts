@@ -147,21 +147,21 @@ export class ContributorField extends FieldBase<any> {
   template: `
   <div *ngIf="field.editMode" [formGroup]='field.formModel' class="form-group" >
     <div class="row" *ngIf="field.showHeader">
-      <div class="col-md-4"><label>{{field.nameColHdr}}</label></div>
-      <div class="col-md-4"><label>{{field.emailColHdr}}</label></div>
-      <div class="col-md-4"><label>{{field.roleColHdr}}</label></div>
+      <div class="col-xs-4"><label>{{field.nameColHdr}}</label></div>
+      <div class="col-xs-4"><label>{{field.emailColHdr}}</label></div>
+      <div class="col-xs-4"><label>{{field.roleColHdr}}</label></div>
     </div>
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-xs-4">
         <input formControlName="name" type="text" class="form-control"/>
         <div class="text-danger" *ngIf="field.formModel.controls['name'].touched && field.formModel.controls['name'].hasError('required')">{{field.validationMessages.required.name}}</div>
       </div>
-      <div class="col-md-4">
+      <div class="col-xs-4">
         <input formControlName="email" type="text" class="form-control" />
         <div class="text-danger" *ngIf="field.formModel.controls['email'].touched && field.formModel.controls['email'].hasError('email')">{{field.validationMessages.invalid.email}}</div>
         <div class="text-danger" *ngIf="field.formModel.controls['email'].touched && field.formModel.controls['email'].hasError('required')">{{field.validationMessages.required.email}}</div>
       </div>
-      <div class="col-md-4">
+      <div class="col-xs-4">
         <select formControlName="role" class="form-control">
           <option *ngFor="let role of field.roles" [value]="role">{{role}}</option>
         </select>
@@ -172,14 +172,14 @@ export class ContributorField extends FieldBase<any> {
   <div *ngIf="!field.editMode">
     <label *ngIf="field.label">{{field.label}}</label>
     <div class="row" *ngIf="field.showHeader">
-      <div class="col-md-4"><label>{{field.nameColHdr}}</label></div>
-      <div class="col-md-4"><label>{{field.emailColHdr}}</label></div>
-      <div class="col-md-4"><label>{{field.roleColHdr}}</label></div>
+      <div class="col-xs-4"><label>{{field.nameColHdr}}</label></div>
+      <div class="col-xs-4"><label>{{field.emailColHdr}}</label></div>
+      <div class="col-xs-4"><label>{{field.roleColHdr}}</label></div>
     </div>
     <div class="row">
-      <div class="col-md-4">{{field.value.name}}</div>
-      <div class="col-md-4">{{field.value.email}}</div>
-      <div class="col-md-4">{{field.value.role}}</div>
+      <div class="col-xs-4">{{field.value.name}}</div>
+      <div class="col-xs-4">{{field.value.email}}</div>
+      <div class="col-xs-4">{{field.value.role}}</div>
     </div>
   </div>
   `,

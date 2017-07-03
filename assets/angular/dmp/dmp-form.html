@@ -4,8 +4,8 @@
       <dmp-field *ngFor="let field of fields" [field]="field" [form]="form" class="form-row" [fieldMap]="fieldMap"></dmp-field>
       <div *ngIf="editMode" class="form-row">
         <div class="pull-right col-md-10">
-          <button type="button" (click)="onSubmit()" class="btn btn-primary" [disabled]="!needsSave">Save</button>
-          <a href="/default/rdmp/home" class="btn btn-warning" [class.disabled]="status.saving">Cancel</a>
+          <button type="button" (click)="onSubmit()" class="btn btn-primary" [disabled]="!needsSave || isSaving()">Save</button>
+          <a href="/default/rdmp/home" class="btn btn-warning" [class.disabled]="isSaving()">Cancel</a>
         </div>
       </div>
       <div *ngIf="editMode" class="form-row">

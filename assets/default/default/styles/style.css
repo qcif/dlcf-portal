@@ -1049,6 +1049,10 @@ div.logo img {
   padding-bottom:1em;
 }
 
+.margin-1 {
+  margin: 1px;
+}
+
 .margin-5 {
   margin: 5px;
 }
