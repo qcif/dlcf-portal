@@ -5,7 +5,7 @@
       <div *ngIf="editMode" class="form-row">
         <div class="pull-right col-md-10">
           <button type="button" (click)="onSubmit()" class="btn btn-primary" [disabled]="!needsSave || isSaving()">Save</button>
-          <a href="/default/rdmp/home" class="btn btn-warning" [class.disabled]="isSaving()">Cancel</a>
+          <button type="button" class="btn btn-warning" [disabled]="isSaving()" (click)="onCancel()">Cancel</button>
         </div>
       </div>
       <div *ngIf="editMode" class="form-row">
