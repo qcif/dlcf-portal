@@ -163,19 +163,22 @@ export class VocabFieldLookupService extends BaseService {
 @Component({
   selector: 'rb-vocab',
   template: `
-  <div *ngIf="field.editMode && !isEmbedded" [formGroup]='form' class="form-group" >
+  <div *ngIf="field.editMode && !isEmbedded" [formGroup]='form' [ngClass]="getGroupClass()">
     <label>{{field.label}}</label>
-    <ng2-completer [placeholder]="'Select a valid value'" [clearUnselected]="true" (selected)="onSelect($event)" [datasource]="field.dataService" [minSearchLength]="0" inputClass="form-control" [initialValue]="field.initialValue"></ng2-completer>
-    <div class="text-danger" *ngIf="field.formModel.touched && field.formModel.hasError('required')">{{field.validationMessages.required}}</div>
+    <ng2-completer [placeholder]="'Select a valid value'" [clearUnselected]="true" (selected)="onSelect($event)" [datasource]="field.dataService" [minSearchLength]="0" [inputClass]="'form-control'" [initialValue]="field.initialValue"></ng2-completer>
+    <div class="text-danger" *ngIf="hasRequiredError()">{{field.validationMessages.required}}</div>
   </div>
-  <div *ngIf="field.editMode && isEmbedded" [formGroup]='form' class="input-group" >
-    <ng2-completer [placeholder]="'Select a valid value'" [clearUnselected]="true" (selected)="onSelect($event)" [datasource]="field.dataService" [minSearchLength]="0" inputClass="form-control" [initialValue]="field.initialValue"></ng2-completer>
-    <span class="input-group-btn">
-      <button type='button' *ngIf="removeBtnText" [disabled]="!canRemove" (click)="onRemove($event)" [ngClass]="removeBtnClass" >{{removeBtnText}}</button>
-      <button [disabled]="!canRemove" type='button' [ngClass]="removeBtnClass" (click)="onRemove($event)"></button>
-    </span>
-    <div class="text-danger" *ngIf="field.formModel.touched && field.formModel.hasError('required')">{{field.validationMessages.required}}</div>
+  <div *ngIf="field.editMode && isEmbedded" [formGroup]='form' [ngClass]="getGroupClass()">
+    <div class="input-group">
+      <ng2-completer [placeholder]="'Select a valid value'" [clearUnselected]="true" (selected)="onSelect($event)" [datasource]="field.dataService" [minSearchLength]="0" [inputClass]="'form-control'" [initialValue]="field.initialValue"></ng2-completer>
+      <span class="input-group-btn">
+        <button type='button' *ngIf="removeBtnText" [disabled]="!canRemove" (click)="onRemove($event)" [ngClass]="removeBtnClass" >{{removeBtnText}}</button>
+        <button [disabled]="!canRemove" type='button' [ngClass]="removeBtnClass" (click)="onRemove($event)"></button>
+      </span>
+    </div>
+    <div class="text-danger" *ngIf="hasRequiredError()">{{field.validationMessages.required}}</div>
   </div>
+
   <li *ngIf="!field.editMode" class="key-value-pair">
     <span *ngIf="field.label" class="key">{{field.label}}</span>
     <span class="value">{{field.getTitle(field.value)}}</span>

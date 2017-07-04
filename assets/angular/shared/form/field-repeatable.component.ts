@@ -46,7 +46,7 @@ export class RepeatableContainer extends Container {
     super(options);
     this.hasGroup = true;
     this.addButtonText = options['addButtonText'] || '';
-    this.removeButtonText = options['removeButtonText'] || '';
+    this.removeButtonText = options['removeButtonText'] || null;
     this.skipClone = options['skipClone'] || [];
     this.forceClone = options['forceClone'] || [];
     this.addButtonTextClass = options['addButtonTextClass'] || 'btn btn-success pull-right';
@@ -149,8 +149,8 @@ export class RepeatableComponent extends SimpleComponent {
       <label class="col-md-12">{{field.label}}</label>
     </div>
     <div *ngFor="let fieldElem of field.fields; let i = index;" class="row">
-      <span class="col-xs-12 form-group">
-        <rb-vocab [field]="fieldElem" [form]="form" [fieldMap]="fieldMap" [isEmbedded]="true" [canRemove]="field.fields.length > 1" (onRemoveBtnClick)="removeElem($event[0], $event[1])" [index]="i"></rb-vocab>
+      <span class="col-xs-12">
+        <rb-vocab [field]="fieldElem" [form]="form" [fieldMap]="fieldMap" [isEmbedded]="true" [removeBtnText]="field.removeButtonText" [removeBtnClass]="field.removeButtonClass" [canRemove]="field.fields.length > 1" (onRemoveBtnClick)="removeElem($event[0], $event[1])" [index]="i"></rb-vocab>
       </span>
     </div>
     <div class="row">
@@ -213,7 +213,7 @@ export class RepeatableContributorComponent extends RepeatableComponent implemen
 
   addElem(event) {
     const newElem = this.field.addElem();
-    newElem.marginTop = '5px';
+    newElem.marginTop = '0px';
   }
 
   removeElem(event, i) {

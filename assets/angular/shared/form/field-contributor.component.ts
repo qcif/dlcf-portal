@@ -145,23 +145,23 @@ export class ContributorField extends FieldBase<any> {
 @Component({
   selector: 'rb-contributor',
   template: `
-  <div *ngIf="field.editMode" [formGroup]='field.formModel' class="form-group" >
+  <div *ngIf="field.editMode" [formGroup]='field.formModel' >
     <div class="row" *ngIf="field.showHeader">
       <div class="col-xs-4"><label>{{field.nameColHdr}}</label></div>
       <div class="col-xs-4"><label>{{field.emailColHdr}}</label></div>
       <div class="col-xs-4"><label>{{field.roleColHdr}}</label></div>
     </div>
     <div class="row">
-      <div class="col-xs-4">
+      <div [ngClass]="getGroupClass('name')">
         <input formControlName="name" type="text" class="form-control"/>
         <div class="text-danger" *ngIf="field.formModel.controls['name'].touched && field.formModel.controls['name'].hasError('required')">{{field.validationMessages.required.name}}</div>
       </div>
-      <div class="col-xs-4">
+      <div [ngClass]="getGroupClass('email')">
         <input formControlName="email" type="text" class="form-control" />
         <div class="text-danger" *ngIf="field.formModel.controls['email'].touched && field.formModel.controls['email'].hasError('email')">{{field.validationMessages.invalid.email}}</div>
         <div class="text-danger" *ngIf="field.formModel.controls['email'].touched && field.formModel.controls['email'].hasError('required')">{{field.validationMessages.required.email}}</div>
       </div>
-      <div class="col-xs-4">
+      <div [ngClass]="getGroupClass('role')">
         <select formControlName="role" class="form-control">
           <option *ngFor="let role of field.roles" [value]="role">{{role}}</option>
         </select>
@@ -185,4 +185,12 @@ export class ContributorField extends FieldBase<any> {
   `,
 })
 export class ContributorComponent extends SimpleComponent {
+  public getGroupClass(fldName) {
+    let hasError = false;
+    hasError = hasError || (this.field.formModel.controls[fldName].touched && this.field.formModel.controls[fldName].hasError('required'));
+    if (!hasError && fldName == 'email') {
+      hasError = hasError || (this.field.formModel.controls[fldName].touched && this.field.formModel.controls[fldName].hasError('email');
+    }
+    return `col-xs-4 form-group${hasError ? ' has-error' : ''}`;
+  }
 }
