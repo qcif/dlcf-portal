@@ -8,7 +8,10 @@ module.exports = function(req, res, next) {
     if(_.includes(BrandingService.getAvailable(),branding)) {
       return next();
     } else {
-      return res.notFound(req.options.locals, "404");
+      // brand not found, use default brand so images, css, etc. resolves
+      req.options.locals.branding = sails.config.auth.defaultBrand;
+      req.options.locals.portal = sails.config.auth.defaultPortal;
+      return res.notFound();
     }
   }
   return next();

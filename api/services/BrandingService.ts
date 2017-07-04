@@ -38,7 +38,8 @@ export module Services {
       'loadAvailableBrands',
       'getDefault',
       'getBrand',
-      'getAvailable'
+      'getAvailable',
+      'getBrandAndPortalPath'
     ];
 
     protected availableBrandings: any =  []
@@ -87,6 +88,14 @@ export module Services {
     public getAvailable = () => {
       return _this.availableBrandings;
     }
+
+    public getBrandAndPortalPath(req) {
+      const branding = req.param('branding') ? req.param('branding') : sails.config.auth.defaultBrand;
+      const portal = req.param('portal') ? req.param('portal') : sails.config.auth.defaultPortal;
+      const path = `/${branding}/${portal}`;
+      return path;
+    }
+
   }
 
 }
