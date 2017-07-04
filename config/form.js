@@ -387,7 +387,7 @@ module.exports.form = {
                        label: "Start Date",
                        datePickerOpts: {format: 'dd/mm/yyyy', icon: 'fa fa-calendar'},
                        timePickerOpts: false,
-                       hasClearButton: true,
+                       hasClearButton: false,
                        valueFormat: 'YYYY-MM-DD',
                        displayFormat: 'L',
                        onChange: {setStartDate: ['endDate']}
@@ -400,7 +400,7 @@ module.exports.form = {
                        label: "End Date",
                        datePickerOpts: {format: 'dd/mm/yyyy', icon: 'fa fa-calendar'},
                        timePickerOpts: false,
-                       hasClearButton: true,
+                       hasClearButton: false,
                        valueFormat: 'YYYY-MM-DD',
                        displayFormat: 'L',
                      }
@@ -641,7 +641,7 @@ module.exports.form = {
                        label: "Start Date",
                        datePickerOpts: {format: 'dd/mm/yyyy', icon: 'fa fa-calendar'},
                        timePickerOpts: false,
-                       hasClearButton: true,
+                       hasClearButton: false,
                        valueFormat: 'YYYY-MM-DD',
                        displayFormat: 'L',
                        onChange: {setStartDate: ['endDate']}
@@ -654,7 +654,7 @@ module.exports.form = {
                        label: "End Date",
                        datePickerOpts: {format: 'dd/mm/yyyy', icon: 'fa fa-calendar'},
                        timePickerOpts: false,
-                       hasClearButton: true,
+                       hasClearButton: false,
                        valueFormat: 'YYYY-MM-DD',
                        displayFormat: 'L'
                      }
