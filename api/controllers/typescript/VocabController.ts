@@ -69,7 +69,7 @@ export module Controllers {
 
     public getCollection(req, res) {
       const collectionId = req.param('collectionId');
-      const searchString = req.query.search;
+      const searchString = req.query.search ? req.query.search.toLowerCase() : '';
       VocabService.findCollection(collectionId, searchString).subscribe(collections => {
         this.ajaxOk(req, res, null, collections, true);
       }, error => {

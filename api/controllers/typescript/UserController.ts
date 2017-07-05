@@ -90,7 +90,9 @@ export module Controllers {
 
       public logout(req, res) {
         req.logout();
-        res.redirect(sails.config.auth.postLogoutRedir);
+        req.session.destroy(err => {
+          res.redirect(sails.config.auth.postLogoutRedir);
+        });
       }
 
       public info(req, res) {

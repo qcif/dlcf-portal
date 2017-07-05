@@ -57,7 +57,7 @@
 }
 .navbar-toggle .icon-bar { background: none repeat scroll 0 0 #fff }
 .navbar-collapse.collapse.in {
-  background: none repeat scroll 0 0 #1abc9c;
+  background: none repeat scroll 0 0 #222;
   position: relative;
   z-index: 99;
 }

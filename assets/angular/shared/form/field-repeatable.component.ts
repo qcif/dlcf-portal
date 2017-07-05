@@ -194,16 +194,18 @@ export class RepeatableVocabComponent extends RepeatableComponent {
       </span>
     </div>
   </div>
-  <table *ngIf="!field.editMode" class="table">
-    <thead><th>{{field.fields[0].nameColHdr}}</th><th>{{field.fields[0].emailColHdr}}</th><th>{{field.fields[0].roleColHdr}}</th></thead>
-    <tbody>
-      <tr *ngFor="let fieldElem of field.fields; let i = index;">
-        <td>{{fieldElem.value.name}}</td>
-        <td>{{fieldElem.value.email}}</td>
-        <td>{{fieldElem.value.role}}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div  *ngIf="!field.editMode" class="table-responsive">
+    <table class="table table-striped table-condensed">
+      <thead><th>{{field.fields[0].nameColHdr}}</th><th>{{field.fields[0].emailColHdr}}</th><th>{{field.fields[0].roleColHdr}}</th></thead>
+      <tbody>
+        <tr *ngFor="let fieldElem of field.fields; let i = index;">
+          <td>{{fieldElem.value.name}}</td>
+          <td>{{fieldElem.value.email}}</td>
+          <td>{{fieldElem.value.role}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   `,
 })
 export class RepeatableContributorComponent extends RepeatableComponent implements OnInit {

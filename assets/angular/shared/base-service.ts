@@ -93,6 +93,7 @@ export class BaseService {
 
   protected getOptionsClient(headersObj={}) {
     headersObj['X-Source'] = 'jsclient';
+    headersObj['Content-Type'] = 'application/json;charset=utf-8';
     return this.getOptions(headersObj);
   }
 }
