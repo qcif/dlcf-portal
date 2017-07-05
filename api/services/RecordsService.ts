@@ -73,7 +73,7 @@ export module Services {
       if (!_.isEmpty(packageType)) {
         url = url.replace('$packageType', packageType);
       }
-      return {url:url, json: true, headers: {'Authorization': `Bearer ${sails.config.redbox.apiKey}`}};
+      return {url:url, json:true, headers: {'Authorization': `Bearer ${sails.config.redbox.apiKey}`, 'Content-Type': 'application/json; charset=utf-8'}};
     }
 
     /**
