@@ -37,14 +37,6 @@ module.exports.form = {
           }
         },
         {
-          class: 'LinkValueComponent',
-          viewOnly: true,
-          definition: {
-            label: 'RAiD',
-            name: 'raid'
-          }
-        },
-        {
           class: 'TextArea',
           viewOnly: true,
           definition: {
@@ -295,7 +287,7 @@ module.exports.form = {
           class: 'LinkValueComponent',
           viewOnly: true,
           definition: {
-            label: 'RAiD',
+            label: 'RAID',
             name: 'raid'
           }
         },
@@ -344,6 +336,16 @@ module.exports.form = {
                   id: "overview",
                   label : "Overview",
                   fields: [
+                   {
+                      class : "TextField",
+                      editOnly: true,
+                      definition : {
+                        "name" : "raid",
+                        "label" : "RAID",
+                        "type" : "text",
+                        "readOnly" : true
+                      }
+                   },
                    {
                      class: 'TextField',
                      editOnly: true,
@@ -548,7 +550,7 @@ module.exports.form = {
           class: 'LinkValueComponent',
           viewOnly: true,
           definition: {
-            label: 'RAiD',
+            label: 'RAID',
             name: 'raid'
           }
         },
@@ -598,6 +600,16 @@ module.exports.form = {
                   id: "overview",
                   label : "Overview",
                   fields: [
+                   {
+                      class : "TextField",
+                      editOnly: true,
+                      definition : {
+                        "name" : "raid",
+                        "label" : "RAID",
+                        "type" : "text",
+                        "readOnly" : true
+                      }
+                   },
                    {
                      class: 'TextField',
                      editOnly: true,

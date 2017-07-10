@@ -55,6 +55,7 @@ export module Controllers {
 
     public start(req, res) {
       const procId = req.param("procId");
+      const forceHarvest = req.query.force == "true";
       const brand = BrandingService.getBrand(req.session.branding);
       const username = req.user.username;
       switch (procId) {
@@ -63,7 +64,7 @@ export module Controllers {
           .subscribe(progress => {
             this.ajaxOk(req, res, null, {status: 'Starting', progressId: progress.id}, true);
             const progressId = progress.id;
-            VocabService.loadCollection('grid', progressId).subscribe(prog=> {
+            VocabService.loadCollection('grid', progressId, forceHarvest).subscribe(prog=> {
               console.log(`Asynch progress: `);
               console.log(prog);
             },

@@ -101,13 +101,13 @@ export module Services {
       });
     }
 
-    loadCollection(collectionId, progressId) {
+    loadCollection(collectionId, progressId, force=false) {
       const getMethod = sails.config.vocab.collection[collectionId].getMethod;
       const bufferCount = sails.config.vocab.collection[collectionId].processingBuffer;
       const processWindow = sails.config.vocab.collection[collectionId].processingTime;
       let collectionData = null;
       return this[getMethod](collectionId).flatMap(data => {
-        if (_.isEmpty(data)) {
+        if (_.isEmpty(data) || force) {
           // return a receipt and then start the process of loading...
           const url = sails.config.vocab.collection[collectionId].url;
           sails.log.verbose(`Loading collection: ${collectionId}, using url: ${url}`);
@@ -163,7 +163,7 @@ export module Services {
         // added for Solr case-insensi search
         item.text_name = item.name;
       });
-      return RecordsService.createBatch(sails.config.vocab.collection['grid'].type, instItems);
+      return RecordsService.createBatch(sails.config.vocab.collection['grid'].type, instItems, 'grid_id');
     }
 
     searchInst(searchString, fields) {

@@ -163,8 +163,10 @@ export class HiddenValue extends FieldBase<string> {
 }
 
 export class LinkValue extends FieldBase<string> {
+  target: string;
   constructor(options) {
     super(options);
     this.controlType = 'link';
+    this.target = options.target || '_blank';
   }
 }
