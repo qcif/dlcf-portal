@@ -1,5 +1,6 @@
 package steps
 
+import au.com.redboxresearchdata.dlcf.page.RecordEditPage
 import cucumber.api.PendingException
 
 /**
@@ -7,14 +8,27 @@ import cucumber.api.PendingException
  * @date 13/6/17
  */
 
-this.metaClass.mixin(cucumber.api.groovy.Hooks)
-this.metaClass.mixin(cucumber.api.groovy.EN)
+import static cucumber.api.groovy.EN.*
 
 Then(~/^I am on the record edit page$/) { ->
   // Write code here that turns the phrase above into concrete actions
-  throw new PendingException()
+  throw new cucumber.api.PendingException()
 }
 And(~/^I should see the [Ww]elcome to the [Dd]ata [Mm]anagement [Pp]lan [Ff]orm$/) { ->
   // Write code here that turns the phrase above into concrete actions
   throw new PendingException()
+}
+
+
+When(~/^I go to the CreateRecord page$/) { ->
+  to RecordEditPage
+  at RecordEditPage
+}
+
+When(~/^I try to go to the CreateRecord page$/) { ->
+  go RecordEditPage.url
+}
+
+Then(~/^I should see the CreateRecord panel$/) { ->
+  page.assertAtCreateRecordStart()
 }

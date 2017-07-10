@@ -1,51 +1,58 @@
 package au.com.redboxresearchdata.dlcf.page
-
-import geb.Page
-
 /**
  * @author <a href="matt@redboxresearchdata.com.au">Matt Mulholland</a>
  * Created on 25/05/2017.
  */
-class HomePage extends Page {
+
+class HomePage extends GenericLayoutPage {
+
   static url = "/default/rdmp/home"
 
-  static at = { $("h1#main-title")?.text() ==~ /[Ww]elcome.*[DMP].*[Tt]ool/ }
+  static at = { assertDefaultPanellIsVisible() }
 
   static content = {
-    loginLink(required: false) { $("div a[href*='login']") }
-    dashboardLink(required: false) { $("div a[href*='dashboard']") }
-    logoutLink { $(".user-menu").has('div a[href$="/user/logout"]') }
-    welcomeMessage {
-      def selector = $('.user-menu').has('.fa-user')
-      assert selector?.text().trim() ==~ /^(?s)[Ww]elcome.*$/
-      assert dashboardLink.isDisplayed()
+    defaultPanel {
+      layout.defaultPanel.$(".default-page")
+    }
+    defaultPanelHeader {
+      def selector = defaultPanel.$(".header")
+      assert selector.$("div.container")?.text()?.trim() ==~ /(?si)^This is the homepage of the DMP Tool. Some content needs to go here as well as a link to the researcher dashboard \(still to be implemented\)$/
+      return selector
+    }
+    defaultPanelTitle {
+      def selector = defaultPanelHeader.$("h1#main-title")
+      assert selector?.text()?.trim() ==~ /^(?s)[Ww]elcome to the DMP [Tt]ool$/
+      return selector
+    }
+    defaultPanelBody {
+      defaultPanel.$("div.main.container")
+    }
+    dashboardLink {
+      def selector = defaultPanelBody.$("a[href*='dashboard']")
+      assert selector?.text()?.trim() ==~ /Proceed to the dashboard/
       return selector
     }
   }
 
-  String previousPageName
-
-  @Override
-  void onLoad(Page previousPage) {
-    previousPageName = previousPage.class.simpleName
-  }
-
   def enterLogin() {
     getDriver().manage().window().maximize()
-    def result = loginLink.click()
+    def result = loginHeader.loginLink.click()
     print result
   }
 
   def enterDashboard() {
     getDriver().manage().window().maximize()
-    def result = dashboardLink.click()
+    def result = $(dashboardLink).click()
     print result
   }
 
-  def isLoggedIn() {
-    waitFor { logoutLink }.isDisplayed()
-    waitFor { welcomeMessage }.isDisplayed()
-    !loginLink.isDisplayed()
+  def assertDefaultPanellIsVisible() {
+    waitFor { defaultPanelTitle }.isDisplayed()
+    waitFor { dashboardLink }.isDisplayed()
   }
 
+  def assertIsLoggedIn() {
+    super.assertIsLoggedIn()
+    assertDefaultPanellIsVisible()
+  }
 }

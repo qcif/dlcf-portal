@@ -11,12 +11,12 @@ Then(~/^I am on the [Dd]ashboard page$/) { ->
   at DashboardPage
   assert page.previousPageName == 'HomePage'
 }
-And(~/^I should see the 'Create a plan' button$/) { ->
-  page.assertCreatePlanButtonExists()
+And(~/^I should see the [']?Create a plan[']? button$/) { ->
+  page.assertCreatePlanButtonIsVisible()
 }
 And(~/^I should see my plans$/) { ->
   // Write code here that turns the phrase above into concrete actions
-  page.assertMyPlansExist()
+  page.assertMyPlansAreVisible()
 }
 
 And(~/^I go to the [Dd]ashboard page$/) { ->

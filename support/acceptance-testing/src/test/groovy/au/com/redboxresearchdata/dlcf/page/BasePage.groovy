@@ -8,4 +8,5 @@ import geb.Page
  */
 class BasePage extends Page {
   static url = "/"
+
 }

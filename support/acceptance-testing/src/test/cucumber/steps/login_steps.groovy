@@ -1,30 +1,50 @@
 package steps
 
+import au.com.redboxresearchdata.dlcf.page.AafTestOrganisationPage
+import au.com.redboxresearchdata.dlcf.page.AafTestVirtualHomePage
 import au.com.redboxresearchdata.dlcf.page.BasePage
 import au.com.redboxresearchdata.dlcf.page.HomePage
 import au.com.redboxresearchdata.dlcf.page.LoginPage
 
 import static cucumber.api.groovy.EN.*
+import static cucumber.api.groovy.Hooks.After
 
 Given(~/^I go to the [Hh]ome page$/) { ->
   via BasePage
   at HomePage
 }
 
-Given(~/^I have logged in$/) { ->
+Given(~/^I log[ ]?in (?:with|using) local (?:credentials)?$/) { ->
   to LoginPage
-  page.login()
+  page.loginUsingLocalCredentials(world.user)
   at HomePage
-  page.isLoggedIn()
+  page.assertIsLoggedIn()
+}
+
+Given(~/^I log in (?:with|using) aaf (?:credentials)?$/) { ->
+  to LoginPage
+  page.enterAafLogin()
+  at AafTestOrganisationPage
+  page.selectAafOrganisation()
+  world.useAafSession({ user ->
+    at AafTestVirtualHomePage
+    page.loginUsingAafCredentials(user)
+  })
+  at HomePage
+  page.assertIsLoggedIn()
 }
 
 When(~/^I click on login$/) { ->
   page.enterLogin()
 }
 
-Then(~/^I am on the login page$/) { ->
+Then(~/^I am on the [Ll]ogin page$/) { ->
   at LoginPage
   assert page.previousPageName == 'HomePage'
+}
+
+Then(~/^I am redirected to the [Ll]ogin page$/) { ->
+  at LoginPage
 }
 
 Then(~/^I should see the login dialog$/) { ->
@@ -42,9 +62,22 @@ When(~/^I enter test username and test password$/) { ->
 
 Then(~/^I am on the home page$/) { ->
   at HomePage
-  assert page.previousPageName == 'LoginPage'
 }
 
-Then(~/^I am logged in$/) { ->
-  page.isLoggedIn()
+Given(~/^I am logged in$/) { ->
+  page.assertIsLoggedIn()
+}
+
+Given(~/^I do not log[ ]?in$/) { ->
+  page.assertIsNotLoggedIn()
+}
+
+Then(~/^the header should show that I am not logged in$/) { ->
+  page.assertHeaderIsVisible()
+  page.assertIsNotLoggedIn()
+}
+
+Then(~/^the header should show that I am logged in$/) { ->
+  page.assertHeaderIsVisible()
+  page.assertIsLoggedIn()
 }
