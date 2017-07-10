@@ -107,7 +107,8 @@ z-index: 999;}
 }
 
 .mainmenu-area ul.dropdown-menu li a {
-    color: black;
+    color: darkgray;
+    background-color: #222222;
 }
 
 .mainmenu-area ul.navbar-nav li:hover a, .mainmenu-area ul.navbar-nav li.active a {}
