@@ -72,8 +72,8 @@ class RecordModule extends Module {
     navTabFooter {
       PageHelper.scrollIntoView(".single-product-area form div.form-row div")
       form.$("div.form-row div")
-        .has("button", type: "button", text: "Save")
-        .has('a.btn-warning[href$="default/rdmp/home"]')
+        .has("button.btn-primary", type: "button", text: "Save")
+        .has("button.btn-warning", type: "button", text: "Cancel")
     }
 
   }

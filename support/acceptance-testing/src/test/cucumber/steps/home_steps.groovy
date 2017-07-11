@@ -18,40 +18,17 @@
  *
  */
 
-package au.com.redboxresearchdata.dlcf.module
+package steps
 
-import geb.Module
-import groovy.json.StringEscapeUtils
-/**
- * @author Matt Mulholland (matt@redboxresearchdata.com.au)
- * @date 24/6/17
- */
-class LayoutModule extends Module {
-  static content = {
+import au.com.redboxresearchdata.dlcf.page.HomePage
 
-    header {
-      $(".header-area").has(".user-menu")
-    }
-    branding {
-      $(".site-branding-area").has(".logo").has("img", "src": "http://dlcfportal:1500/default/rdmp/images/logo.png")
-    }
+import static cucumber.api.groovy.EN.*
 
-    defaultPanel {
-      $(".single-product-area")
-    }
+Given(~/^I go to the [Hh]ome page$/) { ->
+  to HomePage
+  at HomePage
+}
 
-    mainMenu {
-      $(".mainmenu-area")
-    }
-    footer {
-      def selector = $(".footer-bottom-area").$(".copyright").findAll{
-
-        StringEscapeUtils.escapeJava(it?.text()?.trim()) ==~ /\\u00A9 2017 Queensland [Cc]yberinfrastructure [Ff]oundation/
-      }
-      assert selector.size() == 1
-      return selector[0]
-    }
-  }
-
-
+When(~/^I try to go to the [Hh]ome page$/) { ->
+  go HomePage.url
 }

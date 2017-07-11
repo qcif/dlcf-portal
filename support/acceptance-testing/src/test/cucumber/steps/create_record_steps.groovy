@@ -20,12 +20,12 @@ And(~/^I should see the [Ww]elcome to the [Dd]ata [Mm]anagement [Pp]lan [Ff]orm$
 }
 
 
-When(~/^I go to the CreateRecord page$/) { ->
+When(~/^I go to the [Cc]reateRecord page$/) { ->
   to RecordEditPage
   at RecordEditPage
 }
 
-When(~/^I try to go to the CreateRecord page$/) { ->
+When(~/^I try to go to the [Cc]reateRecord page$/) { ->
   go RecordEditPage.url
 }
 

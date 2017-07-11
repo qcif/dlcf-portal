@@ -45,15 +45,15 @@ abstract class GenericLayoutPage extends GenericPage {
     previousPageName = previousPage.class.simpleName
   }
 
-  def assertAllLayoutFor(def role) {
+  def assertAllAuthorisedLayoutFor(def role) {
     assertIsLoggedIn()
-    assertAllBodyPanelsAreVisibleFor(role)
+    assertAllAuthorisedBodyPanelsAreVisibleFor(role)
     assertFooterIsVisible()
   }
 
   def assertAllLoggedOutLayout() {
     assertIsNotLoggedIn()
-    assertAllDefaultBodyPanelsAreVisible()
+    assertAllUnAuthorisedDefaultBodyPanelsAreVisible()
     assertFooterIsVisible()
   }
 
@@ -87,21 +87,26 @@ abstract class GenericLayoutPage extends GenericPage {
     assert loginHeader.logoutLink.isEmpty()
   }
 
-  def assertAllBodyPanelsAreVisibleFor(role) {
-    assertAllDefaultBodyPanelsAreVisible()
-    assertRoleMenusAreVisibleFor(role)
+  def assertAllAuthorisedBodyPanelsAreVisibleFor(role) {
+    assertAllAuthorisedDefaultBodyPanelsAreVisible()
+    assertAuthorisedRoleMenusAreVisibleFor(role)
   }
 
-  def assertAllDefaultBodyPanelsAreVisible() {
+  def assertAllAuthorisedDefaultBodyPanelsAreVisible() {
     assertDefaultBrandingIsVisible()
-    assertAllDefaultMenusAreVisible()
+    assertAllAuthorisedDefaultMenusAreVisible()
+  }
+
+  def assertAllUnAuthorisedDefaultBodyPanelsAreVisible() {
+    assertDefaultBrandingIsVisible()
+    assertAllUnAuthorisedDefaultMenusAreVisible()
   }
 
   def assertDefaultBrandingIsVisible() {
     waitFor { layout.branding }.isDisplayed()
   }
 
-  def assertRoleMenusAreVisibleFor(role) {
+  def assertAuthorisedRoleMenusAreVisibleFor(role) {
     switch (role) {
       case "admin":
         waitFor { menu."${role}Menu" }.isDisplayed()
@@ -112,7 +117,13 @@ abstract class GenericLayoutPage extends GenericPage {
     }
   }
 
-  def assertAllDefaultMenusAreVisible() {
+  def assertAllAuthorisedDefaultMenusAreVisible() {
+    ["dashboard"].each { name ->
+      waitFor { menu."${name}Menu" }.isDisplayed()
+    }
+  }
+
+  def assertAllUnAuthorisedDefaultMenusAreVisible() {
     ["home"].each { name ->
       waitFor { menu."${name}Menu" }.isDisplayed()
     }

@@ -1,9 +1,9 @@
 Feature: Home
 
-  Scenario: I am not logged in and I observe the Home Page
-    Given I go to the home page
-    And I do not log in
-    Then I should see all of the logged out layout
+#  Scenario: I am not logged in and I observe the Home Page
+#    Given I go to the home page
+#    And I do not log in
+#    Then I should see all of the logged out layout
 
 #  Scenario: Observe the Home Page as an admin user who is logged in
 #    Given I am an admin user

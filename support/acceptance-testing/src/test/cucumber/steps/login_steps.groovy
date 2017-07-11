@@ -1,20 +1,15 @@
 package steps
 
 import au.com.redboxresearchdata.dlcf.page.BasePage
-import au.com.redboxresearchdata.dlcf.page.HomePage
+import au.com.redboxresearchdata.dlcf.page.DashboardPage
 import au.com.redboxresearchdata.dlcf.page.LoginPage
 
 import static cucumber.api.groovy.EN.*
 
-Given(~/^I go to the [Hh]ome page$/) { ->
-  via BasePage
-  at HomePage
-}
-
 Given(~/^I log[ ]?in (?:with|using) local (?:credentials)?$/) { ->
   to LoginPage
   page.loginUsingLocalCredentials(world.user)
-  at HomePage
+  at DashboardPage
   page.assertIsLoggedIn()
 }
 
@@ -27,7 +22,7 @@ Given(~/^I log in (?:with|using) aaf (?:credentials)?$/) { ->
     at AafTestVirtualHomePage
     page.loginUsingAafCredentials(user)
   })
-  at HomePage
+  at DashboardPage
   page.assertIsLoggedIn()
 }
 
@@ -37,11 +32,10 @@ When(~/^I click on login$/) { ->
 
 Then(~/^I am on the [Ll]ogin page$/) { ->
   at LoginPage
-  assert page.previousPageName == 'HomePage'
 }
 
-Then(~/^I am redirected to the [Ll]ogin page$/) { ->
-  at LoginPage
+When(~/^I try to go to the [Ll]ogin page$/) { ->
+  go LoginPage.url
 }
 
 Then(~/^I should see the login dialog$/) { ->
@@ -57,15 +51,12 @@ When(~/^I enter test username and test password$/) { ->
   page.login()
 }
 
-Then(~/^I am on the home page$/) { ->
-  at HomePage
-}
-
 Given(~/^I am logged in$/) { ->
   page.assertIsLoggedIn()
 }
 
 Given(~/^I do not log[ ]?in$/) { ->
+  at LoginPage
   page.assertIsNotLoggedIn()
 }
 

@@ -38,6 +38,14 @@ class MenuModule extends Module {
       assert selector.size() == 1
       return selector[0]
     }
+    dashboardMenu {
+      //using findAll easier to debug than geb's :text
+      def selector = layout.mainMenu.$("li a").findAll {
+        it?.text()?.trim()?.toLowerCase() ==~ /dashboard/
+      }
+      assert selector.size() == 1
+      return selector[0]
+    }
     adminMenu {
       //using findAll easier to debug than geb's :text
       def selector = layout.mainMenu.$("li a").findAll {

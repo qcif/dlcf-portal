@@ -9,7 +9,6 @@ When(~/^I click on Proceed to the dashboard$/) { ->
 }
 Then(~/^I am on the [Dd]ashboard page$/) { ->
   at DashboardPage
-  assert page.previousPageName == 'HomePage'
 }
 And(~/^I should see the [']?Create a plan[']? button$/) { ->
   page.assertCreatePlanButtonIsVisible()
@@ -19,9 +18,13 @@ And(~/^I should see my plans$/) { ->
   page.assertMyPlansAreVisible()
 }
 
-And(~/^I go to the [Dd]ashboard page$/) { ->
+When(~/^I go to the [Dd]ashboard page$/) { ->
   to DashboardPage
   at DashboardPage
+}
+
+When(~/^I try to go to the [Dd]ashboard page$/) { ->
+  go DashboardPage.url
 }
 
 And(~/^I click on [Cc]reate [Aa] [Pp]lan$/) { ->

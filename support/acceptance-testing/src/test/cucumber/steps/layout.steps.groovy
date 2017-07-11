@@ -28,7 +28,7 @@ import static cucumber.api.groovy.EN.Then
  */
 
 Then(~/^I should see(?: all of)? the (\w+) layout$/) { role ->
-  page.assertAllLayoutFor(role)
+  page.assertAllAuthorisedLayoutFor(role)
 }
 
 Then(~/^I should see(?: all of)? the logged out layout$/) { ->
@@ -40,19 +40,19 @@ Then(~/^I should see the header$/) { ->
 }
 
 Then(~/^I should see(?: all of)? the (admin|guest) body panels$/) { role ->
-  page.assertAllBodyPanelsAreVisibleFor(role)
+  page.assertAllAuthorisedBodyPanelsAreVisibleFor(role)
 }
 
-Then(~/^I should see(?: all of)? the (admin) menu panels$/) { role ->
-  page.assertRoleMenusAreVisibleFor(role)
+Then(~/^I should see(?: all of)? the (admin|guest) menu panels$/) { role ->
+  page.assertAuthorisedRoleMenusAreVisibleFor(role)
 }
 
 Then(~/^I should see(?: all of)? the default body panels$/) { ->
-  page.assertAllDefaultBodyPanelsAreVisible()
+  page.assertAllAuthorisedDefaultBodyPanelsAreVisible()
 }
 
 Then(~/^I should see(?: all of)? the default menu panels$/) { ->
-  page.assertAllDefaultMenusAreVisible()
+  page.assertAllAuthorisedDefaultMenusAreVisible()
 }
 
 Then(~/^I should see the footer$/) { ->

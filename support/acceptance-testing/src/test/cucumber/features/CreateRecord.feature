@@ -4,14 +4,7 @@ Feature: CreateRecord
     Given I go to the Home page
     When I click on Proceed to the dashboard
     Then I am on the Login page
-    And I should see the default body panels
-    And the header should show that I am not logged in
-
-  Scenario: As a user who is not logged in, I observe the layout, by typing in a url
-    When I try to go to the CreateRecord page
-    Then I am redirected to the Login page
-    And I should see the default body panels
-    And the header should show that I am not logged in
+    And I should see all of the logged out layout
 
   Scenario Outline: As a <role> user, who logs in using <credentialsType> credentials, I observe the CreateRecord Page
     Given I am a <role> user
