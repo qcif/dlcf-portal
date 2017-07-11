@@ -40,15 +40,27 @@ export class SimpleComponent {
     }
     return null;
   }
+
+  public getGroupClass() {
+    return `form-group ${this.hasRequiredError() ? 'has-error' : '' }`;
+  }
+
+  public hasRequiredError() {
+    return this.field.formModel.touched && this.field.formModel.hasError('required');
+  }
 }
 
 @Component({
   selector: 'textfield',
   template: `
-  <div *ngIf="field.editMode" [formGroup]='form' class="form-group" >
+  <div *ngIf="field.editMode" [formGroup]='form' [ngClass]="getGroupClass()" >
     <label [attr.for]="field.name">{{field.label}}</label><br/>
-    <input [formControl]="fieldMap[field.name].control"  [id]="field.name" [type]="field.type" class="form-control">
+    <input [formControl]="fieldMap[field.name].control"  [id]="field.name" [type]="field.type" [readonly]="field.readOnly" class="form-control">
     <div class="text-danger" *ngIf="fieldMap[field.name].control.hasError('required') && fieldMap[field.name].control.touched">{{field.label}} is required</div>
+  </div>
+  <div *ngIf="!field.editMode" class="key-value-pair">
+    <span class="key" *ngIf="field.label">{{field.label}}</span>
+    <span class="value">{{field.value}}</span>
   </div>
   `,
 })
@@ -246,9 +258,9 @@ export class AnchorOrButtonComponent extends SimpleComponent {
 @Component({
   selector: 'link-value',
   template: `
-  <li *ngIf="!field.editMode && isVisible()" class="key-value-pair">
+  <li *ngIf="!field.editMode && isVisible()" class="key-value-pair padding-bottom-10">
     <span class="key" *ngIf="field.label">{{field.label}}</span>
-    <span class="value"><a href='{{field.value}}'>{{field.value}}</a></span>
+    <span class="value"><a href='{{field.value}}' target="field.target">{{field.value}}</a></span>
   </li>
   `,
 })

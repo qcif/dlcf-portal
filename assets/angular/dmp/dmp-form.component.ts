@@ -233,7 +233,7 @@ export class DmpFormComponent extends LoadableComponent {
         console.log(res);
         if (res.success) {
           this.setSuccess(this.formDef.messages.saveSuccess);
-          window.location.href = this.RecordsService.getDashboardUrl();
+          this.gotoDashboard();
         } else {
           this.setError(`${this.formDef.messages.saveError} ${res.message}`);
         }
@@ -258,4 +258,11 @@ export class DmpFormComponent extends LoadableComponent {
     return this.status.saving;
   }
 
+  gotoDashboard() {
+    window.location.href = this.RecordsService.getDashboardUrl();
+  }
+
+  onCancel() {
+    this.gotoDashboard();
+  }
 }

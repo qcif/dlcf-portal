@@ -9,11 +9,16 @@
     <div class="container"><a class="btn btn-large btn-info" href="/<%= typeof branding == 'undefined'? data.branding : branding %>/<%= typeof portal == 'undefined'? data.portal : portal %>/record/edit"><span class="glyphicon glyphicon-plus-sign"></span> Create a plan</a></div>
     <br/>
   </div>
-
-  <div class="main container clearfix">
-    <div class="col-md-offset-5 col-md-3">
-      <img src="/images/loading.svg" id="loading">
+  <div class="row" id="loading">
+    <div class="col-xs-1">
     </div>
+    <div class="col-xs-10">
+      <img class="center-block" src="/images/loading.svg">
+    </div>
+    <div class="col-xs-1">
+    </div>
+  </div>
+  <div class="main container clearfix">
     <dashboard branding="<%= typeof branding == 'undefined'? data.branding : branding %>" portal="<%= typeof portal == 'undefined'? data.portal : portal %>"></dashboard>
 <% if (!sails.config.ng2.use_bundled) { %>
   <script src="/dynamic/systemjs-config.js?appName=dashboard"></script>

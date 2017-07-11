@@ -73,7 +73,7 @@ export module Services {
       if (!_.isEmpty(packageType)) {
         url = url.replace('$packageType', packageType);
       }
-      return {url:url, json: true, headers: {'Authorization': `Bearer ${sails.config.redbox.apiKey}`}};
+      return {url:url, json:true, headers: {'Authorization': `Bearer ${sails.config.redbox.apiKey}`, 'Content-Type': 'application/json; charset=utf-8'}};
     }
 
     /**
@@ -102,10 +102,10 @@ export module Services {
       });
     }
 
-    public createBatch(type, data) {
+    public createBatch(type, data, harvestIdFldName) {
       const options = this.getOptions(sails.config.record.api.harvest.url, null, type);
       data = _.map(data, dataItem => {
-        return {metadata: {metadata: dataItem, metaMetadata: {type:type}}};
+        return {harvest_id: _.get(dataItem, harvestIdFldName, ''), metadata: {metadata: dataItem, metaMetadata: {type:type}}};
       });
       options.body = {records: data};
       sails.log.verbose(`Sending data:`);

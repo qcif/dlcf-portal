@@ -22,4 +22,12 @@ superPartial = function(value, branding,portal) {
 displayValue = function(value,defaultValue="") {
   return ViewUtils.displayValue(value,req,defaultValue);
 }
+
+/**
+ *  Returns true if the user is an admin
+ */
+hasAdminRole = function(req) {
+  return UsersService.hasRole(req.user, RolesService.getAdmin(BrandingService.getBrand(req.session.branding)));
+}
+
 %>

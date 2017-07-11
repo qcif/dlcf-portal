@@ -91,7 +91,6 @@ export module Services {
       });
       _.forEach(fields, field => {
         field.definition.editMode = editMode;
-
         if (!_.isEmpty(field.definition.fields)) {
           this.setFormEditMode(field.definition.fields, editMode);
         }

@@ -46,7 +46,7 @@ export class RepeatableContainer extends Container {
     super(options);
     this.hasGroup = true;
     this.addButtonText = options['addButtonText'] || '';
-    this.removeButtonText = options['removeButtonText'] || '';
+    this.removeButtonText = options['removeButtonText'] || null;
     this.skipClone = options['skipClone'] || [];
     this.forceClone = options['forceClone'] || [];
     this.addButtonTextClass = options['addButtonTextClass'] || 'btn btn-success pull-right';
@@ -144,20 +144,20 @@ export class RepeatableComponent extends SimpleComponent {
 @Component({
   selector: 'repeatable',
   template: `
-  <div *ngIf="field.editMode" [formGroup]='form' class="form-group" >
-    <label>{{field.label}}</label>
-    <div  *ngFor="let fieldElem of field.fields; let i = index;" class="row">
-      <span class="col-md-10">
-        <rb-vocab [field]="fieldElem" [form]="form" [fieldMap]="fieldMap"></rb-vocab>
-      </span>
-      <span class="col-md-2">
-        <button type='button' *ngIf="field.fields.length > 1 && field.removeButtonText" (click)="removeElem($event, i)" [ngClass]="field.removeButtonTextClass" style="margin-top: 20px;">{{field.removeButtonText}}</button>
-        <button type='button' *ngIf="field.fields.length > 1 && !field.removeButtonText" (click)="removeElem($event, i)"  [ngClass]="field.removeButtonClass" style="margin-top: 20px;"></button>
+  <div *ngIf="field.editMode">
+    <div class="row">
+      <label class="col-md-12">{{field.label}}</label>
+    </div>
+    <div *ngFor="let fieldElem of field.fields; let i = index;" class="row">
+      <span class="col-xs-12">
+        <rb-vocab [field]="fieldElem" [form]="form" [fieldMap]="fieldMap" [isEmbedded]="true" [removeBtnText]="field.removeButtonText" [removeBtnClass]="field.removeButtonClass" [canRemove]="field.fields.length > 1" (onRemoveBtnClick)="removeElem($event[0], $event[1])" [index]="i"></rb-vocab>
       </span>
     </div>
     <div class="row">
-      <button *ngIf="field.addButtonText" type='button' (click)="addElem($event)" [ngClass]="field.addButtonTextClass" >{{field.addButtonText}}</button>
-      <button *ngIf="!field.addButtonText" type='button' (click)="addElem($event)" [ngClass]="field.addButtonClass"></button>
+      <span class="col-xs-12">
+        <button *ngIf="field.addButtonText" type='button' (click)="addElem($event)" [ngClass]="field.addButtonTextClass" >{{field.addButtonText}}</button>
+        <button *ngIf="!field.addButtonText" type='button' (click)="addElem($event)" [ngClass]="field.addButtonClass"></button>
+      </span>
     </div>
   </div>
   <li *ngIf="!field.editMode" class="key-value-pair">
@@ -177,31 +177,35 @@ export class RepeatableVocabComponent extends RepeatableComponent {
 @Component({
   selector: 'repeatable',
   template: `
-  <div *ngIf="field.editMode" [formGroup]='form' class="form-group" >
+  <div *ngIf="field.editMode">
     <div *ngFor="let fieldElem of field.fields; let i = index;" class="row">
-      <span class="col-md-10">
+      <span class="col-xs-10">
         <rb-contributor [field]="fieldElem" [form]="form" [fieldMap]="fieldMap"></rb-contributor>
       </span>
-      <span class="col-md-2">
+      <span class="col-xs-2">
         <button type='button' *ngIf="field.fields.length > 1 && field.removeButtonText" (click)="removeElem($event, i)"  [ngClass]="field.removeButtonTextClass" [ngStyle]="{'margin-top': fieldElem.marginTop}" >{{field.removeButtonText}}</button>
         <button type='button' *ngIf="field.fields.length > 1 && !field.removeButtonText" (click)="removeElem($event, i)" [ngClass]="field.removeButtonClass" [ngStyle]="{'margin-top': fieldElem.marginTop}" ></button>
       </span>
     </div>
     <div class="row">
-      <button *ngIf="field.addButtonText" type='button' (click)="addElem($event)" [ngClass]="field.addButtonTextClass" >{{field.addButtonText}}</button>
-      <button *ngIf="!field.addButtonText" type='button' (click)="addElem($event)" [ngClass]="field.addButtonClass" ></button>
+      <span class="col-xs-12">
+        <button *ngIf="field.addButtonText" type='button' (click)="addElem($event)" [ngClass]="field.addButtonTextClass" >{{field.addButtonText}}</button>
+        <button *ngIf="!field.addButtonText" type='button' (click)="addElem($event)" [ngClass]="field.addButtonClass" ></button>
+      </span>
     </div>
   </div>
-  <table *ngIf="!field.editMode" class="table">
-    <thead><th>{{field.fields[0].nameColHdr}}</th><th>{{field.fields[0].emailColHdr}}</th><th>{{field.fields[0].roleColHdr}}</th></thead>
-    <tbody>
-      <tr *ngFor="let fieldElem of field.fields; let i = index;">
-        <td>{{fieldElem.value.name}}</td>
-        <td>{{fieldElem.value.email}}</td>
-        <td>{{fieldElem.value.role}}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div  *ngIf="!field.editMode" class="table-responsive">
+    <table class="table table-striped table-condensed">
+      <thead><th>{{field.fields[0].nameColHdr}}</th><th>{{field.fields[0].emailColHdr}}</th><th>{{field.fields[0].roleColHdr}}</th></thead>
+      <tbody>
+        <tr *ngFor="let fieldElem of field.fields; let i = index;">
+          <td>{{fieldElem.value.name}}</td>
+          <td>{{fieldElem.value.email}}</td>
+          <td>{{fieldElem.value.role}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   `,
 })
 export class RepeatableContributorComponent extends RepeatableComponent implements OnInit {
@@ -211,7 +215,7 @@ export class RepeatableContributorComponent extends RepeatableComponent implemen
 
   addElem(event) {
     const newElem = this.field.addElem();
-    newElem.marginTop = '5px';
+    newElem.marginTop = '0px';
   }
 
   removeElem(event, i) {

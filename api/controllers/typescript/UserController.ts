@@ -20,7 +20,7 @@
 //<reference path='./../../typings/loader.d.ts'/>
 declare var module;
 declare var sails;
-
+declare var BrandingService;
 import controller = require('../../../typescript/controllers/CoreController.js');
 
 export module Controllers {
@@ -73,9 +73,7 @@ export module Controllers {
         if (req.path.indexOf(sails.config.auth.loginPath) == -1) {
           req.session.redirUrl = req.path;
         }
-        var branding = req.param('branding') ? req.param('branding') : sails.config.auth.defaultBrand;
-        var portal = req.param('portal') ? req.param('portal') : sails.config.auth.defaultPortal;
-        res.redirect('/' + branding + '/' + portal + '/' + sails.config.auth.loginPath);
+        return res.redirect(`${BrandingService.getBrandAndPortalPath(req)}/${sails.config.auth.loginPath}`);
       }
 
       public redirPostLogin(req, res) {
@@ -84,15 +82,17 @@ export module Controllers {
 
       protected getPostLoginUrl(req, res) {
         if (req.session.redirUrl) {
-            return req.session.redirUrl;
+          return req.session.redirUrl;
         } else {
-            return sails.config.auth.local.postLoginRedir;
+          return `${BrandingService.getBrandAndPortalPath(req)}/${sails.config.auth.local.postLoginRedir}`;
         }
       }
 
       public logout(req, res) {
         req.logout();
-        res.redirect(sails.config.auth.postLogoutRedir);
+        req.session.destroy(err => {
+          res.redirect(sails.config.auth.postLogoutRedir);
+        });
       }
 
       public info(req, res) {

@@ -173,6 +173,9 @@ export module Controllers {
         currentRec.workflow = nextStep.config.workflow;
         // TODO: validate data with form fields
         currentRec.metaMetadata.form = nextStep.config.form;
+        // update authorizations based on workflow...
+        currentRec.authorization.viewRoles = nextStep.config.authorization.viewRoles;
+        currentRec.authorization.editRoles = nextStep.config.authorization.editRoles;
       }
     }
 

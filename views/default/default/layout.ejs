@@ -1,3 +1,4 @@
+<% include ../../functions %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -98,14 +99,22 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="/<%= typeof branding == 'undefined'? data.branding : branding %>/<%= typeof portal == 'undefined'? data.portal : portal %>/home">Home</a></li>
-            <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="/<%= typeof branding == 'undefined'? data.branding : branding %>/<%= typeof portal == 'undefined'? data.portal : portal %>/admin">Role management</a></li>
-            <li><a href="/<%= typeof branding == 'undefined'? data.branding : branding %>/<%= typeof portal == 'undefined'? data.portal : portal %>/export">Export</a></li>
-          </ul>
-        </li>
+            <% if (req.isAuthenticated()) {
+              %> 
+              <li class="active"><a href="/<%= typeof branding == 'undefined'? data.branding : branding %>/<%= typeof portal == 'undefined'? data.portal : portal %>/dashboard">Dashboard</a></li>
+              <%
+                if (hasAdminRole(req)) {%>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="/<%= typeof branding == 'undefined'? data.branding : branding %>/<%= typeof portal == 'undefined'? data.portal : portal %>/admin">Role management</a></li>
+                  <li><a href="/<%= typeof branding == 'undefined'? data.branding : branding %>/<%= typeof portal == 'undefined'? data.portal : portal %>/export">Export</a></li>
+                </ul>
+              </li>
+            <% }
+              } else { %>
+              <li class="active"><a href="/<%= typeof branding == 'undefined'? data.branding : branding %>/<%= typeof portal == 'undefined'? data.portal : portal %>/home">Home</a></li>
+            <% } %>
           </ul>
 
         </div>
@@ -152,7 +161,7 @@
   <script src="/js/dependencies/sails.io.js"></script>
   <!--SCRIPTS END-->
 </body>
-<% if (sails.config.ng2.use_bundled) { %>
+<% if (res.statusCode <= 400 && sails.config.ng2.use_bundled) { %>
   <!-- NG2 bundled scripts section, expects a 'ng2_apps' local containing the list of apps to load for this view -->
   <%- partial ('../../misc/ng2-apps.ejs', {apps: ng2_apps}) %>
 <% } %>
