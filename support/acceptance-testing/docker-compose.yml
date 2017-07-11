@@ -5,7 +5,7 @@ services:
     ports:
        - "27017:27017"
   redbox:
-    image: qcifengineering/dlcf-redbox:latest
+    image: qcifengineering/dlcf-redbox:acceptance
     ports:
        - "9000:9000"
   dlcfportal:
