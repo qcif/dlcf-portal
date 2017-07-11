@@ -1,13 +1,10 @@
 package steps
 
-import au.com.redboxresearchdata.dlcf.page.AafTestOrganisationPage
-import au.com.redboxresearchdata.dlcf.page.AafTestVirtualHomePage
 import au.com.redboxresearchdata.dlcf.page.BasePage
 import au.com.redboxresearchdata.dlcf.page.HomePage
 import au.com.redboxresearchdata.dlcf.page.LoginPage
 
 import static cucumber.api.groovy.EN.*
-import static cucumber.api.groovy.Hooks.After
 
 Given(~/^I go to the [Hh]ome page$/) { ->
   via BasePage
@@ -24,9 +21,9 @@ Given(~/^I log[ ]?in (?:with|using) local (?:credentials)?$/) { ->
 Given(~/^I log in (?:with|using) aaf (?:credentials)?$/) { ->
   to LoginPage
   page.enterAafLogin()
-  at AafTestOrganisationPage
-  page.selectAafOrganisation()
   world.useAafSession({ user ->
+    at AafTestOrganisationPage
+    page.selectAafOrganisation()
     at AafTestVirtualHomePage
     page.loginUsingAafCredentials(user)
   })

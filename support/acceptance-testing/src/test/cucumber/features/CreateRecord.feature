@@ -25,6 +25,7 @@ Feature: CreateRecord
     Examples:
       | role  | credentialsType |
       | admin | local           |
+      | guest | aaf             |
 
 #  Scenario: Observe the create record Introduction panel
 #    Given I have logged in
