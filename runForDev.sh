@@ -24,6 +24,7 @@ do
     if [ $var == "aotCompile" ]; then
       cleanUpAllJs
       linkNodeLib "lodash-es" "lodash-lib"
+      echo "declare module 'lodash-lib';" > "node_modules/lodash-es/index.d.ts"
       compileAoT
       exit 0
     fi

@@ -44,7 +44,7 @@ export class AppComponent extends LoadableComponent {
   isLoginDisabled: boolean;
   constructor (@Inject(UserSimpleService) protected userService: UserSimpleService, @Inject(FormBuilder) protected fb: FormBuilder, @Inject(DOCUMENT) protected document:any) {
     super();
-    userService.waitForInit(whatever=> {
+    userService.waitForInit((whatever:any)=> {
       this.form = this.fb.group({
           "username": ["", Validators.required],
           "password":["", Validators.required]

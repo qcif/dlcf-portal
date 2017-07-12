@@ -36,13 +36,13 @@ export class ConfigService {
   protected config: any;
   protected subjects: any;
 
-  constructor (@Inject(Http) protected http) {
+  constructor (@Inject(Http) protected http: any) {
     this.subjects = {};
     this.subjects['get'] = new Subject();
     this.initConfig();
   }
 
-  getConfig(handler): any {
+  getConfig(handler: any): any {
     const subs = this.subjects['get'].subscribe(handler);
     this.emitConfig();
     return subs;
@@ -55,14 +55,14 @@ export class ConfigService {
   }
 
   initConfig() {
-    this.http.get('/dynamic/apiClientConfig.json').subscribe(res => {
+    this.http.get('/dynamic/apiClientConfig.json').subscribe((res:any) => {
       this.config = this.extractData(res);
       console.log(`ConfigService, initialized. `);
       this.emitConfig();
     });
   }
 
-  protected extractData(res: Response, parentField = null) {
+  protected extractData(res: Response, parentField: any = null) {
     let body = res.json();
     if (parentField) {
         return body[parentField] || {};

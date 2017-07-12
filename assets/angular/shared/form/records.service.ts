@@ -37,7 +37,7 @@ import { ConfigService } from '../config-service';
 @Injectable()
 export class RecordsService extends BaseService {
 
-  constructor (@Inject(Http) http, @Inject(FieldControlService) protected fcs: FieldControlService, @Inject(ConfigService) protected configService) {
+  constructor (@Inject(Http) http: Http, @Inject(FieldControlService) protected fcs: FieldControlService, @Inject(ConfigService) protected configService: ConfigService) {
     super(http, configService);
   }
 
@@ -45,23 +45,23 @@ export class RecordsService extends BaseService {
     if (_.isEmpty(oid)) {
       oid = null;
     }
-    return this.getFormFieldsMeta(this.config.defaultForm, editable, oid).then((form) => {
-      return this.fcs.getLookupData(form.fieldsMeta).flatMap(fields => {
+    return this.getFormFieldsMeta(this.config.defaultForm, editable, oid).then((form:any) => {
+      return this.fcs.getLookupData(form.fieldsMeta).flatMap((fields:any) => {
         form.fieldsMata = fields;
         return Observable.of(form);
       });
     });
   }
 
-  getFormFields(formName, oid=null, editable) {
+  getFormFields(formName:string, oid: string=null, editable:boolean) {
     const url = oid ? `${this.brandingAndPortallUrl}/record/form/auto/${oid}?edit=${editable}` : `${this.brandingAndPortallUrl}/record/form/${formName}?edit=${editable}`;
     return this.http.get(url, this.options)
       .toPromise()
-      .then((res) => this.extractData(res));
+      .then((res:any) => this.extractData(res));
   }
 
-  getFormFieldsMeta(formName, editable, oid=null) {
-    return this.getFormFields(formName, oid, editable).then(form => {
+  getFormFieldsMeta(formName:string, editable:boolean, oid:string=null) {
+    return this.getFormFields(formName, oid, editable).then((form:any) => {
       if (form && form.fields) {
         form.fieldsMeta = this.fcs.getFieldsMeta(form.fields);
       } else {
@@ -75,19 +75,19 @@ export class RecordsService extends BaseService {
   create(record: any) {
     return this.http.post(`${this.brandingAndPortallUrl}/recordmeta/`, record, this.getOptionsClient())
     .toPromise()
-    .then((res) => this.extractData(res) as RecordActionResult);
+    .then((res:any) => this.extractData(res) as RecordActionResult);
   }
 
   update(oid: string, record: any) {
     return this.http.put(`${this.brandingAndPortallUrl}/recordmeta/${oid}`, record, this.getOptionsClient())
     .toPromise()
-    .then((res) => this.extractData(res) as RecordActionResult);
+    .then((res:any) => this.extractData(res) as RecordActionResult);
   }
 
   stepTo(oid: string, record: any, targetStep: string) {
     return this.http.post(`${this.brandingAndPortallUrl}/record/workflow/step/${targetStep}/${oid}`, record, this.getOptionsClient())
     .toPromise()
-    .then((res) => this.extractData(res) as RecordActionResult);
+    .then((res:any) => this.extractData(res) as RecordActionResult);
   }
 
   getDashboardUrl() {

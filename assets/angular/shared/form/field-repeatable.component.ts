@@ -21,7 +21,7 @@ import { Input, Component, OnInit} from '@angular/core';
 import { SimpleComponent } from './field-simple.component';
 import { Container } from './field-simple';
 import { FormArray } from '@angular/forms';
-import { ContributorComponent } from './field-contributor.component';
+import { ContributorComponent, ContributorField } from './field-contributor.component';
 import * as _ from "lodash-lib";
 import { ChangeDetectorRef } from '@angular/core';
 
@@ -42,7 +42,7 @@ export class RepeatableContainer extends Container {
   addButtonClass: any;
   removeButtonClass: any;
 
-  constructor(options) {
+  constructor(options: any) {
     super(options);
     this.hasGroup = true;
     this.addButtonText = options['addButtonText'] || '';
@@ -60,14 +60,14 @@ export class RepeatableContainer extends Container {
     return [this.fields[0].createFormModel()];
   }
 
-  getGroup(group, fieldMap) {
+  getGroup(group: any, fieldMap: any) {
     fieldMap[this.name] = {field:this};
     if (!this.value || this.value.length == 0) {
       this.control = new FormArray(this.getInitArrayEntry());
     } else {
       let fieldCtr = 0;
       const baseField = this.fields[0];
-      this.fields = _.map(this.value, valueElem => {
+      this.fields = _.map(this.value, (valueElem:any) => {
         let fieldClone = null;
         if (fieldCtr == 0) {
           fieldClone = baseField;
@@ -80,7 +80,7 @@ export class RepeatableContainer extends Container {
         fieldCtr++;
         return fieldClone;
       });
-      const elems = _.map(this.fields, field => {
+      const elems = _.map(this.fields, (field:any) => {
         return field.createFormModel();
       });
       this.control = new FormArray(elems);
@@ -99,12 +99,12 @@ export class RepeatableContainer extends Container {
     }
   }
 
-  createNewElem(baseFieldInst) {
+  createNewElem(baseFieldInst: any) {
     const newInst = new baseFieldInst.constructor(baseFieldInst.options);
-    _.forEach(this.skipClone, (f)=> {
+    _.forEach(this.skipClone, (f: any)=> {
       newInst[f] = null;
     });
-    _.forEach(this.forceClone, (f) => {
+    _.forEach(this.forceClone, (f: any) => {
       newInst[f] = _.cloneDeep(baseFieldInst[f]);
     });
     newInst.postInit(null);
@@ -118,25 +118,26 @@ export class RepeatableContainer extends Container {
     return newElem;
   }
 
-  removeElem(index) {
-    _.remove(this.fields, (val, idx) => { return idx == index });
+  removeElem(index: number) {
+    _.remove(this.fields, (val:any, idx: number) => { return idx == index });
     this.control.removeAt(index);
   }
 
   public triggerValidation() {
-    _.forEach(this.fields, f => {
+    _.forEach(this.fields, (f:any) => {
       f.triggerValidation();
     });
   }
 }
 
 export class RepeatableComponent extends SimpleComponent {
+  field: RepeatableContainer;
 
-  addElem(event) {
+  addElem(event: any) {
     this.field.addElem();
   }
 
-  removeElem(event, i) {
+  removeElem(event: any, i: number) {
     this.field.removeElem(i);
   }
 }
@@ -173,6 +174,9 @@ export class RepeatableComponent extends SimpleComponent {
 export class RepeatableVocabComponent extends RepeatableComponent {
 }
 
+export class RepeatableContributor extends RepeatableContainer {
+  fields: ContributorField[];
+}
 
 @Component({
   selector: 'repeatable',
@@ -209,16 +213,19 @@ export class RepeatableVocabComponent extends RepeatableComponent {
   `,
 })
 export class RepeatableContributorComponent extends RepeatableComponent implements OnInit {
+  field: RepeatableContributor;
+
   ngOnInit() {
+    let fieldElem: {}
     this.field.fields[0].marginTop = '25px';
   }
 
-  addElem(event) {
+  addElem(event: any) {
     const newElem = this.field.addElem();
     newElem.marginTop = '0px';
   }
 
-  removeElem(event, i) {
+  removeElem(event: any, i: number) {
     this.field.removeElem(i);
     if (i == 0) {
       this.field.fields[0].marginTop = '25px';

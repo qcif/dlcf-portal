@@ -23,7 +23,7 @@
   <pagination *ngIf="draftPlans.totalItems > 0" [directionLinks]="false" [boundaryLinks]="true" [totalItems]="draftPlans.totalItems"
             [(ngModel)]="draftPlans.currentPage" (pageChanged)="draftTablePageChanged($event)" class="pagination-sm"></pagination>
   </div>
-  <div *ngIf="draftPlans.totalItems <= 0">
+  <div *ngIf="draftPlans.totalItems <= 0" class="padding-bottom-10">
     You currently don't have any draft plans.
   </div>
   <h2>My active plans</h2>

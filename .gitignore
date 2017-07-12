@@ -143,3 +143,5 @@ support/acceptance-testing/reports/
 support/acceptance-testing/build/
 DashboardService.js
 AsynchsService.js
+.tscache
+*.tmp*

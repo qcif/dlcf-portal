@@ -60,14 +60,14 @@ export class DmpFormComponent extends LoadableComponent {
   ) {
     super();
     this.status = {};
-    this.initSubs = RecordsService.waitForInit(initStat => {
+    this.initSubs = RecordsService.waitForInit((initStat:boolean) => {
       this.initSubs.unsubscribe();
       this.fieldMap = {_rootComp:this};
       this.oid = elm.nativeElement.getAttribute('oid');
       this.editMode = elm.nativeElement.getAttribute('editMode') == "true";
       console.log(`Loading form with OID: ${this.oid}, on edit mode:${this.editMode}`);
-      this.RecordsService.getForm(this.oid, this.editMode).then(obs => {
-        obs.subscribe(form => {
+      this.RecordsService.getForm(this.oid, this.editMode).then((obs:any) => {
+        obs.subscribe((form:any) => {
           this.formDef = form;
           if (this.editMode) {
             this.cssClasses = this.formDef.editCssClasses;
@@ -81,7 +81,7 @@ export class DmpFormComponent extends LoadableComponent {
             this.watchForChanges();
           }
         });
-      }).catch(err => {
+      }).catch((err:any) => {
         console.log("Error loading form...");
         console.log(err);
         if (err.status == false) {
@@ -92,7 +92,7 @@ export class DmpFormComponent extends LoadableComponent {
     });
   }
 
-  onSubmit(nextStep = false, targetStep=null) {
+  onSubmit(nextStep:boolean = false, targetStep:string = null) {
     if (!this.isValid()) {
       return;
     }
@@ -103,7 +103,7 @@ export class DmpFormComponent extends LoadableComponent {
     console.log(this.payLoad);
     this.needsSave = false;
     if (_.isEmpty(this.oid)) {
-      this.RecordsService.create(this.payLoad).then(res=>{
+      this.RecordsService.create(this.payLoad).then((res:any)=>{
         this.clearSaving();
         console.log("Create Response:");
         console.log(res);
@@ -117,11 +117,11 @@ export class DmpFormComponent extends LoadableComponent {
         } else {
           this.setError(`${this.formDef.messages.saveError} ${res.message}`);
         }
-      }).catch(err=>{
-        this.setError(`${this.formDef.messages.saveError} ${res.message}`);
+      }).catch((err:any)=>{
+        this.setError(`${this.formDef.messages.saveError} ${err.message}`);
       });
     } else {
-      this.RecordsService.update(this.oid, this.payLoad).then(res=>{
+      this.RecordsService.update(this.oid, this.payLoad).then((res:any)=>{
         this.clearSaving();
         console.log("Update Response:");
         console.log(res);
@@ -130,24 +130,24 @@ export class DmpFormComponent extends LoadableComponent {
         } else {
           this.setError(`${this.formDef.messages.saveError} ${res.message}`);
         }
-      }).catch(err=>{
+      }).catch((err:any)=>{
         this.setError(`${this.formDef.messages.saveError} ${err}`);
       });
     }
   }
 
-  setStatus(stat, msg) {
-    _.forOwn(this.status, (stat, key) => {
+  setStatus(stat:string, msg:string) {
+    _.forOwn(this.status, (stat:string, key:string) => {
       this.status[key] = null;
     });
     this.status[stat] = {msg: msg};
   }
 
-  clearStatus(stat) {
+  clearStatus(stat:string) {
     this.status[stat] = null;
   }
 
-  setSaving(msg='Saving...') {
+  setSaving(msg:string = 'Saving...') {
     this.clearError();
     this.clearSuccess();
     this.setStatus('saving', msg);
@@ -157,7 +157,7 @@ export class DmpFormComponent extends LoadableComponent {
     this.clearStatus('saving');
   }
 
-  setError(msg) {
+  setError(msg: string) {
     this.clearSaving();
     this.needsSave = true;
     this.setStatus('error', msg);
@@ -167,7 +167,7 @@ export class DmpFormComponent extends LoadableComponent {
     this.clearStatus('error');
   }
 
-  setSuccess(msg) {
+  setSuccess(msg: string) {
     this.clearSaving();
     this.setStatus('success', msg);
   }
@@ -185,7 +185,7 @@ export class DmpFormComponent extends LoadableComponent {
       if (_.isEmpty(this.oid)){
         this.setLoading(false);
       }
-      this.form.valueChanges.subscribe(data => {
+      this.form.valueChanges.subscribe((data:any) => {
         if (this.isLoading) {
           this.setLoading(false);
         } else {
@@ -198,7 +198,7 @@ export class DmpFormComponent extends LoadableComponent {
   }
 
   triggerValidation() {
-    _.forOwn(this.fieldMap, (fieldEntry, fieldName) => {
+    _.forOwn(this.fieldMap, (fieldEntry:any, fieldName:string) => {
       if (!_.isEmpty(fieldName) && !_.startsWith(fieldName, '_')) {
         fieldEntry.field.triggerValidation();
       }
@@ -215,7 +215,7 @@ export class DmpFormComponent extends LoadableComponent {
     return true;
   }
 
-  stepTo(targetStep) {
+  stepTo(targetStep: string) {
     if (!this.isValid()) {
       return;
     }
@@ -227,7 +227,7 @@ export class DmpFormComponent extends LoadableComponent {
       const values = this.formatValues(this.form.value);
       this.payLoad = JSON.stringify(values);
       console.log(this.payLoad);
-      this.RecordsService.stepTo(this.oid, this.payLoad, targetStep).then(res => {
+      this.RecordsService.stepTo(this.oid, this.payLoad, targetStep).then((res:any) => {
         this.clearSaving();
         console.log("Update Response:");
         console.log(res);
@@ -237,15 +237,15 @@ export class DmpFormComponent extends LoadableComponent {
         } else {
           this.setError(`${this.formDef.messages.saveError} ${res.message}`);
         }
-      }).catch(err=>{
+      }).catch((err:any)=>{
         this.setError(`${this.formDef.messages.saveError} ${err}`);
       });
     }
   }
 
-  formatValues(data) {
+  formatValues(data:any) {
     const formVals = _.cloneDeep(data);
-    _.forOwn(formVals, (val, key) => {
+    _.forOwn(formVals, (val:any, key:string) => {
       if (_.isFunction(this.fieldMap[key].instance.formatValue)) {
         const newVal = this.fieldMap[key].instance.formatValue(formVals[key]);
         formVals[key] = newVal;

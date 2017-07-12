@@ -45,26 +45,26 @@ declare var jQuery: any;
 export class AppComponent extends LoadableComponent {
   users: any[] = [];
   filteredUsers: any[];
-  searchFilter = { name: null, role: null, roles: [ {value: null, label:'Any', checked:true}]};
+  searchFilter: { name: string, role: any, prevName: string, prevRole: any, roles: any[] } = { name: null, role: null, prevName: null, prevRole:null, roles: [ {value: null, label:'Any', checked:true}]};
   roles: Role[];
   hiddenUsers = ['admin'];
   currentUser: any = {username:'', name:'', email:'', roles:[]};
   saveMsg = "";
   saveMsgType ="info";
-  initSubs;
+  initSubs: any;
 
   constructor (@Inject(RolesService) protected rolesService: RolesService, @Inject(FormBuilder) fb: FormBuilder, @Inject(DOCUMENT) protected document:any) {
     super();
-    this.initSubs = rolesService.waitForInit(initStat => {
+    this.initSubs = rolesService.waitForInit((initStat:any) => {
       this.initSubs.unsubscribe();
-      rolesService.getBrandRoles().then(roles => {
+      rolesService.getBrandRoles().then((roles:any) => {
         this.roles = roles;
-        _.forEach(roles, (role) => {
+        _.forEach(roles, (role:any) => {
           this.searchFilter.roles.push({value:role.name, label:role.name, checked:false});
-          _.forEach(role.users, (user) => {
+          _.forEach(role.users, (user:any) => {
             if (!_.includes(this.hiddenUsers, user.username)) {
               // flattening the tree, match by username
-              var existingUser = _.find(this.users, (existingUser) => { return existingUser.username == user.username});
+              let existingUser: any = _.find(this.users, (existingUser:any) => { return existingUser.username == user.username});
               if (_.isEmpty(existingUser)) {
                 existingUser = user;
                 existingUser.roles = [role.name];
@@ -75,25 +75,25 @@ export class AppComponent extends LoadableComponent {
             }
           });
         });
-        _.map(this.users, (user)=> {user.roleStr = _.join(user.roles, ', ')});
+        _.map(this.users, (user:any)=> {user.roleStr = _.join(user.roles, ', ')});
         this.filteredUsers = this.users;
         this.setLoading(false);
       });
     });
   }
 
-  editUser(username) {
+  editUser(username:string) {
     this.setSaveMessage();
-    this.currentUser = _.find(this.users, (user)=>{return user.username == username});
-    this.currentUser.newRoles = _.map(this.roles, (r) => {
+    this.currentUser = _.find(this.users, (user:any)=>{return user.username == username});
+    this.currentUser.newRoles = _.map(this.roles, (r:any) => {
       return {name: r.name, id:r.id, hasRole: _.includes(this.currentUser.roles, r.name)};
     });
   }
 
-  saveCurrentUser($event) {
-    var hasRole = false;
-    var newRoles = [];
-    _.forEach(this.currentUser.newRoles, (role) => {
+  saveCurrentUser($event:any) {
+    let hasRole:boolean = false;
+    let newRoles:any[] = [];
+    _.forEach(this.currentUser.newRoles, (role:any) => {
       hasRole = hasRole || role.hasRole;
       if (role.hasRole)
         newRoles.push(role.name);
@@ -115,23 +115,23 @@ export class AppComponent extends LoadableComponent {
     });
   }
 
-  setSaveMessage(msg="", type="primary") {
+  setSaveMessage(msg:string="", type:string="primary") {
     this.saveMsg = msg;
     this.saveMsgType = type;
   }
 
-  onFilterChange(roleFilter=null) {
+  onFilterChange(roleFilter:any=null) {
     if (roleFilter) {
       roleFilter.checked = true;
       this.searchFilter.role = roleFilter.value;
-      _.map(this.searchFilter.roles, (role)=> role.checked = roleFilter.value == role.value);
+      _.map(this.searchFilter.roles, (role:any)=> role.checked = roleFilter.value == role.value );
     }
     if (this.searchFilter.name != this.searchFilter.prevName || this.searchFilter.role != this.searchFilter.prevRole) {
       this.searchFilter.prevName = this.searchFilter.name;
       this.searchFilter.prevRole = this.searchFilter.role;
       var nameFilter =_.isEmpty(this.searchFilter.name) ? "" : _.trim(this.searchFilter.name);
       // run filter change...
-      this.filteredUsers = _.filter(this.users, (user) => {
+      this.filteredUsers = _.filter(this.users, (user:any) => {
         var hasRole = this.searchFilter.role == null ?  true : _.includes(user.roles, this.searchFilter.role);
         var hasNameMatch = nameFilter == "" ? true : (_.toLower(user.name).indexOf(_.toLower(this.searchFilter.name)) >= 0);
         return hasRole && hasNameMatch;
@@ -142,7 +142,7 @@ export class AppComponent extends LoadableComponent {
   resetFilter() {
     this.searchFilter.name = null;
     this.searchFilter.role = null;
-    _.map(this.searchFilter.roles, (role)=> role.checked = role.value == null);
+    _.map(this.searchFilter.roles, (role:any)=> role.checked = role.value == null);
     this.onFilterChange();
   }
 }

@@ -19,6 +19,7 @@
 
 import { Input, Component, ViewChild, ViewContainerRef, OnInit } from '@angular/core';
 import { FieldBase } from './field-base';
+import { DateTime, AnchorOrButton, TextArea, TextField } from './field-simple';
 import { FormGroup } from '@angular/forms';
 import * as _ from "lodash-lib";
 import moment from 'moment-es6';
@@ -41,7 +42,7 @@ export class SimpleComponent {
     return null;
   }
 
-  public getGroupClass() {
+  public getGroupClass(fldName:string=null): string {
     return `form-group ${this.hasRequiredError() ? 'has-error' : '' }`;
   }
 
@@ -85,6 +86,7 @@ export class TextFieldComponent extends SimpleComponent {}
   `,
 })
 export class TextAreaComponent extends SimpleComponent implements OnInit {
+  field: TextArea;
   ngOnInit() {
     if (!this.field.editMode) {
       this.field.formatValueForDisplay();
@@ -182,6 +184,7 @@ export class HtmlRawComponent extends SimpleComponent {
   `,
 })
 export class TextBlockComponent extends SimpleComponent {
+  field: TextField;
 }
 
 /**
@@ -202,15 +205,16 @@ Based on: https://bootstrap-datepicker.readthedocs.io/en/stable/
   `
 })
 export class DateTimeComponent extends SimpleComponent implements OnInit {
+  public field: DateTime;
   @ViewChild('dateTime', {read: ViewContainerRef}) dateTimeView: ViewContainerRef;
 
   ngOnInit() {
-    this.getFormControl().valueChanges.subscribe(date => {
+    this.getFormControl().valueChanges.subscribe((date:any) => {
       this.handleChange(date);
     });
   }
 
-  updateStartDate(newVal) {
+  updateStartDate(newVal: any) {
     const thisDate = moment(newVal);
     const prevStartDate = moment(this.getFormControl().value);
     if (!prevStartDate.isValid() || thisDate.isAfter(prevStartDate)) {
@@ -223,7 +227,7 @@ export class DateTimeComponent extends SimpleComponent implements OnInit {
 
   handleChange(newVal: Date) {
     if (this.field.onChange) {
-      _.forEach(this.field.onChange.setStartDate, (targetField) => {
+      _.forEach(this.field.onChange.setStartDate, (targetField: any) => {
         this.fieldMap[targetField].instance.updateStartDate(newVal);
       });
     }
@@ -243,7 +247,9 @@ export class DateTimeComponent extends SimpleComponent implements OnInit {
   `,
 })
 export class AnchorOrButtonComponent extends SimpleComponent {
-  public onClick(event) {
+  public field: AnchorOrButton;
+
+  public onClick(event: any) {
     this.fieldMap._rootComp[this.field.onClick_RootFn]();
   }
 
