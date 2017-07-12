@@ -26,6 +26,9 @@ services:
        - "27017:27017"
   redbox:
     image: qcifengineering/dlcf-redbox
+    environment:
+      - RAID_URL=https://api.raid.org.au:8000/
+      - RAID_KEY=<To be supplied>
     volumes:
         - "/mnt/data/redbox:/opt/redbox/data"
         - "/var/log/redbox:/opt/redbox/home/logs"
