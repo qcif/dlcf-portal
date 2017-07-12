@@ -1,6 +1,7 @@
 package steps
 
-import au.com.redboxresearchdata.dlcf.page.BasePage
+import au.com.redboxresearchdata.dlcf.page.AafTestOrganisationPage
+import au.com.redboxresearchdata.dlcf.page.AafTestVirtualHomePage
 import au.com.redboxresearchdata.dlcf.page.DashboardPage
 import au.com.redboxresearchdata.dlcf.page.LoginPage
 
