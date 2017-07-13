@@ -95,7 +95,10 @@ abstract class GenericLayoutPage extends GenericPage {
   def assertAllAuthorisedDefaultBodyPanelsAreVisible() {
     assertDefaultBrandingIsVisible()
     assertAllAuthorisedDefaultMenusAreVisible()
+    assertBodyPanelIsVisible()
   }
+
+  abstract def assertBodyPanelIsVisible
 
   def assertAllUnAuthorisedDefaultBodyPanelsAreVisible() {
     assertDefaultBrandingIsVisible()

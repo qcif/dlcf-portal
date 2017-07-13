@@ -1,8 +1,8 @@
 package au.com.redboxresearchdata.dlcf.page
 
-import au.com.redboxresearchdata.dlcf.module.RecordModule
-import geb.Page
-
+import au.com.redboxresearchdata.dlcf.module.record.ContributorsModule
+import au.com.redboxresearchdata.dlcf.module.record.IntroductionModule
+import au.com.redboxresearchdata.dlcf.module.record.OverviewModule
 /**
  * @author Matt Mulholland
  * @date 24/5/17
@@ -10,60 +10,48 @@ import geb.Page
 class RecordEditPage extends GenericLayoutPage {
   static url = "/default/rdmp/record/edit"
   static at = {
-    assertNavMenusAndContentAreDisplayed()
+    assertBodyPanelIsVisible()
   }
 
   static content = {
-    record { module RecordModule }
-  }
-  String previousPageName
+    introduction { module IntroductionModule }
+    overview { module OverviewModule }
+    contributors { module ContributorsModule }
 
-  @Override
-  void onLoad(Page previousPage) {
-    previousPageName = previousPage.class.simpleName
   }
 
-  def assertNavMenusAndContentAreDisplayed() {
-    waitFor { record.navTabMenus }
-    waitFor { record.navTabContent }.isDisplayed()
+  def assertBodyPanelIsVisible() {
+    assertAtTabMenu("introduction")
   }
 
-  def assertAtCreateRecordStart() {
-    assertNavMenusAndContentAreDisplayed()
-    assertNavTabFooterIsDisplayed()
-    assertAtIntroTabMenu()
-  }
-
-  def assertAtIntroTabMenu() {
-    assert getActiveTabMenu().find("a") == record.introductionTabMenu
-    assertIntroductionTabMenu()
-    assertIntroductionTabContent()
+  def assertAtTabMenu(def tabName) {
+    assert getActiveTabMenu().find("a") == getTabMenu(tabName).tabMenu
+    getTabMenu(tabName).assertAtTabMenu()
   }
 
   def getActiveTabMenu() {
-    record.navTabMenus.filter(".active")
+    introduction.navTabMenus.filter(".active")
   }
 
-  def assertIntroductionTabMenu() {
-    assert record.introductionTabMenu?.text()?.trim() ==~ /Introduction/
+  def clickTabMenu(def tabName) {
+    getTabMenu(tabName).tabMenu.click()
   }
 
-  def assertIntroductionTabContent() {
-    assertIntroductionTabContentHeading()
-    assertIntroductionTabContentBody()
+  def getTabMenu(def tabName) {
+    switch (tabName) {
+      case ~/[Ii]ntroduction/:
+        introduction
+        break
+      case ~/[Oo]verview/:
+        overview
+        break
+      case ~/[Cc]ontributors/:
+        contributors
+        break
+      case ~/[Ss]ubmit/:
+      default:
+        throw new IllegalStateException("No tab name: ${tabName} is supported.")
+  }
   }
 
-  def assertIntroductionTabContentHeading() {
-    def heading = record.introductionTabContent.find("dmp-field")[0]
-    assert heading?.text()?.trim() ==~ /^[Ww]elcome to the [Dd]ata [Mm]anagement [Pp]lan [Ff]orm$/
-  }
-
-  def assertIntroductionTabContentBody() {
-    def body = record.introductionTabContent.find("dmp-field").drop(1).collect { it?.text() }
-    assert body?.join(" ")?.trim() ==~ /(?si)Some text to introduce the user to the form would go here.$/
-  }
-
-  def assertNavTabFooterIsDisplayed() {
-    waitFor { record.navTabFooter }.isDisplayed()
-  }
 }

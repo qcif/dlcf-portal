@@ -27,6 +27,6 @@ When(~/^I try to go to the [Dd]ashboard page$/) { ->
   go DashboardPage.url
 }
 
-And(~/^I click on [Cc]reate [Aa] [Pp]lan$/) { ->
+When(~/^I click on [Cc]reate [Aa] [Pp]lan$/) { ->
   page.enterPlan()
 }
