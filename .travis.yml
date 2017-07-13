@@ -7,7 +7,7 @@ before_install:
 install:
 - docker-compose build
 script:
-- docker-compose run acceptance gradle sauceLabsCoreDevices
+- docker-compose run acceptance gradle sauceLabsCoreDevicesTests
 before_deploy:
 - docker ps -a
 - docker cp `docker ps -aqf "name=_acceptance_"`:/home/groovy/acceptance/build/reports /tmp/
