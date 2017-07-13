@@ -36,17 +36,17 @@ export class UserSimpleService extends BaseService {
   protected config: any;
   protected headers: any;
 
-  constructor (@Inject(Http) http, @Inject(ConfigService) protected configService) {
+  constructor (@Inject(Http) http: Http, @Inject(ConfigService) protected configService: ConfigService) {
     super(http, configService);
   }
 
   getInfo(): Promise<User> {
     return this.http.get(`${this.baseUrl}/user/info`)
     .toPromise()
-    .then((res) => this.extractData(res, 'user') as User);
+    .then((res:any) => this.extractData(res, 'user') as User);
   }
 
-  loginLocal(username, password): Promise<any> {
+  loginLocal(username: string, password: string): Promise<any> {
     return this.http.post(`${this.baseUrl}/user/login_local`, {username: username, password:password}, this.getOptionsClient())
     .toPromise()
     .then(this.extractData);

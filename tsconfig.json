@@ -19,12 +19,14 @@
     "exclude": [
         "node_modules/**",
         "typings/browser/**",
-        "typings/browser.d.ts"
+        "typings/browser.d.ts",
+        "test/integration/**/*.ts"
     ],
     "include": [
         "typescript/**/*.ts",
         "api/**/*.ts",
-        "assets/angular/**/*.ts"    ],
+        "assets/angular/**/*.ts"
+    ],
     "compileOnSave": true,
     "buildOnSave": false,
     "atom": {

@@ -10,7 +10,7 @@ import { ConfigService } from './config-service';
 @Injectable()
 export class DashboardService extends BaseService {
 
-  constructor( @Inject(Http) http, @Inject(ConfigService) protected configService) {
+  constructor( @Inject(Http) http: Http, @Inject(ConfigService) protected configService: ConfigService) {
     super(http, configService);
   }
 
@@ -19,7 +19,7 @@ export class DashboardService extends BaseService {
     var start = (pageNumber-1) * rows;
     return this.http.get(`${this.brandingAndPortallUrl}/listPlans?state=active&start=`+start+`&rows=`+rows, this.options)
       .toPromise()
-      .then((res) => this.formatDates(this.extractData(res))as PlanTable);
+      .then((res: any) => this.formatDates(this.extractData(res))as PlanTable);
   }
 
   getDraftPlans(pageNumber:number): Promise<PlanTable> {
@@ -27,7 +27,7 @@ export class DashboardService extends BaseService {
     var start = (pageNumber-1) * rows;
     return this.http.get(`${this.brandingAndPortallUrl}/listPlans?state=draft&start=`+start+`&rows=`+rows, this.options)
       .toPromise()
-      .then((res) => this.formatDates(this.extractData(res)) as PlanTable);
+      .then((res: any) => this.formatDates(this.extractData(res)) as PlanTable);
   }
 
   formatDates(response:object){

@@ -44,8 +44,8 @@ export class RbValidator {
     return (control: AbstractControl ): {[key: string]: any} => {
       const group = field.formModel;
       if (group) {
-        const status = {empty: false, emptyFields: []};
-        _.forEach(dependentFieldNames, (f)=> {
+        const status: {empty: boolean, emptyFields: any[]} = {empty: false, emptyFields: []};
+        _.forEach(dependentFieldNames, (f:any)=> {
           const isEmpty = RbValidator.isEmpty(group.controls[f]);
           if (isEmpty) {
             status.emptyFields.push(f);

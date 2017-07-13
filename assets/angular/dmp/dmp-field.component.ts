@@ -17,10 +17,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import { Component, Input, Inject, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
+import { Component, Input, Inject, ViewChild, ViewContainerRef, ComponentFactoryResolver, ComponentRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FieldBase } from '../shared/form/field-base';
-
+import { SimpleComponent } from '../shared/form/field-simple.component';
 /**
  * Base component for a DMP field...
  *
@@ -56,7 +56,7 @@ export class DmpFieldComponent {
     this.fieldAnchor.clear();
 
     let compFactory = this.componentFactoryResolver.resolveComponentFactory(this.field.compClass);
-    let fieldCompRef = this.fieldAnchor.createComponent(compFactory);
+    let fieldCompRef:ComponentRef<SimpleComponent> = <ComponentRef<SimpleComponent>> this.fieldAnchor.createComponent(compFactory);
     fieldCompRef.instance.field = this.field;
     fieldCompRef.instance.form = this.form;
     fieldCompRef.instance.fieldMap = this.fieldMap;

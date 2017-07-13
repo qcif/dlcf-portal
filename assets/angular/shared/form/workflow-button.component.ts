@@ -6,7 +6,7 @@ import { AnchorOrButton } from './field-simple';
 export class WorkflowStepButton extends AnchorOrButton {
   targetStep: string;
 
-  constructor(options) {
+  constructor(options: any) {
     super(options);
     this.targetStep = options['targetStep'] || null;
   }
@@ -20,7 +20,9 @@ export class WorkflowStepButton extends AnchorOrButton {
   `,
 })
 export class WorkflowStepButtonComponent extends AnchorOrButtonComponent {
-  gotoTargetStep() {
+  field: WorkflowStepButton;
+
+  gotoTargetStep(event:any) {
     return this.fieldMap._rootComp.stepTo(this.field.targetStep);
   }
 }

@@ -38,9 +38,9 @@ import { ConfigService } from '../config-service';
 export class VocabField extends FieldBase<any> {
   public vocabId: string;
   public sourceData: any;
-  public completerService;
+  public completerService: CompleterService;
   protected dataService: CompleterData;
-  public initialValue;
+  public initialValue: any;
   public titleFieldArr: string[];
   public titleFieldDelim: string;
   public searchFields: string;
@@ -48,7 +48,7 @@ export class VocabField extends FieldBase<any> {
   public sourceType: string;
   public lookupService: any;
 
-  constructor(options) {
+  constructor(options: any) {
     super(options);
     this.hasLookup = true;
     this.vocabId = options['vocabId'] || '';
@@ -60,7 +60,7 @@ export class VocabField extends FieldBase<any> {
     this.sourceType = options['sourceType'] || 'vocab';
   }
 
-  createFormModel(valueElem = undefined) {
+  createFormModel(valueElem: any = undefined) {
     const group = {};
     if (valueElem) {
       this.value = valueElem;
@@ -77,7 +77,7 @@ export class VocabField extends FieldBase<any> {
     return this.formModel;
   }
 
-  postInit(value) {
+  postInit(value: any) {
     if (value) {
       this.value = value;
     } else {
@@ -94,7 +94,7 @@ export class VocabField extends FieldBase<any> {
   initLookupData() {
     if (this.sourceType == "vocab") {
       // Hack for creating the intended title...
-      _.forEach(this.sourceData, data => {
+      _.forEach(this.sourceData, (data: any) => {
         data.title = this.getTitle(data);
       });
       this.dataService = this.completerService.local(this.sourceData, this.searchFields, 'title');
@@ -109,17 +109,17 @@ export class VocabField extends FieldBase<any> {
     }
   }
 
-  getTitle(data): string {
+  getTitle(data: any): string {
     let title = '';
-    _.forEach(this.titleFieldArr, titleFld => {
+    _.forEach(this.titleFieldArr, (titleFld: string) => {
       title = `${title}${_.isEmpty(title) ? '' : this.titleFieldDelim}${data[titleFld]}`;
     });
     return title;
   }
 
-  getValue(data) {
+  getValue(data: any) {
     const valObj = {};
-    _.forEach(this.fieldNames, fldName => {
+    _.forEach(this.fieldNames, (fldName: string) => {
       valObj[fldName] = data[fldName];
     });
     return valObj;
@@ -130,7 +130,7 @@ export class VocabField extends FieldBase<any> {
 @Injectable()
 export class VocabFieldLookupService extends BaseService {
 
-  constructor (@Inject(Http) http, @Inject(ConfigService) protected configService) {
+  constructor (@Inject(Http) http: Http, @Inject(ConfigService) protected configService: ConfigService) {
     super(http, configService);
   }
 
@@ -140,7 +140,7 @@ export class VocabFieldLookupService extends BaseService {
     if (field.sourceType == "vocab") {
       const url = `${this.brandingAndPortallUrl}/${this.config.vocabRootUrl}/${vocabId}`;
       return this.http.get(url, this.options)
-        .flatMap((res) => {
+        .flatMap((res: any) => {
           const data = this.extractData(res);
           field.sourceData = data;
           field.postInit(field.value);
@@ -186,6 +186,7 @@ export class VocabFieldLookupService extends BaseService {
   `,
 })
 export class VocabFieldComponent extends SimpleComponent {
+  field: VocabField;
   @Input() isEmbedded: boolean = false;
   @Input() canRemove: boolean = false;
   @Input() removeBtnText: string = null;
@@ -197,7 +198,7 @@ export class VocabFieldComponent extends SimpleComponent {
     super();
   }
 
-  onSelect(selected) {
+  onSelect(selected: any) {
     if (selected) {
       this.field.formModel.setValue(this.field.getValue(selected.originalObject));
     } else {
@@ -205,7 +206,7 @@ export class VocabFieldComponent extends SimpleComponent {
     }
   }
 
-  onRemove(event) {
+  onRemove(event: any) {
     this.onRemoveBtnClick.emit([event, this.index]);
   }
 }

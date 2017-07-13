@@ -40,8 +40,10 @@ export class ContributorField extends FieldBase<any> {
   groupFieldNames: string[];
   validators: any;
   enabledValidators: boolean;
+  marginTop: string;
+  
 
-  constructor(options) {
+  constructor(options: any) {
     super(options);
     this.controlType = 'textbox';
     this.nameColHdr = options['nameColHdr'] || 'Researcher Name';
@@ -59,7 +61,7 @@ export class ContributorField extends FieldBase<any> {
     };
   }
 
-  createFormModel(valueElem = undefined): any {
+  createFormModel(valueElem: any = undefined): any {
     if (valueElem) {
       this.value = valueElem;
     }
@@ -70,9 +72,9 @@ export class ContributorField extends FieldBase<any> {
     return this.formModel;
   }
 
-  toggleValidator(c) {
-    return (value) => {
-      if (value || _.find(this.formModel.controls, c => { return c.value })) {
+  toggleValidator(c:any) {
+    return (value:any) => {
+      if (value || _.find(this.formModel.controls, (c:any) => { return c.value })) {
         this.enableValidators();
       } else {
         this.disableValidators();
@@ -85,7 +87,7 @@ export class ContributorField extends FieldBase<any> {
       return;
     }
     this.enabledValidators = true;
-    _.forEach(this.groupFieldNames, f => {
+    _.forEach(this.groupFieldNames, (f:any) => {
       this.formModel.controls[f].setValidators(this.validators[f]);
     });
   }
@@ -95,13 +97,13 @@ export class ContributorField extends FieldBase<any> {
       return;
     }
     this.enabledValidators = false;
-    _.forEach(this.formModel.controls, c => {
+    _.forEach(this.formModel.controls, (c:any) => {
       c.setValidators(null);
       c.setErrors(null);
     });
   }
 
-  postInit(value) {
+  postInit(value:any) {
     if (value) {
       this.value = value;
     } else {
@@ -116,23 +118,23 @@ export class ContributorField extends FieldBase<any> {
 
   get isValid() {
     let validity = false;
-    _.forEach(this.groupFieldNames, f => {
+    _.forEach(this.groupFieldNames, (f:any) => {
       validity = validity && this.formModel.controls[f].valid;
     });
     return validity;
   }
 
-  public triggerValidation() {
-    _.forEach(this.groupFieldNames, f => {
+  public triggerValidation(): void {
+    _.forEach(this.groupFieldNames, (f:any) => {
       this.formModel.controls[f].updateValueAndValidity();
       this.formModel.controls[f].markAsTouched();
     });
   }
 
-  public getValidationError() {
+  public getValidationError(): any {
     let errObj = null;
     if (this.formModel) {
-      _.forEach(this.groupFieldNames, f => {
+      _.forEach(this.groupFieldNames, (f:any) => {
         if (!_.isEmpty(this.formModel.controls[f].errors)) {
           errObj = this.formModel.controls[f].errors;
         }
@@ -185,11 +187,11 @@ export class ContributorField extends FieldBase<any> {
   `,
 })
 export class ContributorComponent extends SimpleComponent {
-  public getGroupClass(fldName) {
+  public getGroupClass(fldName:any): string {
     let hasError = false;
     hasError = hasError || (this.field.formModel.controls[fldName].touched && this.field.formModel.controls[fldName].hasError('required'));
     if (!hasError && fldName == 'email') {
-      hasError = hasError || (this.field.formModel.controls[fldName].touched && this.field.formModel.controls[fldName].hasError('email');
+      hasError = hasError || (this.field.formModel.controls[fldName].touched && this.field.formModel.controls[fldName].hasError('email'));
     }
     return `col-xs-4 form-group${hasError ? ' has-error' : ''}`;
   }

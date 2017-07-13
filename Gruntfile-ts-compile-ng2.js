@@ -1,6 +1,9 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     ts: {
+      options: {
+        failOnTypeErrors: false
+      },
       default : {
         tsconfig: {
           tsconfig: 'tsconfig-ng2.json'

@@ -27,8 +27,8 @@ export class AppComponent extends LoadableComponent  {
   draftPlans: PlanTable;
   activePlans: PlanTable;
   saveMsgType = "info";
-  initSubs;
-  initTracker = {draftLoaded:false, activeLoaded: false};
+  initSubs: any;
+  initTracker: any = {draftLoaded:false, activeLoaded: false};
 
 
   constructor( @Inject(DashboardService) protected dashboardService: DashboardService, @Inject(DOCUMENT) protected document: any,elementRef: ElementRef) {
@@ -37,16 +37,16 @@ export class AppComponent extends LoadableComponent  {
     this.activePlans = new PlanTable();
     this.branding = elementRef.nativeElement.getAttribute('branding');
     this.portal = elementRef.nativeElement.getAttribute('portal');
-    this.initSubs = dashboardService.waitForInit(initStat => {
+    this.initSubs = dashboardService.waitForInit((initStat:boolean) => {
       this.initSubs.unsubscribe();
-      dashboardService.getDraftPlans(1).then(draftPlans => {
+      dashboardService.getDraftPlans(1).then((draftPlans: PlanTable) => {
         this.draftPlans = draftPlans;
         this.initTracker.draftLoaded = true;
         if (this.hasLoaded()) {
           this.setLoading(false);
         }
       });
-      dashboardService.getActivePlans(1).then(activePlans => {
+      dashboardService.getActivePlans(1).then((activePlans: PlanTable) => {
          this.activePlans = activePlans;
          this.initTracker.activeLoaded = true;
          if (this.hasLoaded()) {
@@ -57,16 +57,16 @@ export class AppComponent extends LoadableComponent  {
 
   }
 
-  protected hasLoaded() {
+  public hasLoaded() {
     return this.initTracker.draftLoaded && this.initTracker.activeLoaded;
   }
 
   public draftTablePageChanged(event:any):void {
-    this.dashboardService.getDraftPlans(event.page).then(draftPlans => { this.draftPlans = draftPlans; });
+    this.dashboardService.getDraftPlans(event.page).then((draftPlans: PlanTable) => { this.draftPlans = draftPlans; });
   }
 
   public activeTablePageChanged(event:any):void {
-    this.dashboardService.getActivePlans(event.page).then(activePlans => { this.activePlans = activePlans; });
+    this.dashboardService.getActivePlans(event.page).then((activePlans: PlanTable) => { this.activePlans = activePlans; });
   }
 
 

@@ -33,19 +33,19 @@ import { ConfigService } from './config-service';
 @Injectable()
 export class RolesService extends BaseService {
 
-  constructor (@Inject(Http) http, @Inject(ConfigService) protected configService) {
+  constructor (@Inject(Http) http: Http, @Inject(ConfigService) protected configService: ConfigService) {
     super(http, configService);
   }
 
   getBrandRoles() :Promise<Role[]> {
     return this.http.get(`${this.brandingAndPortallUrl}/admin/roles`, this.options)
     .toPromise()
-    .then((res) => this.extractData(res) as Role[]);
+    .then((res:any) => this.extractData(res) as Role[]);
   }
 
-  updateUserRoles(userid, roleIds) {
+  updateUserRoles(userid: any, roleIds: any) {
     return this.http.post(`${this.brandingAndPortallUrl}/admin/roles/user`, {userid: userid, roles:roleIds}, this.options)
     .toPromise()
-    .then((res) => this.extractData(res) as SaveResult[]);
+    .then((res:any) => this.extractData(res) as SaveResult[]);
   }
 }

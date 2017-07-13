@@ -30,7 +30,7 @@ import moment from 'moment-es6';
 export class TextField extends FieldBase<string> {
   type: string;
 
-  constructor(options) {
+  constructor(options: any) {
     super(options);
     this.type = options['type'] || '';
     this.controlType = 'textbox';
@@ -43,7 +43,7 @@ export class TextArea extends FieldBase<string> {
 
   lines: string[];
 
-  constructor(options) {
+  constructor(options: any) {
     super(options);
     this.rows = options['rows'] || 5;
     this.cols = options['cols'] || null;
@@ -60,7 +60,7 @@ Ordinary dropdown field
 export class DropdownField extends FieldBase<string> {
   options: {key: string, value: string}[] = [];
 
-  constructor(options) {
+  constructor(options: any) {
     super(options);
     this.options = options['options'] || [];
     this.controlType = 'dropdown';
@@ -68,11 +68,12 @@ export class DropdownField extends FieldBase<string> {
 }
 
 export class Container extends FieldBase<string> {
-  fields: FieldBase[];
+  content: string;
+  fields: FieldBase<any>[];
   active: boolean;
   type: string;
 
-  constructor(options) {
+  constructor(options: any) {
     super(options);
     this.controlType = 'div';
     this.content = options['content'] || '';
@@ -90,7 +91,7 @@ export class TabOrAccordionContainer extends Container {
   accContainerClass: any;
   accClass: any;
 
-  constructor(options) {
+  constructor(options: any) {
     super(options);
     // defaults to nav-pills, nav-stacked, nav size col-md-2, tab content col-md-10
     this.tabNavContainerClass = options['tabNavContainerClass'] || 'col-md-2';
@@ -110,7 +111,7 @@ export class DateTime extends FieldBase<any> {
   valueFormat: string;
   displayFormat: string;
 
-  constructor(options) {
+  constructor(options: any) {
     super(options);
     this.datePickerOpts = options['datePickerOpts'] || false;
     this.timePickerOpts = options['timePickerOpts'] || false;
@@ -122,18 +123,18 @@ export class DateTime extends FieldBase<any> {
     this.value = this.value ? this.parseToDate(this.value) : this.value;
   }
 
-  formatValue(value) {
+  formatValue(value: any) {
     // assume local date
     console.log(`Formatting value: ${value}`)
     return value ? moment(value).local().format(this.valueFormat) : value;
   }
 
-  parseToDate(value) {
+  parseToDate(value: any) {
     return moment(value, this.valueFormat).local().toDate();
   }
 
   formatValueForDisplay() {
-    const locale = window.navigator.userLanguage || window.navigator.language;
+    const locale = window.navigator.language; // commented out, no support for below IE 11: window.navigator.userLanguage || window.navigator.language;
     return this.value ? moment(this.value).locale(locale).format(this.displayFormat) : '';
   }
 }
@@ -144,7 +145,7 @@ export class AnchorOrButton extends FieldBase<string> {
   isDisabledFn: any;
   showPencil: boolean;
 
-  constructor(options) {
+  constructor(options: any) {
     super(options);
     this.onClick_RootFn = options['onClick_RootFn'] || null;
     this.isDisabledFn = options['isDisabledFn'] || null;
@@ -156,7 +157,7 @@ export class AnchorOrButton extends FieldBase<string> {
 }
 
 export class HiddenValue extends FieldBase<string> {
-  constructor(options) {
+  constructor(options: any) {
     super(options);
     this.controlType = 'hidden';
   }
@@ -164,7 +165,7 @@ export class HiddenValue extends FieldBase<string> {
 
 export class LinkValue extends FieldBase<string> {
   target: string;
-  constructor(options) {
+  constructor(options: any) {
     super(options);
     this.controlType = 'link';
     this.target = options.target || '_blank';

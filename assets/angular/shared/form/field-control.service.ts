@@ -68,7 +68,7 @@ export class FieldControlService {
     'WorkflowStepButton': {'meta': WorkflowStepButton, 'comp': WorkflowStepButtonComponent},
     'LinkValueComponent': {'meta': LinkValue, 'comp': LinkValueComponent }
   };
-  constructor(@Inject(VocabFieldLookupService) private vocabFieldLookupService, @Inject(CompleterService) private completerService,  @Inject(ConfigService) protected configService) {
+  constructor(@Inject(VocabFieldLookupService) private vocabFieldLookupService: VocabFieldLookupService, @Inject(CompleterService) private completerService: CompleterService,  @Inject(ConfigService) protected configService: ConfigService) {
 
   }
 
@@ -82,8 +82,8 @@ export class FieldControlService {
     return new FormGroup(group);
   }
 
-  populateFormGroup(fields, group, fieldMap) {
-    fields.forEach(field => {
+  populateFormGroup(fields: any[], group: any, fieldMap: any) {
+    fields.forEach((field:any) => {
       if (field.fields && !field.hasGroup) {
         this.populateFormGroup(field.fields, group, fieldMap);
       } else {
@@ -93,12 +93,12 @@ export class FieldControlService {
     return group;
   }
 
-  getFieldsMeta(fieldsArr) {
-    const fields = _.map(fieldsArr, (f) => {
+  getFieldsMeta(fieldsArr: any) {
+    const fields = _.map(fieldsArr, (f:any) => {
       const inst = new this.classes[f.class].meta(f.definition);
       // set the component class
       if (_.isArray(this.classes[f.class].comp)) {
-        inst.compClass = _.find(this.classes[f.class].comp, (c)=> { return c.name == f.compClass });
+        inst.compClass = _.find(this.classes[f.class].comp, (c:any)=> { return c.name == f.compClass });
       } else {
         inst.compClass = this.classes[f.class].comp;
       }
@@ -110,8 +110,8 @@ export class FieldControlService {
     return fields;
   }
 
-  flattenFields(fields, fieldArr) {
-    _.map(fields, (f)=> {
+  flattenFields(fields: any[], fieldArr: any[]) {
+    _.map(fields, (f:any)=> {
       fieldArr.push(f);
       if (f.fields) {
         this.flattenFields(f.fields, fieldArr);
@@ -119,10 +119,10 @@ export class FieldControlService {
     });
   }
 
-  getLookupData(fields) {
-    let fieldArray = [];
+  getLookupData(fields: any[]) {
+    let fieldArray: any[] = [];
     this.flattenFields(fields, fieldArray);
-    return Observable.from(fieldArray).flatMap(f => {
+    return Observable.from(fieldArray).flatMap((f:any) => {
       if (f.hasLookup) {
         const lookupServiceName = this.classes[f.constructor.name].lookupService;
         f.completerService = this.completerService;
@@ -132,11 +132,11 @@ export class FieldControlService {
         return Observable.of(null);
       }
     })
-    .flatMap(field => {
+    .flatMap((field:any) => {
       return Observable.of(field);
     })
     .last()
-    .flatMap(whatever => {
+    .flatMap((whatever:any) => {
       return Observable.of(fields);
     });
   }

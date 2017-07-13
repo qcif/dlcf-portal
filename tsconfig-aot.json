@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "noStrictGenericChecks": true,
         "target": "es5",
         "module": "es2015",
         "moduleResolution": "node",
@@ -17,7 +18,8 @@
         "typings/**",
         "api/**",
         "typescript/**",
-        "node_modules/**"
+        "node_modules/**",
+        "test/integration/**/*.ts"
     ],
     "include": [
         "assets/angular/**/*.ts"

@@ -93,7 +93,7 @@ export class FieldBase<T> {
     return this.formModel;
   }
 
-  public getGroup(group, fieldMap) : any {
+  public getGroup(group: any, fieldMap: any) : any {
     let retval = null;
     fieldMap[this.name] = {field:this};
     let control = this.createFormModel();

@@ -40,11 +40,11 @@ export class BaseService {
   protected static __config: any;
   protected initSubject: any;
 
-  constructor (http, configService) {
+  constructor (http: any , configService: any) {
     this.http = http;
     this.configService = configService;
     this.initSubject = new Subject();
-    this.configService.getConfig(config => {
+    this.configService.getConfig((config:any) => {
       this.config = config;
       this.baseUrl = this.config.baseUrl;
       this.brandingAndPortallUrl = `${this.baseUrl}/${this.config.branding}/${this.config.portal}`;
@@ -61,7 +61,7 @@ export class BaseService {
     return this.baseUrl;
   }
 
-  public waitForInit(handler) {
+  public waitForInit(handler: any) {
     const subs = this.initSubject.subscribe(handler);
     this.emitInit();
     return subs;
@@ -77,7 +77,7 @@ export class BaseService {
     return this.config;
   }
 
-  protected extractData(res: Response, parentField = null) {
+  protected extractData(res: Response, parentField: any = null) {
     let body = res.json();
     if (parentField) {
         return body[parentField] || {};
@@ -86,12 +86,12 @@ export class BaseService {
     }
   }
 
-  protected getOptions(headersObj) {
+  protected getOptions(headersObj: any) {
     let headers = new Headers(headersObj);
     return new RequestOptions({ headers: headers });
   }
 
-  protected getOptionsClient(headersObj={}) {
+  protected getOptionsClient(headersObj: any = {}) {
     headersObj['X-Source'] = 'jsclient';
     headersObj['Content-Type'] = 'application/json;charset=utf-8';
     return this.getOptions(headersObj);
