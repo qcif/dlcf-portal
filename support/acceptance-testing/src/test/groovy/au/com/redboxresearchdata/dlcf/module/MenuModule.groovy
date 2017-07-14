@@ -20,7 +20,6 @@
 
 package au.com.redboxresearchdata.dlcf.module
 
-import au.com.redboxresearchdata.dlcf.module.LayoutModule
 import geb.Module
 
 /**
