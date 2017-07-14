@@ -139,9 +139,13 @@ CacheService.js
 FormsService.js
 RecordsService.js
 WorkflowStepsService.js
+
+### acceptance-testing
 support/acceptance-testing/reports/
 support/acceptance-testing/build/
-DashboardService.js
-AsynchsService.js
-.tscache
-*.tmp*
+support/acceptance-testing/*.iml
+support/acceptance-testing/*.ipr
+support/acceptance-testing/*.iws
+*.iml
+*.ipr
+*.iws
