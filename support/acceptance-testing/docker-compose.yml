@@ -51,7 +51,7 @@ services:
     links:
       - seleniumhub:seleniumhub
       - dlcfportal:dlcfportal
-    command: ['gradle', 'remotechromeTest']
+    command: ['gradle', 'test']
     environment:
       - GEB_BUILD_LOCAL_BASE_URL=http://dlcfportal:1500
       - SAUCE_ACCESS_KEY
