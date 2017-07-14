@@ -1,17 +1,13 @@
 package steps
 
 import au.com.redboxresearchdata.dlcf.page.RecordEditPage
-import cucumber.api.PendingException
 
 import static cucumber.api.groovy.EN.*
 /**
  * @author Matt Mulholland
  * @date 13/6/17
  */
-And(~/^I should see the [Ww]elcome to the [Dd]ata [Mm]anagement [Pp]lan [Ff]orm$/) { ->
-  // Write code here that turns the phrase above into concrete actions
-  throw new PendingException()
-}
+
 
 When(~/^I go to the (?:[Cc]reate[\s]?Record|[Rr]ecord[\s]?Edit) page$/) { ->
   to RecordEditPage
@@ -30,11 +26,11 @@ Then(~/^I should see the CreateRecord panel$/) { ->
   page.assertAtCreateRecordStart()
 }
 
-When(~/^I click on the (\w+) tab$/) { tabName ->
+When(~/^I click on the (\w+) tab menu$/) { tabName ->
   page.clickTabMenu(tabName)
 }
 
-Then(~/^I should see the (\w+) panel$/) { tabName ->
+Then(~/^I should see the (\w+) tab content$/) { tabName ->
   page.assertAtTabMenu(tabName)
 }
 

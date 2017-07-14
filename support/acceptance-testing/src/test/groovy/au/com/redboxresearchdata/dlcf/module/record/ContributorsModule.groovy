@@ -35,22 +35,22 @@ class ContributorsModule extends RecordModule {
       tabContent.$("dmp-field repeatable rb-contributor div")
     }
     researcherNameTitle {
-      field.$(".row").$(".row label:eq(0)", "text": "Researcher Name")
+      field.$(".row").$("label", "text": "Researcher Name")
     }
     researcherNameInput {
-      field.$(".row").$(".row input:eq(0)", "type": "text", "formcontrolname": "name")
+      field.$(".row").$("input", "type": "text", "formcontrolname": "name")
     }
     emailAddressTitle {
-      field.$(".row").$(".row label:eq(1)", "text": "Email Address")
+      field.$(".row").$("label", "text": "Email Address")
     }
     emailAddressInput {
-      field.$(".row").$(".row input:nth-child(2)", "type": "text", "formcontrolname": "email")
+      field.$(".row").$("input", "type": "text", "formcontrolname": "email")
     }
     projectRoleTitle {
-      field.$(".row").$(".row label:nth-child(3)", "text": "Project Role")
+      field.$(".row").$("label", "text": "Project Role")
     }
     projectRoleInput {
-      def selector = field.$(".row").$(".row select:nth-child(3)", "formcontrolname": "role")
+      def selector = field.$(".row").$("select", "formcontrolname": "role")
       def collected = waitFor { selector.$("option") }.collect {
         it?.text()?.trim()
       }
@@ -66,11 +66,15 @@ class ContributorsModule extends RecordModule {
 
   @Override
   def assertTabContent() {
-//    [researcherNameTitle, researcherNameInput, emailAddressTitle, emailAddressInput, projectRoleTitle, projectRoleInput].each { panel ->
-      [researcherNameTitle, researcherNameInput].each { panel ->
-
+    [researcherNameTitle, researcherNameInput, emailAddressTitle, emailAddressInput, projectRoleTitle, projectRoleInput].each { panel ->
         waitFor { panel }.isDisplayed()
     }
+    assert field.$(".row .row").find("label").collect {
+      it?.text()?.trim()
+    } == ["Researcher Name", "Email Address", "Project Role"]
+    assert field.$(".row .row").find("[formcontrolname]").collect{
+      it?.attr("formcontrolname")?.trim()
+    } == ["name", "email", "role"]
   }
 
 }

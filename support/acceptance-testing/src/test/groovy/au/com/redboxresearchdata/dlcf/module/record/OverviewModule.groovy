@@ -74,7 +74,7 @@ class OverviewModule extends RecordModule {
     forCodes {
       field.$("repeatable div")
         .has("div.row label", "text": "Field of Research Codes")
-        .has("div.row button.btn-success", "type": "button")
+        .has("div.row button.fa-plus-circle.btn-success", "type": "button")
     }
 
     forCodesDropDown {

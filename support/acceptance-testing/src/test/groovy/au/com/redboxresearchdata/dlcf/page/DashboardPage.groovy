@@ -6,7 +6,7 @@ package au.com.redboxresearchdata.dlcf.page
 class DashboardPage extends GenericLayoutPage {
   static url = "/default/rdmp/dashboard"
   static at = {
-    assertDefaultPanelIsVisible()
+    assertMainPanelIsVisible()
   }
   static content = {
     createButton {
@@ -21,7 +21,7 @@ class DashboardPage extends GenericLayoutPage {
       return selector
     }
 
-    defaultPanelBody {
+    defaultPanelContent {
       def myplans = defaultPanel.$("div.main.container").$("dashboard[portal='rdmp']")
       assert myplans?.has("h2")?.text()?.trim() ==~ /^(?s).*My.*[Dd]raft.*[Pp]lans.*$/
       assert myplans?.has("h2")?.text()?.trim() ==~ /^(?s).*My.*[Aa]ctive.*[Pp]lans.*$/
@@ -33,8 +33,14 @@ class DashboardPage extends GenericLayoutPage {
     waitFor { createButton }.isDisplayed()
   }
 
+  @Override
+  def assertMainPanelIsVisible() {
+    waitFor { defaultPanelTitle }.isDisplayed()
+    waitFor { defaultPanelContent }.isDisplayed()
+  }
+
   def assertMyPlansAreVisible() {
-    waitFor { defaultPanelBody }.isDisplayed()
+    waitFor { defaultPanelContent }.isDisplayed()
   }
 
   def enterPlan() {
@@ -43,8 +49,4 @@ class DashboardPage extends GenericLayoutPage {
     print result
   }
 
-  def assertDefaultPanelIsVisible() {
-    waitFor { defaultPanelTitle }.isDisplayed()
-    waitFor { defaultPanelBody }.isDisplayed()
-  }
 }

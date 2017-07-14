@@ -40,7 +40,7 @@ When(~/^I try to go to the [Ll]ogin page$/) { ->
 }
 
 Then(~/^I should see the login dialog$/) { ->
-  page.assertLoginDialogExists()
+  page.assertMainPanelIsVisible()
 }
 
 Given(~/^I go to the [Ll]ogin page$/) { ->

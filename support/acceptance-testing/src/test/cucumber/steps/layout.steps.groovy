@@ -39,16 +39,8 @@ Then(~/^I should see the header$/) { ->
   page.assertHeaderIsVisible()
 }
 
-Then(~/^I should see(?: all of)? the (admin|guest) body panels$/) { role ->
-  page.assertAllAuthorisedBodyPanelsAreVisibleFor(role)
-}
-
 Then(~/^I should see(?: all of)? the (admin|guest) menu panels$/) { role ->
   page.assertAuthorisedRoleMenusAreVisibleFor(role)
-}
-
-Then(~/^I should see(?: all of)? the default body panels$/) { ->
-  page.assertAllAuthorisedDefaultBodyPanelsAreVisible()
 }
 
 Then(~/^I should see(?: all of)? the default menu panels$/) { ->

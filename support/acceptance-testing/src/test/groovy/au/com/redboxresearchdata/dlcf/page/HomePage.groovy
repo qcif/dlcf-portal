@@ -8,7 +8,7 @@ class HomePage extends GenericLayoutPage {
 
   static url = "/default/rdmp/home"
 
-  static at = { assertDefaultPanellIsVisible() }
+  static at = { assertMainPanelIsVisible() }
 
   static content = {
     defaultPanel {
@@ -34,6 +34,12 @@ class HomePage extends GenericLayoutPage {
     }
   }
 
+  @Override
+  def assertMainPanelIsVisible() {
+    waitFor { defaultPanelTitle }.isDisplayed()
+    waitFor { dashboardLink }.isDisplayed()
+  }
+
   def enterLogin() {
     getDriver().manage().window().maximize()
     def result = loginHeader.loginLink.click()
@@ -46,13 +52,8 @@ class HomePage extends GenericLayoutPage {
     print result
   }
 
-  def assertDefaultPanellIsVisible() {
-    waitFor { defaultPanelTitle }.isDisplayed()
-    waitFor { dashboardLink }.isDisplayed()
-  }
-
   def assertIsLoggedIn() {
     super.assertIsLoggedIn()
-    assertDefaultPanellIsVisible()
+    assertMainPanelIsVisible()
   }
 }

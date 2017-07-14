@@ -47,13 +47,17 @@ abstract class GenericLayoutPage extends GenericPage {
 
   def assertAllAuthorisedLayoutFor(def role) {
     assertIsLoggedIn()
-    assertAllAuthorisedBodyPanelsAreVisibleFor(role)
+    assertDefaultBrandingIsVisible()
+    assertAllAuthorisedDefaultMenusAreVisible()
+    assertAuthorisedRoleMenusAreVisibleFor(role)
+    assertMainPanelIsVisible()
     assertFooterIsVisible()
   }
 
   def assertAllLoggedOutLayout() {
     assertIsNotLoggedIn()
-    assertAllUnAuthorisedDefaultBodyPanelsAreVisible()
+    assertDefaultBrandingIsVisible()
+    assertAllUnAuthorisedDefaultMenusAreVisible()
     assertFooterIsVisible()
   }
 
@@ -87,23 +91,7 @@ abstract class GenericLayoutPage extends GenericPage {
     assert loginHeader.logoutLink.isEmpty()
   }
 
-  def assertAllAuthorisedBodyPanelsAreVisibleFor(role) {
-    assertAllAuthorisedDefaultBodyPanelsAreVisible()
-    assertAuthorisedRoleMenusAreVisibleFor(role)
-  }
-
-  def assertAllAuthorisedDefaultBodyPanelsAreVisible() {
-    assertDefaultBrandingIsVisible()
-    assertAllAuthorisedDefaultMenusAreVisible()
-    assertBodyPanelIsVisible()
-  }
-
-  abstract def assertBodyPanelIsVisible
-
-  def assertAllUnAuthorisedDefaultBodyPanelsAreVisible() {
-    assertDefaultBrandingIsVisible()
-    assertAllUnAuthorisedDefaultMenusAreVisible()
-  }
+  abstract def assertMainPanelIsVisible()
 
   def assertDefaultBrandingIsVisible() {
     waitFor { layout.branding }.isDisplayed()

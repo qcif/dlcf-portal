@@ -34,11 +34,20 @@ services:
     links:
       - seleniumhub:seleniumhub
       - dlcfportal:dlcfportal
+  seleniumnodefirefox:
+    image: selenium/node-firefox:latest
+    environment:
+      - HUB_PORT_4444_TCP_ADDR=seleniumhub
+      - HUB_PORT_4444_TCP_PORT=4444
+    links:
+      - seleniumhub:seleniumhub
+      - dlcfportal:dlcfportal
   acceptance:
     build: .
     image: qcifengineering/acceptance-testing-dlcf
     depends_on:
       - seleniumnodechrome
+      - seleniumnodefirefox
     links:
       - seleniumhub:seleniumhub
       - dlcfportal:dlcfportal

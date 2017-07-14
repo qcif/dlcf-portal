@@ -10,7 +10,7 @@ import au.com.redboxresearchdata.dlcf.module.record.OverviewModule
 class RecordEditPage extends GenericLayoutPage {
   static url = "/default/rdmp/record/edit"
   static at = {
-    assertBodyPanelIsVisible()
+    assertMainPanelIsVisible()
   }
 
   static content = {
@@ -20,7 +20,8 @@ class RecordEditPage extends GenericLayoutPage {
 
   }
 
-  def assertBodyPanelIsVisible() {
+  @Override
+  def assertMainPanelIsVisible() {
     assertAtTabMenu("introduction")
   }
 
