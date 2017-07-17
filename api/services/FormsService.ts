@@ -63,7 +63,8 @@ export module Services {
             type: sails.config.form.forms[formName].type,
             messages: sails.config.form.forms[formName].messages,
             viewCssClasses: sails.config.form.forms[formName].viewCssClasses,
-            editCssClasses: sails.config.form.forms[formName].editCssClasses
+            editCssClasses: sails.config.form.forms[formName].editCssClasses,
+            skipValidationOnSave: sails.config.form.forms[formName].skipValidationOnSave
           };
           return super.getObservable(Form.create(formObj));
         }

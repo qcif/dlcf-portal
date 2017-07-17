@@ -92,8 +92,8 @@ export class DmpFormComponent extends LoadableComponent {
     });
   }
 
-  onSubmit(nextStep:boolean = false, targetStep:string = null) {
-    if (!this.isValid()) {
+  onSubmit(nextStep:boolean = false, targetStep:string = null, forceValidate:boolean=false) {
+    if (!this.isValid(forceValidate)) {
       return;
     }
     this.setSaving(this.formDef.messages.saving);
@@ -181,19 +181,11 @@ export class DmpFormComponent extends LoadableComponent {
   }
 
   watchForChanges() {
+    this.setLoading(false);
     if (this.editMode) {
-      if (_.isEmpty(this.oid)){
-        this.setLoading(false);
-      }
       this.form.valueChanges.subscribe((data:any) => {
-        if (this.isLoading) {
-          this.setLoading(false);
-        } else {
-          this.needsSave = true;
-        }
+        this.needsSave = true;
       });
-    } else {
-      this.setLoading(false);
     }
   }
 
@@ -205,7 +197,10 @@ export class DmpFormComponent extends LoadableComponent {
     });
   }
 
-  isValid() {
+  isValid(forceValidate:boolean=false) {
+    if (this.formDef.skipValidationOnSave  && (_.isUndefined(forceValidate) || _.isNull(forceValidate) || !forceValidate)) {
+      return true;
+    }
     this.triggerValidation();
     if (!this.form.valid) {
       this.setError('There are issues in the form.');
@@ -216,12 +211,12 @@ export class DmpFormComponent extends LoadableComponent {
   }
 
   stepTo(targetStep: string) {
-    if (!this.isValid()) {
+    if (!this.isValid(true)) {
       return;
     }
     this.needsSave = false;
     if (_.isEmpty(this.oid)) {
-      this.onSubmit(true, targetStep);
+      this.onSubmit(true, targetStep, true);
     } else {
       this.setSaving(this.formDef.messages.saving);
       const values = this.formatValues(this.form.value);

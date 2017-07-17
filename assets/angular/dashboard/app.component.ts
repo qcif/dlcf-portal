@@ -3,8 +3,8 @@ import { DOCUMENT } from '@angular/platform-browser';
 import { FormArray, FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { UserSimpleService } from '../shared/user.service-simple';
 import { DashboardService } from '../shared/dashboard-service';
-import { PlanTable } from '../shared/dashboard-models';
-import * as _ from "lodash";
+import { PlanTable, Plan } from '../shared/dashboard-models';
+import * as _ from "lodash-lib";
 import { LoadableComponent } from '../shared/loadable.component';
 import { OnInit } from '@angular/core';
 import { PaginationModule, TooltipModule} from 'ngx-bootstrap';
@@ -40,14 +40,14 @@ export class AppComponent extends LoadableComponent  {
     this.initSubs = dashboardService.waitForInit((initStat:boolean) => {
       this.initSubs.unsubscribe();
       dashboardService.getDraftPlans(1).then((draftPlans: PlanTable) => {
-        this.draftPlans = draftPlans;
+        this.setDraftPlans(draftPlans);
         this.initTracker.draftLoaded = true;
         if (this.hasLoaded()) {
           this.setLoading(false);
         }
       });
       dashboardService.getActivePlans(1).then((activePlans: PlanTable) => {
-         this.activePlans = activePlans;
+         this.setActivePlans(activePlans);
          this.initTracker.activeLoaded = true;
          if (this.hasLoaded()) {
            this.setLoading(false);
@@ -57,19 +57,32 @@ export class AppComponent extends LoadableComponent  {
 
   }
 
+  protected setDashboardTitle(planTable: PlanTable) {
+    _.forEach(planTable.items, (plan: Plan) => {
+      plan.dashboardTitle = (_.isUndefined(plan.title) || _.isEmpty(plan.title) || _.isEmpty(plan.title[0])) ? "Untitled" : plan.title;
+    });
+  }
+
   public hasLoaded() {
     return this.initTracker.draftLoaded && this.initTracker.activeLoaded;
   }
 
   public draftTablePageChanged(event:any):void {
-    this.dashboardService.getDraftPlans(event.page).then((draftPlans: PlanTable) => { this.draftPlans = draftPlans; });
+    this.dashboardService.getDraftPlans(event.page).then((draftPlans: PlanTable) => { this.setDraftPlans(draftPlans); });
   }
 
   public activeTablePageChanged(event:any):void {
-    this.dashboardService.getActivePlans(event.page).then((activePlans: PlanTable) => { this.activePlans = activePlans; });
+    this.dashboardService.getActivePlans(event.page).then((activePlans: PlanTable) => { this.setActivePlans(activePlans); });
   }
 
+  public setDraftPlans(draftPlans) {
+    this.setDashboardTitle(draftPlans);
+    this.draftPlans = draftPlans;
+  }
 
-
+  public setActivePlans(activePlans) {
+    this.setDashboardTitle(activePlans);
+    this.activePlans = activePlans;
+  }
 
 }

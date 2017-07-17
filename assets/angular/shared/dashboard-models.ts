@@ -10,4 +10,6 @@ export class Plan {
   title: string
   dateCreated: string
   dateModified: string
+
+  dashboardTitle: string;
 }

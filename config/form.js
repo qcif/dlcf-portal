@@ -7,6 +7,7 @@ module.exports.form = {
     "default-1.0-draft": {
       name: 'default-1.0-draft',
       type: 'rdmp',
+      skipValidationOnSave: true,
       editCssClasses: 'row col-md-12',
       viewCssClasses: 'row col-md-offset-1 col-md-10',
       messages: {
@@ -82,6 +83,15 @@ module.exports.form = {
                   id: "overview",
                   label : "Overview",
                   fields: [
+                    {
+                      class: 'TextField',
+                      editOnly: true,
+                      definition: {
+                        name: 'raid',
+                        label: 'RAID (if you already have one)',
+                        type: 'text'
+                      }
+                    },
                    {
                      class: 'TextField',
                      editOnly: true,
@@ -192,7 +202,7 @@ module.exports.form = {
                              roles: [
                                "Chief Investigator",
                                "Data manager",
-                               "Collaborators",
+                               "Collaborator",
                                "Supervisor"
                              ],
                              validationMessages: {
@@ -455,7 +465,7 @@ module.exports.form = {
                              roles: [
                                "Chief Investigator",
                                "Data manager",
-                               "Collaborators",
+                               "Collaborator",
                                "Supervisor"
                              ],
                              validationMessages: {
@@ -719,7 +729,7 @@ module.exports.form = {
                              roles: [
                                "Chief Investigator",
                                "Data manager",
-                               "Collaborators",
+                               "Collaborator",
                                "Supervisor"
                              ],
                              validationMessages: {

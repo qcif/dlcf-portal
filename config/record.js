@@ -24,6 +24,6 @@ module.exports.record = {
     }
   },
   export: {
-    maxRecords: 2147483647
+    maxRecords: 20
   }
 };

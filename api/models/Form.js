@@ -30,6 +30,9 @@ module.exports = {
     },
     editCssClasses: {
       type: 'string'
+    },
+    skipValidationOnSave: {
+      type: 'boolean'
     }
   }
 };
