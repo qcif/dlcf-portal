@@ -11,6 +11,7 @@
 var Observable = require('rxjs/Observable').Observable;
 
 module.exports.bootstrap = function(cb) {
+    sails.config.startupMinute = Math.floor(Date.now() / 60000);
     sails.services.cacheservice.bootstrap();
     if (sails.config.environment == "production" || sails.config.ng2.force_bundle) {
       sails.config.ng2.use_bundled = true;
