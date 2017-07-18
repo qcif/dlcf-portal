@@ -2,8 +2,9 @@
 <script>window.module = "";</script>
 <%
 if (apps) {
+  var currentMinute = Math.floor(Date.now() / 60000);
   for (var i=0; i < apps.length; i++) {
-    %><%- partial('script-tag', {src:apps[i]}) %><%
+    %><%- partial('script-tag', {src:apps[i] + "?ts=" + currentMinute}) %><%
   }
 }
 %>
