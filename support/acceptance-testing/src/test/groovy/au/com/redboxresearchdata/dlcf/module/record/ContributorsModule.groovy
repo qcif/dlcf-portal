@@ -54,7 +54,7 @@ class ContributorsModule extends RecordModule {
       def collected = waitFor { selector.$("option") }.collect {
         it?.text()?.trim()
       }
-      assert collected == ["Chief Investigator", "Data manager", "Collaborators", "Supervisor"]
+      assert collected == ["Chief Investigator", "Data manager", "Collaborator", "Supervisor"]
       return selector
     }
   }

@@ -5,7 +5,7 @@ cache: false
 jobs:
   include:
     - stage: before_install
-      script: cd support/acceptance-acceptance
+      script: cd support/acceptance-testing
     - stage: install
       script: docker-compose build
     - stage: test
