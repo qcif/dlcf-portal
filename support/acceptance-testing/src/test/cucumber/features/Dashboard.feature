@@ -25,16 +25,3 @@ Feature: Dashboard
       | admin | local           |
       | guest | aaf             |
 
-
-  Scenario Outline: As a <role> user, I login using <credentialsType> credentials, and I create a dashboard plan
-    Given I am a <role> user
-    And I login using <credentialsType> credentials
-    And I am on the dashboard page
-    When I click on Create a plan
-    Then I am on the record edit page
-    And I should see the Welcome to the Data Management Plan form
-    Examples:
-      | role  | credentialsType |
-      | admin | local           |
-      | guest | aaf             |
-
