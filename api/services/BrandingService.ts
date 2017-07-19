@@ -90,8 +90,8 @@ export module Services {
     }
 
     public getBrandAndPortalPath(req) {
-      const branding = req.param('branding') ? req.param('branding') : sails.config.auth.defaultBrand;
-      const portal = req.param('portal') ? req.param('portal') : sails.config.auth.defaultPortal;
+      const branding = req.params['branding'] ? req.params['branding'] : sails.config.auth.defaultBrand;
+      const portal = req.params['portal'] ? req.params['portal'] : sails.config.auth.defaultPortal;
       const path = `/${branding}/${portal}`;
       return path;
     }

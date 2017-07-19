@@ -43,7 +43,10 @@ export module Services {
     protected cache;
 
     public bootstrap() {
-      this.cache = new NodeCache();
+      const cacheOpts = {stdTTL: sails.config.cache.cacheExpiry, checkperiod: sails.config.cache.checkPeriod ? sails.config.cache.checkPeriod : 600};
+      sails.log.verbose(`Using node cache options: `);
+      sails.log.verbose(cacheOpts);
+      this.cache = new NodeCache(cacheOpts);
     }
 
     public get(name): Observable<any> {
