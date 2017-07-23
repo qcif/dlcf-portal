@@ -139,6 +139,8 @@ CacheService.js
 FormsService.js
 RecordsService.js
 WorkflowStepsService.js
+.tscache
+AsynchsService.js
 
 ### acceptance-testing
 support/acceptance-testing/reports/

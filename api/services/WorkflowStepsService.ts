@@ -36,8 +36,6 @@ export module Services {
 
     protected _exportedMethods: any = [
       'bootstrap',
-      'next',
-      'back',
       'create',
       'get',
       'getFirst'

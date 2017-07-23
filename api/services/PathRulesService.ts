@@ -33,7 +33,7 @@ export module Services {
    * Enforces authorization rules on paths...
    *
    * @author <a target='_' href='https://github.com/shilob'>Shilo Banihit</a>
-   * 
+   *
    */
   export class PathRules extends services.Services.Core.Service {
 
@@ -121,9 +121,13 @@ export module Services {
       return matchRule.length > 0;
     }
 
-    public canWrite = (rules, roles) => {
+    public canWrite = (rules, roles, brandName) => {
       return _.filter(rules, (rule) => {
-        return _.find(roles, (role) => {role.id == rule.role.id}) != undefined && rule.can_write == true;
+        var userRole = _.find(roles, (role) => {
+          // match by id and branding
+          return role.id == rule.role.id && rule.branding.name == brandName;
+        });
+        return userRole != undefined && (rule.can_update == true);
       }).length > 0;
     }
 
