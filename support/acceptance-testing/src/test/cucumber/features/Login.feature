@@ -1,3 +1,4 @@
+@login
 Feature: Login
 
   Scenario Outline: As any user, who is not logged in, I type in a url, and I am redirected to the login page

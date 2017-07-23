@@ -1,3 +1,4 @@
+@createrecord
 Feature: CreateRecord
 
   Scenario: As a user who is not logged in, I observe the layout, via the default workflow

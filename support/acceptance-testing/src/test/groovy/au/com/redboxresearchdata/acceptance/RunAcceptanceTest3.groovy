@@ -9,6 +9,7 @@ import org.junit.runner.RunWith
  * @author <a href="matt@redboxresearchdata.com.au">Matt Mulholland</a>
  * Created on 27/01/2017.
  */
-@DefaultCucumberOptions(feature = "createrecord")
-class RunAcceptanceTest {
+@DefaultCucumberOptions(feature = "dashboard")
+class RunAcceptanceTest3 {
 }
+

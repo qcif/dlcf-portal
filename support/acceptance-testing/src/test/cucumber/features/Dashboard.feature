@@ -1,3 +1,4 @@
+@dashboard
 Feature: Dashboard
 
   Scenario Outline: As a <role> user, I login using <credentialsType> credentials, and I navigate the dashboard
