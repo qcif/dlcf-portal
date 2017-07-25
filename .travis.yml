@@ -2,20 +2,18 @@ sudo: required
 services:
 - docker
 cache: false
-jobs:
-  include:
-    - stage: install
-      script: cd support/acceptance-testing && docker-compose build
-    - stage: test
-      script: cd support/acceptance-testing && docker-compose run acceptance gradle sauceChromeTests
-    - script: cd support/acceptance-testing && docker-compose run acceptance gradle sauceFirefoxTests
-    - script: cd support/acceptance-testing && docker-compose run acceptance gradle sauceIeTests
-    - stage: before_deploy
-      script: docker ps -a && docker cp `docker ps -aqf "name=_acceptance_"`:/home/groovy/acceptance/build/reports /tmp/
-    - stage: deploy
-      provider: pages
-      skip_cleanup: true
-      github_token: $GITHUB_TOKEN
-      local_dir: /tmp/reports
-      on:
-        branch: master
+before_install:
+- cd support/acceptance-testing
+install:
+- docker-compose build
+script: "docker-compose run acceptance gradle test"
+before_deploy:
+- docker ps -a
+- docker cp `docker ps -aqf "name=_acceptance_"`:/home/groovy/acceptance/build/reports /tmp/
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: /tmp/reports
+  on:
+    branch: master
