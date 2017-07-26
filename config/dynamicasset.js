@@ -1,4 +1,6 @@
 module.exports.dynamicasset = {
+  // Dynamic asset configuration
+  // Maps a asset URL to a view, sets the mimetype accordingly
   "systemjs-config.js": {
     view: "systemjs-config",
     type: "text/javascript"
@@ -7,7 +9,8 @@ module.exports.dynamicasset = {
     view: "apiClientConfig",
     type: "application/json"
   },
-  // Public node modules...
+  // Public node modules... only important when developing locally
+  // Not relevant in PROD deployments
   node_modules: {
     copy: [
       "@angular",

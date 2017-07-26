@@ -8,7 +8,7 @@ describe('The PathRulesService', function () {
     var rules = PathRulesService.getRulesFromPath('/default/rdmp/home', brand);
     expect(rules).to.have.lengthOf(1);
     RolesService.getRolesWithBrand(brand).subscribe(function(roles) {
-      var guestRoles = [RolesService.getDefUnathenticatedRole(roles)];
+      var guestRoles = [RolesService.getDefUnathenticatedRole(brand)];
       expect(PathRulesService.canRead(rules, guestRoles, brand.name)).to.be.true;
       expect(PathRulesService.canWrite(rules, guestRoles, brand.name)).to.be.false;
       done();

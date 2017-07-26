@@ -69,7 +69,7 @@ export module Controllers {
       } else {
         // assign default role if needed...
         roles = [];
-        roles.push(RolesService.getDefUnathenticatedRole(brand.roles));
+        roles.push(RolesService.getDefUnathenticatedRole(brand));
       }
 
 

@@ -23,7 +23,7 @@ import {Sails, Model} from "sails";
 
 declare var sails: Sails;
 declare var User, Role, BrandingConfig: Model;
-declare var BrandingService, RolesService;
+declare var BrandingService, RolesService, ConfigService;
 declare var _this;
 declare const Buffer;
 
@@ -45,7 +45,10 @@ export module Services {
     ];
 
     protected localAuthInit = () => {
-      var usernameField = sails.config.auth.local.usernameField, passwordField = sails.config.auth.local.passwordField;
+      // users the default brand's configuration on startup
+      // TODO: consider moving late initializing this if possible
+      const defAuthConfig = ConfigService.getBrand(BrandingService.getDefault().name, 'auth');
+      var usernameField = defAuthConfig.local.usernameField, passwordField = defAuthConfig.local.passwordField;
       //
       // --------- Passport --------------
       //
@@ -89,18 +92,22 @@ export module Services {
     }
 
     protected aafAuthInit = () => {
+      // users the default brand's configuration on startup
+      // TODO: consider moving late initializing this if possible
+      const defAuthConfig = ConfigService.getBrand(BrandingService.getDefault().name, 'auth');
       //
       // JWT/AAF Strategy
       //
       var JwtStrategy = require('passport-jwt').Strategy,
       ExtractJwt = require('passport-jwt').ExtractJwt;
-      sails.config.auth.aaf.opts.jwtFromRequest = ExtractJwt.fromBodyField('assertion');
-
-      sails.config.passport.use('aaf-jwt', new JwtStrategy(sails.config.auth.aaf.opts, function(req, jwt_payload, done) {
-        var aafAttributes = sails.config.auth.aaf.attributesField;
+      const aafOpts = defAuthConfig.aaf.opts;
+      aafOpts.jwtFromRequest = ExtractJwt.fromBodyField('assertion');
+      sails.config.passport.use('aaf-jwt', new JwtStrategy(aafOpts, function(req, jwt_payload, done) {
         var brand = BrandingService.getBrand(req.session.branding);
-        var aafDefRoles = _.map( RolesService.getNestedRoles(RolesService.getDefAuthenticatedRole(brand.roles).name, brand.roles), 'id');
-        var aafUsernameField = sails.config.auth.aaf.usernameField;
+        const authConfig = ConfigService.getBrand(brand.name, 'auth');
+        var aafAttributes = authConfig.aaf.attributesField;
+        var aafDefRoles = _.map( RolesService.getNestedRoles(RolesService.getDefAuthenticatedRole(brand).name, brand.roles), 'id');
+        var aafUsernameField = authConfig.aaf.usernameField;
         const userName = Buffer.from(jwt_payload[aafUsernameField]).toString('base64');
         User.findOne({username: userName}, function(err, user) {
           sails.log.verbose("At AAF Strategy verify, payload:");
@@ -149,13 +156,14 @@ export module Services {
     }
 
     protected initDefAdmin = (defRoles, defAdminRole) => {
-      var usernameField = sails.config.auth.local.usernameField, passwordField = sails.config.auth.local.passwordField;
-      var defaultUser = _.find(defAdminRole.users, (o) => {return o[usernameField] == sails.config.auth.local.default.adminUser});
+      const authConfig = ConfigService.getBrand(BrandingService.getDefault().name, 'auth');
+      var usernameField = authConfig.local.usernameField, passwordField = authConfig.local.passwordField;
+      var defaultUser = _.find(defAdminRole.users, (o) => {return o[usernameField] == authConfig.local.default.adminUser});
 
       if (defaultUser == null) {
         defaultUser = {type:'local', name:'Local Admin'};
-        defaultUser[usernameField] = sails.config.auth.local.default.adminUser;
-        defaultUser[passwordField] = sails.config.auth.local.default.adminPw;
+        defaultUser[usernameField] = authConfig.local.default.adminUser;
+        defaultUser[passwordField] = authConfig.local.default.adminPw;
         sails.log.verbose("Default user missing, creating...");
         return super.getObservable(User.create(defaultUser))
                     .flatMap(defUser => {
@@ -187,10 +195,12 @@ export module Services {
         }
     */
     public bootstrap = (defRoles) => {
+      const defAuthConfig = ConfigService.getBrand(BrandingService.getDefault().name, 'auth');
       sails.log.verbose("Bootstrapping users....");
       // return Observable.of(defAdminRole);
-      var usernameField = sails.config.auth.local.usernameField,
-      passwordField = sails.config.auth.local.passwordField;
+
+      var usernameField = defAuthConfig.local.usernameField,
+      passwordField = defAuthConfig.local.passwordField;
       var defAdminRole = RolesService.getAdminFromRoles(defRoles);
       return Observable.of(defAdminRole)
         .flatMap(defAdminRole => {

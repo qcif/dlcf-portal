@@ -12,7 +12,7 @@ module.exports = function(req, res, next) {
   } else {
     // assign default role if needed...
     roles = [];
-    roles.push(RolesService.getDefUnathenticatedRole(brand.roles));
+    roles.push(RolesService.getDefUnathenticatedRole(brand));
   }
   // get the rules if any....
   var rules = PathRulesService.getRulesFromPath(req.path, brand);

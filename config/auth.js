@@ -4,9 +4,6 @@ Authentication and authorization configuration
 
 */
 module.exports.auth = {
-  // will be shown in the login page choices
-  active: ['local', 'aaf'],
-  postLogoutRedir: '/',
   // Bootstrap BEGIN
   // only used one-time for bootstrapping, not intended for long-term maintenance
   roles: [
@@ -67,34 +64,40 @@ module.exports.auth = {
     }
   ],
   // Bootstrap END
-  defaultRole: 'Guest', // default when unauthenticated
   defaultBrand: 'default',
   defaultPortal: 'rdmp',
   loginPath: 'user/login',
   hiddenRoles: [],
-  local: {
-    usernameField: 'username',
-    passwordField: 'password',
-    default: {
-      adminUser: 'admin',
-      adminPw: 'rbadmin'
-    },
-    templatePath: 'local.ejs',
-    postLoginRedir: 'dashboard',
-  },
-  aaf: {
-    defaultRole: 'Researcher',
-    attributesField: 'https://aaf.edu.au/attributes',
-    usernameField: 'sub',
-    postLoginRedir: 'dashboard',
-    opts: {
-      jsonWebTokenOptions: {
-        issuer: 'https://rapid.aaf.edu.au',
-        ignoreNotBefore: true,
-        clockTolerance: 120,
+  postLogoutRedir: '/',
+  // Brand-Portal Specific configuration
+  default: {
+    defaultRole: 'Guest', // default when unauthenticated
+    // will be shown in the login page choices
+    active: ['local', 'aaf'],
+    local: {
+      usernameField: 'username',
+      passwordField: 'password',
+      default: {
+        adminUser: 'admin',
+        adminPw: 'rbadmin'
       },
-      passReqToCallback: true
+      templatePath: 'local.ejs',
+      postLoginRedir: 'dashboard',
     },
-    templatePath: 'aaf.ejs'
+    aaf: {
+      defaultRole: 'Researcher',
+      attributesField: 'https://aaf.edu.au/attributes',
+      usernameField: 'sub',
+      postLoginRedir: 'dashboard',
+      opts: {
+        jsonWebTokenOptions: {
+          issuer: 'https://rapid.aaf.edu.au',
+          ignoreNotBefore: true,
+          clockTolerance: 120,
+        },
+        passReqToCallback: true
+      },
+      templatePath: 'aaf.ejs'
+    }
   }
 };

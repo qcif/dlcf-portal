@@ -12,7 +12,7 @@ describe('The RolesService', function () {
   it('should return roles for a brand, have default unauthenticated roles', function (done) {
     var brand = BrandingService.getDefault();
     RolesService.getRolesWithBrand(brand).subscribe(function(roles) {
-      expect(RolesService.getDefUnathenticatedRole(roles)).to.have.property('name', 'Guest');
+      expect(RolesService.getDefUnathenticatedRole(brand)).to.have.property('name', 'Guest');
       done();
     });
   });
