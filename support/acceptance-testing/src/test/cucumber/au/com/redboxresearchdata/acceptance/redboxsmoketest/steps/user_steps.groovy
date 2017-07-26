@@ -1,4 +1,4 @@
-package steps
+package au.com.redboxresearchdata.acceptance.redboxsmoketest.steps
 
 import au.com.redboxresearchdata.dlcf.helper.CustomWorld
 import au.com.redboxresearchdata.dlcf.model.user.AdminUser

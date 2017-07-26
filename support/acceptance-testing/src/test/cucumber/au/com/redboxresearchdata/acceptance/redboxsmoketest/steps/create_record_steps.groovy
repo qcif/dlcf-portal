@@ -1,4 +1,4 @@
-package steps
+package au.com.redboxresearchdata.acceptance.redboxsmoketest.steps
 
 import au.com.redboxresearchdata.dlcf.page.RecordEditPage
 

@@ -18,7 +18,7 @@
  *
  */
 
-package steps
+package au.com.redboxresearchdata.acceptance.redboxsmoketest.steps
 
 import static cucumber.api.groovy.EN.Then
 
