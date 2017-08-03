@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - Class au.com.redboxresearchdata.acceptance.RunAcceptanceTest3</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>Class au.com.redboxresearchdata.acceptance.RunAcceptanceTest3</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/au.com.redboxresearchdata.acceptance.html">au.com.redboxresearchdata.acceptance</a> &gt; RunAcceptanceTest3</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">0</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">-</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">-</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>@dashboard
+Feature: Dashboard
+
+  Scenario Outline: As a &lt;role&gt; user, I login using &lt;credentialsType&gt; credentials, and I navigate the dashboard ?[90m# Dashboard.feature:4?[0m
+    ?[36mGiven ?[0m?[36mI am a &lt;role&gt; user?[0m
+    ?[36mWhen ?[0m?[36mI login using &lt;credentialsType&gt; credentials?[0m
+    ?[36mThen ?[0m?[36mI am on the dashboard page?[0m
+    ?[36mAnd ?[0m?[36mI should see the 'Create a plan' button?[0m
+    ?[36mAnd ?[0m?[36mI should see my plans?[0m
+
+    Examples: 
+
+  @dashboard
+  Scenario Outline: As a guest user, I login using aaf credentials, and I navigate the dashboard ?[90m# Dashboard.feature:13?[0m
+    ?[32mGiven ?[0m?[32mI am a ?[0m?[32m?[1mguest?[0m?[32m user?[0m                                                                      ?[90m# user_steps.groovy:20?[0m
+    ?[33mWhen ?[0m?[33mI login using aaf credentials?[0m
+    ?[36mThen ?[0m?[36mI am on the dashboard page?[0m                                                              ?[90m# dashboard_steps.groovy:10?[0m
+    ?[36mAnd ?[0m?[36mI should see the 'Create a plan' button?[0m                                                  ?[90m# dashboard_steps.groovy:13?[0m
+    ?[36mAnd ?[0m?[36mI should see my plans?[0m                                                                    ?[90m# dashboard_steps.groovy:16?[0m
+
+  Scenario Outline: As a &lt;role&gt; user, I login using &lt;credentialsType&gt; credentials, and I go to the home page, and then to the dashboard ?[90m# Dashboard.feature:15?[0m
+    ?[36mGiven ?[0m?[36mI am a &lt;role&gt; user?[0m
+    ?[36mAnd ?[0m?[36mI login using &lt;credentialsType&gt; credentials?[0m
+    ?[36mAnd ?[0m?[36mI am on the dashboard page?[0m
+    ?[36mWhen ?[0m?[36mI go to the home page?[0m
+    ?[36mAnd ?[0m?[36mI click on Proceed to the dashboard?[0m
+    ?[36mThen ?[0m?[36mI am on the dashboard page?[0m
+    ?[36mAnd ?[0m?[36mI should see the 'Create a plan' button?[0m
+    ?[36mAnd ?[0m?[36mI should see my plans?[0m
+
+    Examples: 
+
+  @dashboard
+  Scenario Outline: As a guest user, I login using aaf credentials, and I go to the home page, and then to the dashboard ?[90m# Dashboard.feature:27?[0m
+    ?[32mGiven ?[0m?[32mI am a ?[0m?[32m?[1mguest?[0m?[32m user?[0m                                                                                              ?[90m# user_steps.groovy:20?[0m
+    ?[33mAnd ?[0m?[33mI login using aaf credentials?[0m
+    ?[36mAnd ?[0m?[36mI am on the dashboard page?[0m                                                                                       ?[90m# dashboard_steps.groovy:10?[0m
+    ?[36mWhen ?[0m?[36mI go to the home page?[0m                                                                                           ?[90m# home_steps.groovy:27?[0m
+    ?[36mAnd ?[0m?[36mI click on Proceed to the dashboard?[0m                                                                              ?[90m# dashboard_steps.groovy:7?[0m
+    ?[36mThen ?[0m?[36mI am on the dashboard page?[0m                                                                                      ?[90m# dashboard_steps.groovy:10?[0m
+    ?[36mAnd ?[0m?[36mI should see the 'Create a plan' button?[0m                                                                          ?[90m# dashboard_steps.groovy:13?[0m
+    ?[36mAnd ?[0m?[36mI should see my plans?[0m                                                                                            ?[90m# dashboard_steps.groovy:16?[0m
+
+?[31mFailed scenarios:?[0m
+?[31mDashboard.feature:12 ?[0m# Scenario Outline: As a admin user, I login using local credentials, and I navigate the dashboard
+?[31mDashboard.feature:26 ?[0m# Scenario Outline: As a admin user, I login using local credentials, and I go to the home page, and then to the dashboard
+
+4 Scenarios (?[31m2 failed?[0m, ?[33m2 undefined?[0m)
+26 Steps (?[31m2 failed?[0m, ?[36m18 skipped?[0m, ?[33m2 undefined?[0m, ?[32m4 passed?[0m)
+0m11.832s
+
+geb.error.RequiredPageContentNotPresent: The required page content 'au.com.redboxresearchdata.dlcf.page.LoginPage -&gt; local: au.com.redboxresearchdata.dlcf.module.login.LocalLoginModule -&gt; login: au.com.redboxresearchdata.dlcf.module.login.LoginModule -&gt; layout: au.com.redboxresearchdata.dlcf.module.LayoutModule -&gt; defaultPanel: geb.navigator.EmptyNavigator' is not present
+	at geb.content.TemplateDerivedPageContent.require(TemplateDerivedPageContent.groovy:60)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy:63)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy)
+	at geb.content.PageContentTemplate.create(PageContentTemplate.groovy:82)
+	at geb.content.PageContentTemplate.get(PageContentTemplate.groovy:54)
+	at geb.content.DefaultPageContentSupport.getContent(DefaultPageContentSupport.groovy:42)
+	at geb.content.PageContentSupport.propertyMissing(PageContentSupport.groovy:39)
+	at geb.content.PageContentSupport$propertyMissing.call(Unknown Source)
+	at geb.Module.propertyMissing(Module.groovy:106)
+	at geb.Module.getProperty(Module.groovy)
+	at geb.content.TemplateDerivedPageContent.propertyMissing(TemplateDerivedPageContent.groovy:88)
+	at geb.content.TemplateDerivedPageContent.getProperty(TemplateDerivedPageContent.groovy)
+	at au.com.redboxresearchdata.dlcf.module.login.LoginModule$__clinit__closure1$_closure3.doCall(LoginModule.groovy:34)
+	at au.com.redboxresearchdata.dlcf.module.login.LoginModule$__clinit__closure1$_closure3.doCall(LoginModule.groovy)
+	at geb.content.PageContentTemplate.invokeFactory(PageContentTemplate.groovy:97)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy:59)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy)
+	at geb.content.PageContentTemplate.create(PageContentTemplate.groovy:82)
+	at geb.content.PageContentTemplate.get(PageContentTemplate.groovy:54)
+	at geb.content.DefaultPageContentSupport.getContent(DefaultPageContentSupport.groovy:42)
+	at geb.content.PageContentSupport.propertyMissing(PageContentSupport.groovy:39)
+	at geb.content.PageContentSupport$propertyMissing.call(Unknown Source)
+	at geb.Module.propertyMissing(Module.groovy:106)
+	at geb.Module.getProperty(Module.groovy)
+	at geb.content.PageContentTemplateFactoryDelegate.propertyMissing(PageContentTemplateFactoryDelegate.groovy:45)
+	at geb.content.PageContentTemplateFactoryDelegate.getProperty(PageContentTemplateFactoryDelegate.groovy)
+	at au.com.redboxresearchdata.dlcf.module.login.LoginModule$__clinit__closure1$_closure5.doCall(LoginModule.groovy:40)
+	at au.com.redboxresearchdata.dlcf.module.login.LoginModule$__clinit__closure1$_closure5.doCall(LoginModule.groovy)
+	at geb.content.PageContentTemplate.invokeFactory(PageContentTemplate.groovy:97)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy:59)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy)
+	at geb.content.PageContentTemplate.create(PageContentTemplate.groovy:82)
+	at geb.content.PageContentTemplate.get(PageContentTemplate.groovy:54)
+	at geb.content.DefaultPageContentSupport.getContent(DefaultPageContentSupport.groovy:42)
+	at geb.content.PageContentSupport.propertyMissing(PageContentSupport.groovy:39)
+	at geb.content.PageContentSupport$propertyMissing.call(Unknown Source)
+	at geb.Module.propertyMissing(Module.groovy:106)
+	at geb.Module.getProperty(Module.groovy)
+	at geb.content.TemplateDerivedPageContent.propertyMissing(TemplateDerivedPageContent.groovy:88)
+	at geb.content.TemplateDerivedPageContent.getProperty(TemplateDerivedPageContent.groovy)
+	at au.com.redboxresearchdata.dlcf.module.login.LocalLoginModule$__clinit__closure1$_closure4.doCall(LocalLoginModule.groovy:36)
+	at au.com.redboxresearchdata.dlcf.module.login.LocalLoginModule$__clinit__closure1$_closure4.doCall(LocalLoginModule.groovy)
+	at geb.content.PageContentTemplate.invokeFactory(PageContentTemplate.groovy:97)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy:59)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy)
+	at geb.content.PageContentTemplate.create(PageContentTemplate.groovy:82)
+	at geb.content.PageContentTemplate.get(PageContentTemplate.groovy:54)
+	at geb.content.DefaultPageContentSupport.getContent(DefaultPageContentSupport.groovy:42)
+	at geb.content.PageContentSupport.propertyMissing(PageContentSupport.groovy:39)
+	at geb.content.PageContentSupport$propertyMissing.call(Unknown Source)
+	at geb.Module.propertyMissing(Module.groovy:106)
+	at geb.Module.getProperty(Module.groovy)
+	at geb.content.PageContentTemplateFactoryDelegate.propertyMissing(PageContentTemplateFactoryDelegate.groovy:45)
+	at geb.content.PageContentTemplateFactoryDelegate.getProperty(PageContentTemplateFactoryDelegate.groovy)
+	at au.com.redboxresearchdata.dlcf.module.login.LocalLoginModule$__clinit__closure1$_closure5.doCall(LocalLoginModule.groovy:38)
+	at au.com.redboxresearchdata.dlcf.module.login.LocalLoginModule$__clinit__closure1$_closure5.doCall(LocalLoginModule.groovy)
+	at geb.content.PageContentTemplate.invokeFactory(PageContentTemplate.groovy:97)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy:59)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy)
+	at geb.content.PageContentTemplate.create(PageContentTemplate.groovy:82)
+	at geb.content.PageContentTemplate.get(PageContentTemplate.groovy:54)
+	at geb.content.DefaultPageContentSupport.getContent(DefaultPageContentSupport.groovy:42)
+	at geb.content.PageContentSupport.propertyMissing(PageContentSupport.groovy:52)
+	at geb.content.PageContentSupport$propertyMissing$0.call(Unknown Source)
+	at geb.Module.propertyMissing(Module.groovy:110)
+	at geb.Module.setProperty(Module.groovy)
+	at geb.content.TemplateDerivedPageContent.propertyMissing(TemplateDerivedPageContent.groovy:92)
+	at geb.content.TemplateDerivedPageContent.setProperty(TemplateDerivedPageContent.groovy)
+	at au.com.redboxresearchdata.dlcf.page.LoginPage.loginUsingLocalCredentials(LoginPage.groovy:32)
+	at au.com.redboxresearchdata.dlcf.page.LoginPage$loginUsingLocalCredentials$0.callCurrent(Unknown Source)
+	at au.com.redboxresearchdata.dlcf.page.LoginPage.loginUsingLocalCredentials(LoginPage.groovy:28)
+	at au.com.redboxresearchdata.dlcf.page.LoginPage$loginUsingLocalCredentials.call(Unknown Source)
+	at steps.login_steps$_run_closure1.doCall(login_steps.groovy:12)
+	at ✽.When I login using local credentials(Dashboard.feature:6)
+
+geb.error.RequiredPageContentNotPresent: The required page content 'au.com.redboxresearchdata.dlcf.page.LoginPage -&gt; local: au.com.redboxresearchdata.dlcf.module.login.LocalLoginModule -&gt; login: au.com.redboxresearchdata.dlcf.module.login.LoginModule -&gt; layout: au.com.redboxresearchdata.dlcf.module.LayoutModule -&gt; defaultPanel: geb.navigator.EmptyNavigator' is not present
+	at geb.content.TemplateDerivedPageContent.require(TemplateDerivedPageContent.groovy:60)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy:63)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy)
+	at geb.content.PageContentTemplate.create(PageContentTemplate.groovy:82)
+	at geb.content.PageContentTemplate.get(PageContentTemplate.groovy:54)
+	at geb.content.DefaultPageContentSupport.getContent(DefaultPageContentSupport.groovy:42)
+	at geb.content.PageContentSupport.propertyMissing(PageContentSupport.groovy:39)
+	at geb.content.PageContentSupport$propertyMissing.call(Unknown Source)
+	at geb.Module.propertyMissing(Module.groovy:106)
+	at geb.Module.getProperty(Module.groovy)
+	at geb.content.TemplateDerivedPageContent.propertyMissing(TemplateDerivedPageContent.groovy:88)
+	at geb.content.TemplateDerivedPageContent.getProperty(TemplateDerivedPageContent.groovy)
+	at au.com.redboxresearchdata.dlcf.module.login.LoginModule$__clinit__closure1$_closure3.doCall(LoginModule.groovy:34)
+	at au.com.redboxresearchdata.dlcf.module.login.LoginModule$__clinit__closure1$_closure3.doCall(LoginModule.groovy)
+	at geb.content.PageContentTemplate.invokeFactory(PageContentTemplate.groovy:97)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy:59)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy)
+	at geb.content.PageContentTemplate.create(PageContentTemplate.groovy:82)
+	at geb.content.PageContentTemplate.get(PageContentTemplate.groovy:54)
+	at geb.content.DefaultPageContentSupport.getContent(DefaultPageContentSupport.groovy:42)
+	at geb.content.PageContentSupport.propertyMissing(PageContentSupport.groovy:39)
+	at geb.content.PageContentSupport$propertyMissing.call(Unknown Source)
+	at geb.Module.propertyMissing(Module.groovy:106)
+	at geb.Module.getProperty(Module.groovy)
+	at geb.content.PageContentTemplateFactoryDelegate.propertyMissing(PageContentTemplateFactoryDelegate.groovy:45)
+	at geb.content.PageContentTemplateFactoryDelegate.getProperty(PageContentTemplateFactoryDelegate.groovy)
+	at au.com.redboxresearchdata.dlcf.module.login.LoginModule$__clinit__closure1$_closure5.doCall(LoginModule.groovy:40)
+	at au.com.redboxresearchdata.dlcf.module.login.LoginModule$__clinit__closure1$_closure5.doCall(LoginModule.groovy)
+	at geb.content.PageContentTemplate.invokeFactory(PageContentTemplate.groovy:97)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy:59)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy)
+	at geb.content.PageContentTemplate.create(PageContentTemplate.groovy:82)
+	at geb.content.PageContentTemplate.get(PageContentTemplate.groovy:54)
+	at geb.content.DefaultPageContentSupport.getContent(DefaultPageContentSupport.groovy:42)
+	at geb.content.PageContentSupport.propertyMissing(PageContentSupport.groovy:39)
+	at geb.content.PageContentSupport$propertyMissing.call(Unknown Source)
+	at geb.Module.propertyMissing(Module.groovy:106)
+	at geb.Module.getProperty(Module.groovy)
+	at geb.content.TemplateDerivedPageContent.propertyMissing(TemplateDerivedPageContent.groovy:88)
+	at geb.content.TemplateDerivedPageContent.getProperty(TemplateDerivedPageContent.groovy)
+	at au.com.redboxresearchdata.dlcf.module.login.LocalLoginModule$__clinit__closure1$_closure4.doCall(LocalLoginModule.groovy:36)
+	at au.com.redboxresearchdata.dlcf.module.login.LocalLoginModule$__clinit__closure1$_closure4.doCall(LocalLoginModule.groovy)
+	at geb.content.PageContentTemplate.invokeFactory(PageContentTemplate.groovy:97)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy:59)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy)
+	at geb.content.PageContentTemplate.create(PageContentTemplate.groovy:82)
+	at geb.content.PageContentTemplate.get(PageContentTemplate.groovy:54)
+	at geb.content.DefaultPageContentSupport.getContent(DefaultPageContentSupport.groovy:42)
+	at geb.content.PageContentSupport.propertyMissing(PageContentSupport.groovy:39)
+	at geb.content.PageContentSupport$propertyMissing.call(Unknown Source)
+	at geb.Module.propertyMissing(Module.groovy:106)
+	at geb.Module.getProperty(Module.groovy)
+	at geb.content.PageContentTemplateFactoryDelegate.propertyMissing(PageContentTemplateFactoryDelegate.groovy:45)
+	at geb.content.PageContentTemplateFactoryDelegate.getProperty(PageContentTemplateFactoryDelegate.groovy)
+	at au.com.redboxresearchdata.dlcf.module.login.LocalLoginModule$__clinit__closure1$_closure5.doCall(LocalLoginModule.groovy:38)
+	at au.com.redboxresearchdata.dlcf.module.login.LocalLoginModule$__clinit__closure1$_closure5.doCall(LocalLoginModule.groovy)
+	at geb.content.PageContentTemplate.invokeFactory(PageContentTemplate.groovy:97)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy:59)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy)
+	at geb.content.PageContentTemplate.create(PageContentTemplate.groovy:82)
+	at geb.content.PageContentTemplate.get(PageContentTemplate.groovy:54)
+	at geb.content.DefaultPageContentSupport.getContent(DefaultPageContentSupport.groovy:42)
+	at geb.content.PageContentSupport.propertyMissing(PageContentSupport.groovy:52)
+	at geb.content.PageContentSupport$propertyMissing$0.call(Unknown Source)
+	at geb.Module.propertyMissing(Module.groovy:110)
+	at geb.Module.setProperty(Module.groovy)
+	at geb.content.TemplateDerivedPageContent.propertyMissing(TemplateDerivedPageContent.groovy:92)
+	at geb.content.TemplateDerivedPageContent.setProperty(TemplateDerivedPageContent.groovy)
+	at au.com.redboxresearchdata.dlcf.page.LoginPage.loginUsingLocalCredentials(LoginPage.groovy:32)
+	at au.com.redboxresearchdata.dlcf.page.LoginPage$loginUsingLocalCredentials$0.callCurrent(Unknown Source)
+	at au.com.redboxresearchdata.dlcf.page.LoginPage.loginUsingLocalCredentials(LoginPage.groovy:28)
+	at au.com.redboxresearchdata.dlcf.page.LoginPage$loginUsingLocalCredentials.call(Unknown Source)
+	at steps.login_steps$_run_closure1.doCall(login_steps.groovy:12)
+	at ✽.And I login using local credentials(Dashboard.feature:17)
+
+
+You can implement missing steps with the snippets below:
+
+@When(&quot;^I login using aaf credentials$&quot;)
+public void i_login_using_aaf_credentials() throws Throwable {
+    // Write code here that turns the phrase above into concrete actions
+    throw new PendingException();
+}
+
+When(~/^I login using aaf credentials$/) { -&gt;
+    // Write code here that turns the phrase above into concrete actions
+    throw new PendingException()
+}
+
+@Given(&quot;^I login using aaf credentials$&quot;)
+public void i_login_using_aaf_credentials() throws Throwable {
+    // Write code here that turns the phrase above into concrete actions
+    throw new PendingException();
+}
+
+Given(~/^I login using aaf credentials$/) { -&gt;
+    // Write code here that turns the phrase above into concrete actions
+    throw new PendingException()
+}
+
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 3.5</a> at Aug 3, 2017 12:53:22 AM</p>
+</div>
+</div>
+</body>
+</html>

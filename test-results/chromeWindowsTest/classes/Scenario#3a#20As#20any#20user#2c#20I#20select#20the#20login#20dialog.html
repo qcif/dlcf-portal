@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - Class Scenario: As any user, I select the login dialog</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>Class Scenario: As any user, I select the login dialog</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/default-package.html">default-package</a> &gt; Scenario: As any user, I select the login dialog</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">5</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">2</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">3</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">8.134s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox failures" id="successRate">
+<div class="percent">0%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Failed tests</a>
+</li>
+<li>
+<a href="#tab1">Tests</a>
+</li>
+<li>
+<a href="#tab2">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Failed tests</h2>
+<div class="test">
+<a name="Given I go to the home page"></a>
+<h3 class="failures">Given I go to the home page</h3>
+<span class="code">
+<pre>geb.waiting.WaitTimeoutException: condition did not pass in 7.0 seconds (failed with exception)
+	at geb.waiting.Wait.waitFor(Wait.groovy:138)
+	at geb.waiting.Wait$waitFor.call(Unknown Source)
+	at geb.waiting.Wait$waitFor.call(Unknown Source)
+	at geb.Page.verifyThisPageAtOnly(Page.groovy:243)
+	at geb.Page.getAtVerificationResult(Page.groovy:223)
+	at geb.Page.verifyAt(Page.groovy:194)
+	at geb.Page$verifyAt$3.call(Unknown Source)
+	at geb.Page$verifyAt$3.call(Unknown Source)
+	at geb.Browser.doAt(Browser.groovy:457)
+	at geb.Browser.at(Browser.groovy:356)
+	at geb.Browser$at$5.callCurrent(Unknown Source)
+	at geb.Browser$at$5.callCurrent(Unknown Source)
+	at geb.Browser.to(Browser.groovy:571)
+	at geb.Browser$to$1.callCurrent(Unknown Source)
+	at geb.Browser$to$1.callCurrent(Unknown Source)
+	at geb.Browser.to(Browser.groovy:548)
+	at geb.Browser$to$0.callCurrent(Unknown Source)
+	at geb.Browser.to(Browser.groovy:537)
+	at geb.Browser.to(Browser.groovy)
+	at geb.binding.BindingUpdater$InvocationForwarding.doCall(BindingUpdater.groovy:73)
+	at steps.home_steps$_run_closure1.doCall(home_steps.groovy:28)
+	at ✽.Given I go to the home page(Login.feature:27)
+Caused by: geb.waiting.WaitTimeoutException: condition did not pass in 7.0 seconds (failed with exception)
+	at geb.waiting.Wait.waitFor(Wait.groovy:138)
+	at geb.waiting.Wait$waitFor.call(Unknown Source)
+	at geb.waiting.Wait$waitFor.call(Unknown Source)
+	at geb.waiting.DefaultWaitingSupport.doWaitFor(DefaultWaitingSupport.groovy:51)
+	at geb.waiting.DefaultWaitingSupport.waitFor(DefaultWaitingSupport.groovy:38)
+	at geb.waiting.WaitingSupport$waitFor$0.call(Unknown Source)
+	at geb.waiting.WaitingSupport$waitFor$0.call(Unknown Source)
+	at geb.Page.waitFor(Page.groovy:535)
+	at geb.Page.waitFor(Page.groovy)
+	at geb.waiting.WaitingSupport$waitFor.callCurrent(Unknown Source)
+	at au.com.redboxresearchdata.dlcf.page.HomePage.assertMainPanelIsVisible(HomePage.groovy:39)
+	at au.com.redboxresearchdata.dlcf.page.HomePage$__clinit__closure3.doCall(HomePage.groovy:11)
+	at au.com.redboxresearchdata.dlcf.page.HomePage$__clinit__closure3.doCall(HomePage.groovy)
+	at geb.waiting.Wait.waitFor(Wait.groovy:117)
+	at geb.waiting.Wait$waitFor.call(Unknown Source)
+	at geb.waiting.Wait$waitFor.call(Unknown Source)
+	at geb.Page.verifyThisPageAtOnly(Page.groovy:243)
+	at geb.Page.getAtVerificationResult(Page.groovy:223)
+	at geb.Page.verifyAt(Page.groovy:194)
+	at geb.Page$verifyAt$3.call(Unknown Source)
+	at geb.Page$verifyAt$3.call(Unknown Source)
+	at geb.Browser.doAt(Browser.groovy:457)
+	at geb.Browser.at(Browser.groovy:356)
+	at geb.Browser$at$5.callCurrent(Unknown Source)
+	at geb.Browser$at$5.callCurrent(Unknown Source)
+	at geb.Browser.to(Browser.groovy:571)
+	at geb.Browser$to$1.callCurrent(Unknown Source)
+	at geb.Browser$to$1.callCurrent(Unknown Source)
+	at geb.Browser.to(Browser.groovy:548)
+	at geb.Browser$to$0.callCurrent(Unknown Source)
+	at geb.Browser.to(Browser.groovy:537)
+	at geb.Browser.to(Browser.groovy)
+	at geb.binding.BindingUpdater$InvocationForwarding.doCall(BindingUpdater.groovy:73)
+	at steps.home_steps$_run_closure1.doCall(home_steps.groovy:28)
+	at cucumber.runtime.groovy.GroovyBackend.invoke(GroovyBackend.java:155)
+	at cucumber.runtime.groovy.GroovyStepDefinition$1.call(GroovyStepDefinition.java:67)
+	at cucumber.runtime.Timeout.timeout(Timeout.java:16)
+	at cucumber.runtime.groovy.GroovyStepDefinition.execute(GroovyStepDefinition.java:64)
+	at cucumber.runtime.StepDefinitionMatch.runStep(StepDefinitionMatch.java:37)
+	at cucumber.runtime.Runtime.runStep(Runtime.java:300)
+	at cucumber.runtime.model.StepContainer.runStep(StepContainer.java:44)
+	at cucumber.runtime.model.StepContainer.runSteps(StepContainer.java:39)
+	at cucumber.runtime.model.CucumberScenario.run(CucumberScenario.java:44)
+	at cucumber.runtime.junit.ExecutionUnitRunner.run(ExecutionUnitRunner.java:102)
+	at cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:63)
+	at cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:18)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at cucumber.runtime.junit.FeatureRunner.run(FeatureRunner.java:70)
+	at cucumber.api.junit.Cucumber.runChild(Cucumber.java:95)
+	at cucumber.api.junit.Cucumber.runChild(Cucumber.java:38)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at cucumber.api.junit.Cucumber.run(Cucumber.java:100)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.runTestClass(JUnitTestClassExecuter.java:114)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.execute(JUnitTestClassExecuter.java:57)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassProcessor.processTestClass(JUnitTestClassProcessor.java:66)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:51)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
+	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
+	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:109)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:147)
+	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:129)
+	at org.gradle.internal.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:404)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:63)
+	at org.gradle.internal.concurrent.StoppableExecutorImpl$1.run(StoppableExecutorImpl.java:46)
+Caused by: geb.error.RequiredPageContentNotPresent: The required page content 'au.com.redboxresearchdata.dlcf.page.HomePage -&gt; layout: au.com.redboxresearchdata.dlcf.module.LayoutModule -&gt; defaultPanel: geb.navigator.EmptyNavigator' is not present
+	at geb.content.TemplateDerivedPageContent.require(TemplateDerivedPageContent.groovy:60)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy:63)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy)
+	at geb.content.PageContentTemplate.create(PageContentTemplate.groovy:82)
+	at geb.content.PageContentTemplate.get(PageContentTemplate.groovy:54)
+	at geb.content.DefaultPageContentSupport.getContent(DefaultPageContentSupport.groovy:42)
+	at geb.content.PageContentSupport.propertyMissing(PageContentSupport.groovy:39)
+	at geb.content.PageContentSupport$propertyMissing.call(Unknown Source)
+	at geb.Module.propertyMissing(Module.groovy:106)
+	at geb.Module.getProperty(Module.groovy)
+	at geb.content.TemplateDerivedPageContent.propertyMissing(TemplateDerivedPageContent.groovy:88)
+	at geb.content.TemplateDerivedPageContent.getProperty(TemplateDerivedPageContent.groovy)
+	at au.com.redboxresearchdata.dlcf.page.HomePage$__clinit__closure4$_closure5.doCall(HomePage.groovy:15)
+	at au.com.redboxresearchdata.dlcf.page.HomePage$__clinit__closure4$_closure5.doCall(HomePage.groovy)
+	at geb.content.PageContentTemplate.invokeFactory(PageContentTemplate.groovy:97)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy:59)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy)
+	at geb.content.PageContentTemplate.create(PageContentTemplate.groovy:82)
+	at geb.content.PageContentTemplate.get(PageContentTemplate.groovy:54)
+	at geb.content.DefaultPageContentSupport.getContent(DefaultPageContentSupport.groovy:42)
+	at geb.content.PageContentSupport.propertyMissing(PageContentSupport.groovy:39)
+	at geb.content.PageContentSupport$propertyMissing.call(Unknown Source)
+	at geb.Page.propertyMissing(Page.groovy:112)
+	at geb.Page.getProperty(Page.groovy)
+	at geb.content.PageContentTemplateFactoryDelegate.propertyMissing(PageContentTemplateFactoryDelegate.groovy:45)
+	at geb.content.PageContentTemplateFactoryDelegate.getProperty(PageContentTemplateFactoryDelegate.groovy)
+	at au.com.redboxresearchdata.dlcf.page.HomePage$__clinit__closure4$_closure6.doCall(HomePage.groovy:18)
+	at au.com.redboxresearchdata.dlcf.page.HomePage$__clinit__closure4$_closure6.doCall(HomePage.groovy)
+	at geb.content.PageContentTemplate.invokeFactory(PageContentTemplate.groovy:97)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy:59)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy)
+	at geb.content.PageContentTemplate.create(PageContentTemplate.groovy:82)
+	at geb.content.PageContentTemplate.get(PageContentTemplate.groovy:54)
+	at geb.content.DefaultPageContentSupport.getContent(DefaultPageContentSupport.groovy:42)
+	at geb.content.PageContentSupport.propertyMissing(PageContentSupport.groovy:39)
+	at geb.content.PageContentSupport$propertyMissing.call(Unknown Source)
+	at geb.Page.propertyMissing(Page.groovy:112)
+	at geb.Page.getProperty(Page.groovy)
+	at geb.content.PageContentTemplateFactoryDelegate.propertyMissing(PageContentTemplateFactoryDelegate.groovy:45)
+	at geb.content.PageContentTemplateFactoryDelegate.getProperty(PageContentTemplateFactoryDelegate.groovy)
+	at au.com.redboxresearchdata.dlcf.page.HomePage$__clinit__closure4$_closure7.doCall(HomePage.groovy:23)
+	at au.com.redboxresearchdata.dlcf.page.HomePage$__clinit__closure4$_closure7.doCall(HomePage.groovy)
+	at geb.content.PageContentTemplate.invokeFactory(PageContentTemplate.groovy:97)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy:59)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy)
+	at geb.content.PageContentTemplate.create(PageContentTemplate.groovy:82)
+	at geb.content.PageContentTemplate.get(PageContentTemplate.groovy:54)
+	at geb.content.DefaultPageContentSupport.getContent(DefaultPageContentSupport.groovy:42)
+	at geb.content.PageContentSupport.propertyMissing(PageContentSupport.groovy:39)
+	at geb.content.PageContentSupport$propertyMissing.call(Unknown Source)
+	at geb.Page.propertyMissing(Page.groovy:112)
+	at geb.Page.getProperty(Page.groovy)
+	at au.com.redboxresearchdata.dlcf.page.HomePage$_assertMainPanelIsVisible_closure1.doCall(HomePage.groovy:39)
+	at au.com.redboxresearchdata.dlcf.page.HomePage$_assertMainPanelIsVisible_closure1.doCall(HomePage.groovy)
+	at geb.waiting.Wait.waitFor(Wait.groovy:127)
+	... 78 more
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="classMethod"></a>
+<h3 class="failures">classMethod</h3>
+<span class="code">
+<pre>geb.waiting.WaitTimeoutException: condition did not pass in 7.0 seconds (failed with exception)
+	at geb.waiting.Wait.waitFor(Wait.groovy:138)
+	at geb.waiting.Wait$waitFor.call(Unknown Source)
+	at geb.waiting.Wait$waitFor.call(Unknown Source)
+	at geb.Page.verifyThisPageAtOnly(Page.groovy:243)
+	at geb.Page.getAtVerificationResult(Page.groovy:223)
+	at geb.Page.verifyAt(Page.groovy:194)
+	at geb.Page$verifyAt$3.call(Unknown Source)
+	at geb.Page$verifyAt$3.call(Unknown Source)
+	at geb.Browser.doAt(Browser.groovy:457)
+	at geb.Browser.at(Browser.groovy:356)
+	at geb.Browser$at$5.callCurrent(Unknown Source)
+	at geb.Browser$at$5.callCurrent(Unknown Source)
+	at geb.Browser.to(Browser.groovy:571)
+	at geb.Browser$to$1.callCurrent(Unknown Source)
+	at geb.Browser$to$1.callCurrent(Unknown Source)
+	at geb.Browser.to(Browser.groovy:548)
+	at geb.Browser$to$0.callCurrent(Unknown Source)
+	at geb.Browser.to(Browser.groovy:537)
+	at geb.Browser.to(Browser.groovy)
+	at geb.binding.BindingUpdater$InvocationForwarding.doCall(BindingUpdater.groovy:73)
+	at steps.home_steps$_run_closure1.doCall(home_steps.groovy:28)
+	at ✽.Given I go to the home page(Login.feature:27)
+Caused by: geb.waiting.WaitTimeoutException: condition did not pass in 7.0 seconds (failed with exception)
+	at geb.waiting.Wait.waitFor(Wait.groovy:138)
+	at geb.waiting.Wait$waitFor.call(Unknown Source)
+	at geb.waiting.Wait$waitFor.call(Unknown Source)
+	at geb.waiting.DefaultWaitingSupport.doWaitFor(DefaultWaitingSupport.groovy:51)
+	at geb.waiting.DefaultWaitingSupport.waitFor(DefaultWaitingSupport.groovy:38)
+	at geb.waiting.WaitingSupport$waitFor$0.call(Unknown Source)
+	at geb.waiting.WaitingSupport$waitFor$0.call(Unknown Source)
+	at geb.Page.waitFor(Page.groovy:535)
+	at geb.Page.waitFor(Page.groovy)
+	at geb.waiting.WaitingSupport$waitFor.callCurrent(Unknown Source)
+	at au.com.redboxresearchdata.dlcf.page.HomePage.assertMainPanelIsVisible(HomePage.groovy:39)
+	at au.com.redboxresearchdata.dlcf.page.HomePage$__clinit__closure3.doCall(HomePage.groovy:11)
+	at au.com.redboxresearchdata.dlcf.page.HomePage$__clinit__closure3.doCall(HomePage.groovy)
+	at geb.waiting.Wait.waitFor(Wait.groovy:117)
+	at geb.waiting.Wait$waitFor.call(Unknown Source)
+	at geb.waiting.Wait$waitFor.call(Unknown Source)
+	at geb.Page.verifyThisPageAtOnly(Page.groovy:243)
+	at geb.Page.getAtVerificationResult(Page.groovy:223)
+	at geb.Page.verifyAt(Page.groovy:194)
+	at geb.Page$verifyAt$3.call(Unknown Source)
+	at geb.Page$verifyAt$3.call(Unknown Source)
+	at geb.Browser.doAt(Browser.groovy:457)
+	at geb.Browser.at(Browser.groovy:356)
+	at geb.Browser$at$5.callCurrent(Unknown Source)
+	at geb.Browser$at$5.callCurrent(Unknown Source)
+	at geb.Browser.to(Browser.groovy:571)
+	at geb.Browser$to$1.callCurrent(Unknown Source)
+	at geb.Browser$to$1.callCurrent(Unknown Source)
+	at geb.Browser.to(Browser.groovy:548)
+	at geb.Browser$to$0.callCurrent(Unknown Source)
+	at geb.Browser.to(Browser.groovy:537)
+	at geb.Browser.to(Browser.groovy)
+	at geb.binding.BindingUpdater$InvocationForwarding.doCall(BindingUpdater.groovy:73)
+	at steps.home_steps$_run_closure1.doCall(home_steps.groovy:28)
+	at cucumber.runtime.groovy.GroovyBackend.invoke(GroovyBackend.java:155)
+	at cucumber.runtime.groovy.GroovyStepDefinition$1.call(GroovyStepDefinition.java:67)
+	at cucumber.runtime.Timeout.timeout(Timeout.java:16)
+	at cucumber.runtime.groovy.GroovyStepDefinition.execute(GroovyStepDefinition.java:64)
+	at cucumber.runtime.StepDefinitionMatch.runStep(StepDefinitionMatch.java:37)
+	at cucumber.runtime.Runtime.runStep(Runtime.java:300)
+	at cucumber.runtime.model.StepContainer.runStep(StepContainer.java:44)
+	at cucumber.runtime.model.StepContainer.runSteps(StepContainer.java:39)
+	at cucumber.runtime.model.CucumberScenario.run(CucumberScenario.java:44)
+	at cucumber.runtime.junit.ExecutionUnitRunner.run(ExecutionUnitRunner.java:102)
+	at cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:63)
+	at cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:18)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at cucumber.runtime.junit.FeatureRunner.run(FeatureRunner.java:70)
+	at cucumber.api.junit.Cucumber.runChild(Cucumber.java:95)
+	at cucumber.api.junit.Cucumber.runChild(Cucumber.java:38)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at cucumber.api.junit.Cucumber.run(Cucumber.java:100)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.runTestClass(JUnitTestClassExecuter.java:114)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.execute(JUnitTestClassExecuter.java:57)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassProcessor.processTestClass(JUnitTestClassProcessor.java:66)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:51)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
+	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
+	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:109)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:147)
+	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:129)
+	at org.gradle.internal.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:404)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:63)
+	at org.gradle.internal.concurrent.StoppableExecutorImpl$1.run(StoppableExecutorImpl.java:46)
+Caused by: geb.error.RequiredPageContentNotPresent: The required page content 'au.com.redboxresearchdata.dlcf.page.HomePage -&gt; layout: au.com.redboxresearchdata.dlcf.module.LayoutModule -&gt; defaultPanel: geb.navigator.EmptyNavigator' is not present
+	at geb.content.TemplateDerivedPageContent.require(TemplateDerivedPageContent.groovy:60)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy:63)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy)
+	at geb.content.PageContentTemplate.create(PageContentTemplate.groovy:82)
+	at geb.content.PageContentTemplate.get(PageContentTemplate.groovy:54)
+	at geb.content.DefaultPageContentSupport.getContent(DefaultPageContentSupport.groovy:42)
+	at geb.content.PageContentSupport.propertyMissing(PageContentSupport.groovy:39)
+	at geb.content.PageContentSupport$propertyMissing.call(Unknown Source)
+	at geb.Module.propertyMissing(Module.groovy:106)
+	at geb.Module.getProperty(Module.groovy)
+	at geb.content.TemplateDerivedPageContent.propertyMissing(TemplateDerivedPageContent.groovy:88)
+	at geb.content.TemplateDerivedPageContent.getProperty(TemplateDerivedPageContent.groovy)
+	at au.com.redboxresearchdata.dlcf.page.HomePage$__clinit__closure4$_closure5.doCall(HomePage.groovy:15)
+	at au.com.redboxresearchdata.dlcf.page.HomePage$__clinit__closure4$_closure5.doCall(HomePage.groovy)
+	at geb.content.PageContentTemplate.invokeFactory(PageContentTemplate.groovy:97)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy:59)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy)
+	at geb.content.PageContentTemplate.create(PageContentTemplate.groovy:82)
+	at geb.content.PageContentTemplate.get(PageContentTemplate.groovy:54)
+	at geb.content.DefaultPageContentSupport.getContent(DefaultPageContentSupport.groovy:42)
+	at geb.content.PageContentSupport.propertyMissing(PageContentSupport.groovy:39)
+	at geb.content.PageContentSupport$propertyMissing.call(Unknown Source)
+	at geb.Page.propertyMissing(Page.groovy:112)
+	at geb.Page.getProperty(Page.groovy)
+	at geb.content.PageContentTemplateFactoryDelegate.propertyMissing(PageContentTemplateFactoryDelegate.groovy:45)
+	at geb.content.PageContentTemplateFactoryDelegate.getProperty(PageContentTemplateFactoryDelegate.groovy)
+	at au.com.redboxresearchdata.dlcf.page.HomePage$__clinit__closure4$_closure6.doCall(HomePage.groovy:18)
+	at au.com.redboxresearchdata.dlcf.page.HomePage$__clinit__closure4$_closure6.doCall(HomePage.groovy)
+	at geb.content.PageContentTemplate.invokeFactory(PageContentTemplate.groovy:97)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy:59)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy)
+	at geb.content.PageContentTemplate.create(PageContentTemplate.groovy:82)
+	at geb.content.PageContentTemplate.get(PageContentTemplate.groovy:54)
+	at geb.content.DefaultPageContentSupport.getContent(DefaultPageContentSupport.groovy:42)
+	at geb.content.PageContentSupport.propertyMissing(PageContentSupport.groovy:39)
+	at geb.content.PageContentSupport$propertyMissing.call(Unknown Source)
+	at geb.Page.propertyMissing(Page.groovy:112)
+	at geb.Page.getProperty(Page.groovy)
+	at geb.content.PageContentTemplateFactoryDelegate.propertyMissing(PageContentTemplateFactoryDelegate.groovy:45)
+	at geb.content.PageContentTemplateFactoryDelegate.getProperty(PageContentTemplateFactoryDelegate.groovy)
+	at au.com.redboxresearchdata.dlcf.page.HomePage$__clinit__closure4$_closure7.doCall(HomePage.groovy:23)
+	at au.com.redboxresearchdata.dlcf.page.HomePage$__clinit__closure4$_closure7.doCall(HomePage.groovy)
+	at geb.content.PageContentTemplate.invokeFactory(PageContentTemplate.groovy:97)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy:59)
+	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy)
+	at geb.content.PageContentTemplate.create(PageContentTemplate.groovy:82)
+	at geb.content.PageContentTemplate.get(PageContentTemplate.groovy:54)
+	at geb.content.DefaultPageContentSupport.getContent(DefaultPageContentSupport.groovy:42)
+	at geb.content.PageContentSupport.propertyMissing(PageContentSupport.groovy:39)
+	at geb.content.PageContentSupport$propertyMissing.call(Unknown Source)
+	at geb.Page.propertyMissing(Page.groovy:112)
+	at geb.Page.getProperty(Page.groovy)
+	at au.com.redboxresearchdata.dlcf.page.HomePage$_assertMainPanelIsVisible_closure1.doCall(HomePage.groovy:39)
+	at au.com.redboxresearchdata.dlcf.page.HomePage$_assertMainPanelIsVisible_closure1.doCall(HomePage.groovy)
+	at geb.waiting.Wait.waitFor(Wait.groovy:127)
+	... 78 more
+</pre>
+</span>
+</div>
+</div>
+<div id="tab1" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="skipped">And I should see the login dialog</td>
+<td>-</td>
+<td class="skipped">ignored</td>
+</tr>
+<tr>
+<td class="failures">Given I go to the home page</td>
+<td>0s</td>
+<td class="failures">failed</td>
+</tr>
+<tr>
+<td class="skipped">Then I am on the login page</td>
+<td>-</td>
+<td class="skipped">ignored</td>
+</tr>
+<tr>
+<td class="skipped">When I click on login</td>
+<td>-</td>
+<td class="skipped">ignored</td>
+</tr>
+<tr>
+<td class="failures">classMethod</td>
+<td>8.134s</td>
+<td class="failures">failed</td>
+</tr>
+</table>
+</div>
+<div id="tab2" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>sessionId:ae13fa1c8d554beea06632991baebfc3
+
+  @login
+  Scenario Outline: As any user, I go to any page, and I do not log in and I observe the same logged out layout Page ?[90m# Login.feature:24?[0m
+    ?[32mGiven ?[0m?[32mI try to go to the Login page?[0m                                                                              ?[90m# login_steps.groovy:38?[0m
+    ?[31mWhen ?[0m?[31mI do not log in?[0m                                                                                             ?[90m# login_steps.groovy:59?[0m
+      ?[31mgeb.waiting.WaitTimeoutException: condition did not pass in 7.0 seconds (failed with exception)
+      	at geb.waiting.Wait.waitFor(Wait.groovy:138)
+      	at geb.waiting.Wait$waitFor.call(Unknown Source)
+      	at geb.waiting.Wait$waitFor.call(Unknown Source)
+      	at geb.waiting.DefaultWaitingSupport.doWaitFor(DefaultWaitingSupport.groovy:51)
+      	at geb.waiting.DefaultWaitingSupport.waitFor(DefaultWaitingSupport.groovy:38)
+      	at geb.waiting.WaitingSupport$waitFor$0.call(Unknown Source)
+      	at geb.waiting.WaitingSupport$waitFor$0.call(Unknown Source)
+      	at geb.Page.waitFor(Page.groovy:535)
+      	at geb.Page.waitFor(Page.groovy)
+      	at geb.Page$waitFor$4.callCurrent(Unknown Source)
+      	at au.com.redboxresearchdata.dlcf.page.GenericLayoutPage.assertLoginHeaderIsVisible(GenericLayoutPage.groovy:79)
+      	at au.com.redboxresearchdata.dlcf.page.GenericLayoutPage.assertIsNotLoggedIn(GenericLayoutPage.groovy:74)
+      	at au.com.redboxresearchdata.dlcf.page.GenericLayoutPage$assertIsNotLoggedIn$0.call(Unknown Source)
+      	at steps.login_steps$_run_closure10.doCall(login_steps.groovy:61)
+      	at ✽.When I do not log in(Login.feature:17)
+      Caused by: geb.error.RequiredPageContentNotPresent: The required page content 'au.com.redboxresearchdata.dlcf.page.LoginPage -&gt; loginHeader: au.com.redboxresearchdata.dlcf.module.login.LoginHeaderModule -&gt; layout: au.com.redboxresearchdata.dlcf.module.LayoutModule -&gt; header: geb.navigator.EmptyNavigator' is not present
+      	at geb.content.TemplateDerivedPageContent.require(TemplateDerivedPageContent.groovy:60)
+      	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy:63)
+      	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy)
+      	at geb.content.PageContentTemplate.create(PageContentTemplate.groovy:82)
+      	at geb.content.PageContentTemplate.get(PageContentTemplate.groovy:54)
+      	at geb.content.DefaultPageContentSupport.getContent(DefaultPageContentSupport.groovy:42)
+      	at geb.content.PageContentSupport.propertyMissing(PageContentSupport.groovy:39)
+      	at geb.content.PageContentSupport$propertyMissing.call(Unknown Source)
+      	at geb.Module.propertyMissing(Module.groovy:106)
+      	at geb.Module.getProperty(Module.groovy)
+      	at geb.content.TemplateDerivedPageContent.propertyMissing(TemplateDerivedPageContent.groovy:88)
+      	at geb.content.TemplateDerivedPageContent.getProperty(TemplateDerivedPageContent.groovy)
+      	at au.com.redboxresearchdata.dlcf.module.login.LoginHeaderModule$__clinit__closure1$_closure3.doCall(LoginHeaderModule.groovy:33)
+      	at au.com.redboxresearchdata.dlcf.module.login.LoginHeaderModule$__clinit__closure1$_closure3.doCall(LoginHeaderModule.groovy)
+      	at geb.content.PageContentTemplate.invokeFactory(PageContentTemplate.groovy:97)
+      	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy:59)
+      	at geb.content.PageContentTemplate$_create_closure1.doCall(PageContentTemplate.groovy)
+      	at geb.content.PageContentTemplate.create(PageContentTemplate.groovy:82)
+      	at geb.content.PageContentTemplate.get(PageContentTemplate.groovy:54)
+      	at geb.content.DefaultPageContentSupport.getContent(DefaultPageContentSupport.groovy:42)
+      	at geb.content.PageContentSupport.propertyMissing(PageContentSupport.groovy:39)
+      	at geb.content.PageContentSupport$propertyMissing.call(Unknown Source)
+      	at geb.Module.propertyMissing(Module.groovy:106)
+      	at geb.Module.getProperty(Module.groovy)
+      	at geb.content.TemplateDerivedPageContent.propertyMissing(TemplateDerivedPageContent.groovy:88)
+      	at geb.content.TemplateDerivedPageContent.getProperty(TemplateDerivedPageContent.groovy)
+      	at au.com.redboxresearchdata.dlcf.page.GenericLayoutPage$_assertLoginHeaderIsVisible_closure2.doCall(GenericLayoutPage.groovy:79)
+      	at au.com.redboxresearchdata.dlcf.page.GenericLayoutPage$_assertLoginHeaderIsVisible_closure2.doCall(GenericLayoutPage.groovy)
+      	at geb.waiting.Wait.waitFor(Wait.groovy:127)
+      	at geb.waiting.Wait$waitFor.call(Unknown Source)
+      	at geb.waiting.Wait$waitFor.call(Unknown Source)
+      	at geb.waiting.DefaultWaitingSupport.doWaitFor(DefaultWaitingSupport.groovy:51)
+      	at geb.waiting.DefaultWaitingSupport.waitFor(DefaultWaitingSupport.groovy:38)
+      	at geb.waiting.WaitingSupport$waitFor$0.call(Unknown Source)
+      	at geb.waiting.WaitingSupport$waitFor$0.call(Unknown Source)
+      	at geb.Page.waitFor(Page.groovy:535)
+      	at geb.Page.waitFor(Page.groovy)
+      	at geb.Page$waitFor$4.callCurrent(Unknown Source)
+      	at au.com.redboxresearchdata.dlcf.page.GenericLayoutPage.assertLoginHeaderIsVisible(GenericLayoutPage.groovy:79)
+      	at au.com.redboxresearchdata.dlcf.page.GenericLayoutPage.assertIsNotLoggedIn(GenericLayoutPage.groovy:74)
+      	at au.com.redboxresearchdata.dlcf.page.GenericLayoutPage$assertIsNotLoggedIn$0.call(Unknown Source)
+      	at steps.login_steps$_run_closure10.doCall(login_steps.groovy:61)
+      	at cucumber.runtime.groovy.GroovyBackend.invoke(GroovyBackend.java:155)
+      	at cucumber.runtime.groovy.GroovyStepDefinition$1.call(GroovyStepDefinition.java:67)
+      	at cucumber.runtime.Timeout.timeout(Timeout.java:16)
+      	at cucumber.runtime.groovy.GroovyStepDefinition.execute(GroovyStepDefinition.java:64)
+      	at cucumber.runtime.StepDefinitionMatch.runStep(StepDefinitionMatch.java:37)
+      	at cucumber.runtime.Runtime.runStep(Runtime.java:300)
+      	at cucumber.runtime.model.StepContainer.runStep(StepContainer.java:44)
+      	at cucumber.runtime.model.StepContainer.runSteps(StepContainer.java:39)
+      	at cucumber.runtime.model.CucumberScenario.run(CucumberScenario.java:44)
+      	at cucumber.runtime.junit.ExecutionUnitRunner.run(ExecutionUnitRunner.java:102)
+      	at org.junit.runners.Suite.runChild(Suite.java:128)
+      	at org.junit.runners.Suite.runChild(Suite.java:27)
+      	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+      	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+      	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+      	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+      	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+      	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+      	at cucumber.runtime.junit.ExamplesRunner.run(ExamplesRunner.java:59)
+      	at org.junit.runners.Suite.runChild(Suite.java:128)
+      	at org.junit.runners.Suite.runChild(Suite.java:27)
+      	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+      	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+      	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+      	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+      	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+      	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+      	at cucumber.runtime.junit.ScenarioOutlineRunner.run(ScenarioOutlineRunner.java:53)
+      	at cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:63)
+      	at cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:18)
+      	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+      	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+      	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+      	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+      	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+      	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+      	at cucumber.runtime.junit.FeatureRunner.run(FeatureRunner.java:70)
+      	at cucumber.api.junit.Cucumber.runChild(Cucumber.java:95)
+      	at cucumber.api.junit.Cucumber.runChild(Cucumber.java:38)
+      	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+      	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+      	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+      	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+      	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+      	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+      	at cucumber.api.junit.Cucumber.run(Cucumber.java:100)
+      	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.runTestClass(JUnitTestClassExecuter.java:114)
+      	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.execute(JUnitTestClassExecuter.java:57)
+      	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassProcessor.processTestClass(JUnitTestClassProcessor.java:66)
+      	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:51)
+      	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+      	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+      	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
+      	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
+      	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
+      	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:109)
+      	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+      	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+      	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:147)
+      	at org.gradle.internal.remote.internal.hub.MessageHubBackedObjectConnection$DispatchWrapper.dispatch(MessageHubBackedObjectConnection.java:129)
+      	at org.gradle.internal.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:404)
+      	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:63)
+      	at org.gradle.internal.concurrent.StoppableExecutorImpl$1.run(StoppableExecutorImpl.java:46)
+      ?[0m
+    ?[36mThen ?[0m?[36mI should see all of the logged out layout?[0m                                                                   ?[90m# layout.steps.groovy:34?[0m
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 3.5</a> at Aug 3, 2017 12:53:22 AM</p>
+</div>
+</div>
+</body>
+</html>
