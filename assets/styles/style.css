@@ -32,10 +32,10 @@ body { font-family: 'Titillium Web', sans-serif; }
 
 
 .header-area {
-    background: none repeat scroll 0 0 #f4f4f4;
+    background: none repeat scroll 0 0 #bfbfbf;
 }
 .header-area a {
-    color: #888;
+    color: #222;
 }
 .user-menu ul {
     list-style: outside none none;
@@ -47,7 +47,7 @@ body { font-family: 'Titillium Web', sans-serif; }
 }
 .user-menu li a {
     display: block;
-    font-size: 13px;
+    font-size: 14px;
     margin-right: 5px;
     padding: 10px;
 }
@@ -571,7 +571,7 @@ width: 10px;
 }
 
 .site-branding-area {
-  background-color: #b1101a;
+  background-color: #f2f2f2;
 }
 
 .site-branding-area h1 {
