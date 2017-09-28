@@ -32,10 +32,10 @@ body { font-family: 'Titillium Web', sans-serif; }
 
 
 .header-area {
-    background: none repeat scroll 0 0 #f4f4f4;
+    background: none repeat scroll 0 0 #bfbfbf;
 }
 .header-area a {
-    color: #888;
+    color: #222;
 }
 .user-menu ul {
     list-style: outside none none;
@@ -47,7 +47,7 @@ body { font-family: 'Titillium Web', sans-serif; }
 }
 .user-menu li a {
     display: block;
-    font-size: 13px;
+    font-size: 14px;
     margin-right: 5px;
     padding: 10px;
 }
@@ -74,7 +74,7 @@ body { font-family: 'Titillium Web', sans-serif; }
     text-align: center;
 }
 
-.mainmenu-area {background: none repeat scroll 0 0 #500005;
+.mainmenu-area {background: none repeat scroll 0 0 #006eaf;
 font-family: "Roboto Condensed",sans-serif;
 text-transform: uppercase;
 width: 100%;
@@ -112,7 +112,15 @@ z-index: 999;}
 }
 
 .mainmenu-area ul.navbar-nav li:hover a, .mainmenu-area ul.navbar-nav li.active a {}
-.mainmenu-area .nav > li > a:focus {color: #000}
+.mainmenu-area .nav > li > a:focus {
+  color: #000;
+  background-color: #469cd9;
+}
+
+.mainmenu-area .nav > li > a:hover {
+  color: #000;
+  background-color: #469cd9;
+}
 
 .slider-area {clear: both}
 .slider-area, .promo-area, .brands-area, .maincontent-area, .footer-top-area, .product-widget-area, .product-breadcroumb-area, .single-product-area {position: relative;overflow: hidden}
@@ -518,8 +526,16 @@ width: 10px;
   text-align: right;
 }
 
+.copyright {
+  padding-top:1em;
+}
+
 .copyright > p {
   margin: 10px 0 0;
+}
+
+.copyright > a > img {
+  margin-left: 1em;
 }
 
 .product-big-title-area {background: repeat scroll 0 0 #F33E4A}
@@ -539,11 +555,11 @@ width: 10px;
 }
 
 .site-branding-area {
-  background-color: #b1101a;
+  background-color: #f2f2f2;
 }
 
 .site-branding-area h1 {
-  color: #FFF;
+  color: #000;
 }
 
 
@@ -728,4 +744,8 @@ div.logo img {
 
 .padding-bottom-10 {
   padding-bottom: 10px;
+}
+
+#homepageSection {
+  font-size: 150%;
 }

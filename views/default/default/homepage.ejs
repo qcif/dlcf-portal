@@ -4,11 +4,19 @@
 
 <div class="default-page">
   <div class="header">
-    <h1 id="main-title" class="container">Welcome to the DMP Tool</h1>
-    <div class="container">This is the homepage of the DMP Tool. Some content needs to go here as well as a link to the researcher dashboard (still to be implemented)</div>
+    <h1 id="main-title" class="container">Research Activity Portal</h1>
+    <br/>
+    <br/>
+    <div id="homepageSection">
+    <div class="container">Welcome to the Research Activity Portal (RAP).</div>
+    <br/>
+    <div class="container">The RAP produces a simple research activity record via Redbox forms and integrates with the RAiD service to produce a persistent identifier for research projects.</div>
     <br/>
   </div>
-  <div class="main container clearfix">
-    <a href="/<%= typeof branding == 'undefined'? data.branding : branding %>/<%= typeof portal == 'undefined'? data.portal : portal %>/dashboard">Proceed to the dashboard</a>
+  </div>
+  <div id="homepageSection">
+    <div class="main container clearfix">
+      <a href="/<%= typeof branding == 'undefined'? data.branding : branding %>/<%= typeof portal == 'undefined'? data.portal : portal %>/dashboard">Proceed to the dashboard</a>
+    </div>
   </div>
 </div>

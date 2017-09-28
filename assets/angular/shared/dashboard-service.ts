@@ -30,6 +30,14 @@ export class DashboardService extends BaseService {
       .then((res: any) => this.formatDates(this.extractData(res)) as PlanTable);
   }
 
+  getRetiredPlans(pageNumber:number): Promise<PlanTable> {
+    var rows = 10;
+    var start = (pageNumber-1) * rows;
+    return this.http.get(`${this.brandingAndPortallUrl}/listPlans?state=retired&start=`+start+`&rows=`+rows, this.options)
+      .toPromise()
+      .then((res: any) => this.formatDates(this.extractData(res)) as PlanTable);
+  }
+
   formatDates(response:object){
     var items = response["items"];
     for (var i=0;i<items.length;i++){

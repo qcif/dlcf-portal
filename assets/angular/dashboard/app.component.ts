@@ -26,6 +26,7 @@ export class AppComponent extends LoadableComponent  {
   portal: string;
   draftPlans: PlanTable;
   activePlans: PlanTable;
+  retiredPlans: PlanTable;
   saveMsgType = "info";
   initSubs: any;
   initTracker: any = {draftLoaded:false, activeLoaded: false};
@@ -35,6 +36,7 @@ export class AppComponent extends LoadableComponent  {
     super();
     this.draftPlans = new PlanTable();
     this.activePlans = new PlanTable();
+    this.retiredPlans = new PlanTable();
     this.branding = elementRef.nativeElement.getAttribute('branding');
     this.portal = elementRef.nativeElement.getAttribute('portal');
     this.initSubs = dashboardService.waitForInit((initStat:boolean) => {
@@ -53,6 +55,13 @@ export class AppComponent extends LoadableComponent  {
            this.setLoading(false);
          }
        });
+       dashboardService.getRetiredPlans(1).then((retiredPlans: PlanTable) => {
+          this.setRetiredPlans(retiredPlans);
+          this.initTracker.activeLoaded = true;
+          if (this.hasLoaded()) {
+            this.setLoading(false);
+          }
+        });
     });
 
   }
@@ -75,6 +84,10 @@ export class AppComponent extends LoadableComponent  {
     this.dashboardService.getActivePlans(event.page).then((activePlans: PlanTable) => { this.setActivePlans(activePlans); });
   }
 
+  public retiredTablePageChanged(event:any):void {
+    this.dashboardService.getActivePlans(event.page).then((retiredPlans: PlanTable) => { this.setRetiredPlans(retiredPlans); });
+  }
+
   public setDraftPlans(draftPlans) {
     this.setDashboardTitle(draftPlans);
     this.draftPlans = draftPlans;
@@ -83,6 +96,11 @@ export class AppComponent extends LoadableComponent  {
   public setActivePlans(activePlans) {
     this.setDashboardTitle(activePlans);
     this.activePlans = activePlans;
+  }
+
+  public setRetiredPlans(retiredPlans) {
+    this.setDashboardTitle(retiredPlans);
+    this.retiredPlans = retiredPlans;
   }
 
 }

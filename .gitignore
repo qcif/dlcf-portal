@@ -151,3 +151,4 @@ support/acceptance-testing/*.iws
 *.iml
 *.ipr
 *.iws
+ConfigService.js

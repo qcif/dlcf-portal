@@ -23,6 +23,7 @@ import {Sails, Model} from "sails";
 
 declare var sails: Sails;
 declare var Role, BrandingConfig: Model;
+declare var ConfigService;
 declare var _this;
 
 export module Services {
@@ -31,7 +32,7 @@ export module Services {
    *
    *
    * @author <a target='_' href='https://github.com/shilob'>Shilo Banihit</a>
-   * 
+   *
    */
   export class Roles extends services.Services.Core.Service {
 
@@ -64,9 +65,9 @@ export module Services {
       return _this.getRoleWithName(roles, _this.getConfigRole('Admin').name);
     }
 
-    public getDefAuthenticatedRole = (roles) :Role => {
-      sails.log.verbose(_this.getRoleWithName(roles, _this.getConfigRole(sails.config.auth.aaf.defaultRole).name));
-      return _this.getRoleWithName(roles, _this.getConfigRole(sails.config.auth.aaf.defaultRole).name);
+    public getDefAuthenticatedRole = (brand:BrandingConfig) :Role => {
+      sails.log.verbose(_this.getRoleWithName(brand.roles, _this.getConfigRole(ConfigService.getBrand(brand.name, 'auth').aaf.defaultRole).name));
+      return _this.getRoleWithName(brand.roles, _this.getConfigRole(ConfigService.getBrand(brand.name, 'auth').aaf.defaultRole).name);
     }
 
     public getNestedRoles = (role, brandRoles) => {
@@ -85,8 +86,8 @@ export module Services {
       return roles;
     }
 
-    public getDefUnathenticatedRole = (roles) :Role => {
-      return _this.getRoleWithName(roles, _this.getConfigRole(sails.config.auth.defaultRole).name);
+    public getDefUnathenticatedRole = (brand: BrandingConfig) :Role => {
+      return _this.getRoleWithName(brand.roles, _this.getConfigRole(ConfigService.getBrand(brand.name, 'auth').defaultRole).name);
     }
 
     public getRolesWithBrand = (brand) :Observable<any> => {

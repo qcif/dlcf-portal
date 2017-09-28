@@ -30,7 +30,7 @@ module.exports.form = {
           class: "AnchorOrButton",
           viewOnly: true,
           definition: {
-            label: 'Edit this plan',
+            label: 'Edit this record',
             value: '/@branding/@portal/record/edit/@oid',
             cssClasses: 'btn btn-large btn-info margin-15',
             showPencil: true,
@@ -53,42 +53,25 @@ module.exports.form = {
             fields: [
               {
                 class : "Container",
-                editOnly: true,
                 definition: {
-                  id: "intro",
-                  label : "Introduction",
+                  id: "overview",
+                  label : "Overview",
                   active: true,
                   fields: [
                     {
                       class: 'Container',
                       compClass: 'TextBlockComponent',
                       definition: {
-                        value: 'Welcome to the Data Management Plan form',
-                        type: 'h3'
+                        value: 'Please fill out this overview form and select Save to save the record in draft form',
+                        type: 'label'
                       }
                     },
-                    {
-                      class: 'Container',
-                      compClass: 'TextBlockComponent',
-                      definition: {
-                        value: 'Some text to introduce the user to the form would go here.'
-                      }
-                    }
-                  ]
-                }
-              },
-              {
-                class : "Container",
-                definition: {
-                  id: "overview",
-                  label : "Overview",
-                  fields: [
                     {
                       class: 'TextField',
                       editOnly: true,
                       definition: {
                         name: 'raid',
-                        label: 'RAID (if you already have one)',
+                        label: 'RAiD (if you already have one)',
                         type: 'text'
                       }
                     },
@@ -188,6 +171,14 @@ module.exports.form = {
                   label : "Contributors",
                   fields: [
                     {
+                      class: 'Container',
+                      compClass: 'TextBlockComponent',
+                      definition: {
+                        value: 'Please add at least one contributor to the research activity and select Save when finished.',
+                        type: 'label'
+                      }
+                    },
+                    {
                      class: 'RepeatableContainer',
                      compClass: 'RepeatableContributorComponent',
                      definition: {
@@ -228,26 +219,26 @@ module.exports.form = {
                 editOnly: true,
                 definition: {
                   id: "submit",
-                  label : "Submit",
+                  label : "Activate",
                   fields: [
                     {
                       class: 'Container',
                       compClass: 'TextBlockComponent',
                       definition: {
-                        value: "Some text explaining to the user that once they've completed the form and are satisfied with the values, they can push the record to the \"active\" state which represents that the project is currently under way and that a RAID will be generated for the activity."
+                        value: "This record will remain in draft until you activate it. Please check your draft content and update it as needed."
                       }
                     },
                     {
                       class: 'Container',
                       compClass: 'TextBlockComponent',
                       definition: {
-                        value: "With future service provisioning functionality, some text explaining that process could go in here as well."
+                        value: "Once activated, your record will be assigned a Research Activity ID (RAiD), unless it already has one."
                       }
                     },
                     {
                       class: 'WorkflowStepButton',
                       definition: {
-                        label: "Make the plan active",
+                        label: "Activate Record",
                         cssClasses: "btn btn-primary",
                         isDisabledFn: 'isSaving',
                         targetStep: 'active'
@@ -286,7 +277,7 @@ module.exports.form = {
           class: "AnchorOrButton",
           viewOnly: true,
           definition: {
-            label: 'Edit this plan',
+            label: 'Edit this record',
             value: '/@branding/@portal/record/edit/@oid',
             cssClasses: 'btn btn-large btn-info margin-15',
             showPencil: true,
@@ -316,42 +307,17 @@ module.exports.form = {
             fields: [
               {
                 class : "Container",
-                editOnly: true,
-                definition: {
-                  id: "intro",
-                  label : "Introduction",
-                  active: true,
-                  fields: [
-                    {
-                      class: 'Container',
-                      compClass: 'TextBlockComponent',
-                      definition: {
-                        value: 'Welcome to the Data Management Plan form',
-                        type: 'h3'
-                      }
-                    },
-                    {
-                      class: 'Container',
-                      compClass: 'TextBlockComponent',
-                      definition: {
-                        value: 'Some text to introduce the user to the form would go here.'
-                      }
-                    }
-                  ]
-                }
-              },
-              {
-                class : "Container",
                 definition: {
                   id: "overview",
                   label : "Overview",
+                  active: true,
                   fields: [
                    {
                       class : "TextField",
                       editOnly: true,
                       definition : {
                         "name" : "raid",
-                        "label" : "RAID",
+                        "label" : "RAiD",
                         "type" : "text",
                         "readOnly" : true
                       }
@@ -491,26 +457,19 @@ module.exports.form = {
                 editOnly: true,
                 definition: {
                   id: "submit",
-                  label : "Submit",
+                  label : "Retire",
                   fields: [
                     {
                       class: 'Container',
                       compClass: 'TextBlockComponent',
                       definition: {
-                        value: "Some text explaining to the user that they can push the record to the \"retired\" state which represents that the project is inactive."
-                      }
-                    },
-                    {
-                      class: 'Container',
-                      compClass: 'TextBlockComponent',
-                      definition: {
-                        value: "With future service provisioning functionality, some text explaining that process could go in here as well."
+                        value: "This record may be retired to remove it from your list of Active Records. The RAiD is still valid for this activity."
                       }
                     },
                     {
                       class: 'WorkflowStepButton',
                       definition: {
-                        label: "Retire the plan",
+                        label: "Retire the record",
                         cssClasses: "btn btn-primary",
                         isDisabledFn: 'isSaving',
                         targetStep: 'retired'
@@ -549,7 +508,7 @@ module.exports.form = {
           class: "AnchorOrButton",
           viewOnly: true,
           definition: {
-            label: 'Edit this plan',
+            label: 'Edit this record',
             value: '/@branding/@portal/record/edit/@oid',
             cssClasses: 'btn btn-large btn-info margin-15',
             showPencil: true,
@@ -578,32 +537,6 @@ module.exports.form = {
           definition: {
 
             fields: [
-              {
-                class : "Container",
-                editOnly: true,
-                definition: {
-                  id: "intro",
-                  label : "Introduction",
-                  active: true,
-                  fields: [
-                    {
-                      class: 'Container',
-                      compClass: 'TextBlockComponent',
-                      definition: {
-                        value: 'Welcome to the Data Management Plan form',
-                        type: 'h3'
-                      }
-                    },
-                    {
-                      class: 'Container',
-                      compClass: 'TextBlockComponent',
-                      definition: {
-                        value: 'Some text to introduce the user to the form would go here.'
-                      }
-                    }
-                  ]
-                }
-              },
               {
                 class : "Container",
                 definition: {
