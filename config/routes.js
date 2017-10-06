@@ -100,5 +100,6 @@ module.exports.routes = {
   'get /:branding/:portal/export': 'typescript/ExportController.index',
   'get /:branding/:portal/export/record/download/:format': 'typescript/ExportController.downloadRecs',
   'get /:branding/:portal/asynch/start/:procId': 'typescript/AsynchController.start',
-  'get /:branding/:portal/asynch/progress/:progId': 'typescript/AsynchController.progress'
+  'get /:branding/:portal/asynch/progress/:progId': 'typescript/AsynchController.progress',
+  'post /:branding/:portal/branding/create': 'typescript/BrandingController.createBranding'
 };

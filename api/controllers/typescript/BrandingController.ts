@@ -26,6 +26,7 @@ export module Controllers {
     protected _exportedMethods: any = [
       'renderCss',
       'renderImage',
+      'createBranding'
     ];
 
     /**
@@ -40,6 +41,17 @@ export module Controllers {
      **************************************** Add custom methods **************************************
      **************************************************************************************************
      */
+
+     /**
+      * Creates a new branding
+      *
+      * @param req
+      * @param res
+      */
+     public createBranding(req, res) {
+       // the request body as a json object
+       var body = req.body;
+    }
 
     /**
      * Checks the mongodb for configured CSS for the branding
