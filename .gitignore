@@ -152,3 +152,4 @@ support/acceptance-testing/*.iws
 *.ipr
 *.iws
 ConfigService.js
+config/env/production.js
