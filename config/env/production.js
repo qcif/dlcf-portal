@@ -39,7 +39,7 @@ module.exports = {
       aaf: {
         loginUrl: process.env["aafLoginUrl"],
         opts: {
-          secretOrKey: process.env["aafLoginUrl"],
+          secretOrKey: process.env["aafSecretKey"],
           jsonWebTokenOptions: {
             issuer: 'https://rapid.aaf.edu.au',
             audience: 'https://www.raportal.org.au/default/rdmp/',
