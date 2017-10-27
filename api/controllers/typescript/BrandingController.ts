@@ -1,7 +1,7 @@
 import controller = require('../../../typescript/controllers/CoreController.js');
 import skipperGridFs = require('skipper-gridfs');
-import {Model} from "sails";
-import {Sails} from "sails";
+import { Model } from "sails";
+import { Sails } from "sails";
 
 
 declare var sails: Sails;
@@ -42,15 +42,24 @@ export module Controllers {
      **************************************************************************************************
      */
 
-     /**
-      * Creates a new branding
-      *
-      * @param req
-      * @param res
-      */
-     public createBranding(req, res) {
-       // the request body as a json object
-       var body = req.body;
+    /**
+     * Creates a new branding
+     *
+     * @param req
+     * @param res
+     */
+    public createBranding(req, res) {
+      BrandingConfig.create({
+        "name": req.body.name,
+        "css": req.body.css,
+        "roles": req.body.roles
+      }).exec(function(err, brandingConfig) {
+        if (err) {
+          return res.send(err);
+        } else {
+          return res.send(brandingConfig);
+        }
+      });
     }
 
     /**
