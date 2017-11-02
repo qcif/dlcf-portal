@@ -1,11 +1,12 @@
 import controller = require('../../../typescript/controllers/CoreController.js');
 import skipperGridFs = require('skipper-gridfs');
-import { Model } from "sails";
-import { Sails } from "sails";
+import { Model, Sails } from "sails";
+import { Observable } from 'rxjs/Rx';
 
 
 declare var sails: Sails;
-declare var BrandingConfig: Model;
+declare var BrandingConfig, User, Role: Model;
+declare var RolesService, BrandingService, UsersService;
 /**
  * Package that contains all Controllers.
  */
@@ -49,15 +50,37 @@ export module Controllers {
      * @param res
      */
     public createBranding(req, res) {
+      let rolesObject = req.body.roles.map((role) => {
+        return { "name": role };
+      });
+      console.log(rolesObject)
       BrandingConfig.create({
         "name": req.body.name,
         "css": req.body.css,
-        "roles": req.body.roles
+        "roles": rolesObject
       }).exec(function(err, brandingConfig) {
         if (err) {
+          sails.log.error("There was a problem with branding config.")
+          sails.log.error(err)
           return res.send(err);
         } else {
-          return res.send(brandingConfig);
+          sails.log.debug(brandingConfig)
+          var brand = BrandingService.getBrand(brandingConfig.name)
+          console.log(brand)
+          User.findOne({ username: 'admin' }).exec(function(err, user) {
+            if (err) {
+              sails.log.error('Error in finding user')
+              sails.log.error(err)
+            } else {
+              console.log(user)
+              let roleIds = brand.roles.map(role => {
+                return role.id
+              })
+              console.log(roleIds)
+              UsersService.updateUserRoles(user.id, roleIds)
+            }
+          });
+          return brandingConfig
         }
       });
     }
