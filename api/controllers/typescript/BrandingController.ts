@@ -58,6 +58,7 @@ export module Controllers {
       let rolesObject = req.body.roles.map((role) => {
         return { "name": role };
       });
+      let userObject = req.body.user
       BrandingConfig.create({
         "name": req.body.name,
         "css": req.body.css,
@@ -71,6 +72,22 @@ export module Controllers {
           });
         } else {
           sails.log.debug(brandingConfig);
+          if (userObject) {
+            userObject.roles = rolesObject
+            sails.log.debug(userObject)
+            User.create(userObject).exec(function(err, brandUser) {
+              if (err) {
+                sails.log.error(`Error in creating user: ${brandUser}`);
+                sails.log.error(err);
+                return res.status(400).send({
+                  message: err
+                });
+              } else {
+                sails.log.info(`Created new user: ${brandUser}`)
+                sails.log.debug(brandUser)
+              }
+            });
+          }
           User.findOne({ username: 'admin' }).exec(function(err, user) {
             if (err) {
               sails.log.error('Error in finding user');
