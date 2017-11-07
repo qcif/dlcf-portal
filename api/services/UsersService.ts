@@ -41,7 +41,8 @@ export module Services {
       'bootstrap',
       'updateUserRoles',
       'getUserWithId',
-      'hasRole'
+      'hasRole',
+      'addUserRoles'
     ];
 
     protected localAuthInit = () => {
@@ -223,6 +224,20 @@ export module Services {
           var curRoleIds = _.map(user.roles, 'id');
           _.map(newRoleIds, (roleId)=>{user.roles.add(roleId)});
           _.map(curRoleIds, (roleId)=>{if (!_.includes(newRoleIds, roleId)) user.roles.remove(roleId)});
+          return _this.getObservable(user, 'save', 'simplecb');
+        } else {
+          return Observable.throw(new Error('No such user with id:' + userid));
+        }
+      });
+    }
+
+    public addUserRoles = (userid, newRoleIds) => {
+      return _this.getUserWithId(userid).flatMap(user=>{
+        if (user) {
+          if (_.isEmpty(newRoleIds) || newRoleIds.length == 0){
+            return Observable.throw(new Error('Please assign at least one role'));
+          }
+          _.map(newRoleIds, (roleId)=>{user.roles.add(roleId)});
           return _this.getObservable(user, 'save', 'simplecb');
         } else {
           return Observable.throw(new Error('No such user with id:' + userid));
