@@ -41,13 +41,21 @@ export module Controllers {
      **************************************************************************************************
      */
 
+    public
+
     /**
      * Creates a new branding
      * This will also add the roles to the admin user by default
      * e.g, {
         "name": "test1",
         "css": ".site-branding-area h1 {color: blue;}",
-        "roles": ["Admin","Maintainer","Researcher","Guest"]
+        "roles": ["Admin","Maintainer","Researcher","Guest"],
+        "user": {
+          "username": "test",
+          "password": "test",
+          "type": "local",
+          "name": "Test user"
+        }
       }
      *
      * @param req
@@ -72,47 +80,56 @@ export module Controllers {
           });
         } else {
           sails.log.debug(brandingConfig);
-          if (userObject) {
-            userObject.roles = rolesObject
-            sails.log.debug(userObject)
-            User.create(userObject).exec(function(err, brandUser) {
-              if (err) {
-                sails.log.error(`Error in creating user: ${brandUser}`);
-                sails.log.error(err);
-                return res.status(400).send({
-                  message: err
-                });
-              } else {
-                sails.log.info(`Created new user: ${brandUser}`)
-                sails.log.debug(brandUser)
-              }
-            });
-          }
-          User.findOne({ username: 'admin' }).exec(function(err, user) {
+          BrandingConfig.findOne({ name: brandingConfig.name }).populate('roles').exec(function(err, branding) {
             if (err) {
-              sails.log.error('Error in finding user');
-              sails.log.error(err);
+              sails.log.error("Failed to find brand after brand insert");
+              sails.log.error(error);
               return res.status(400).send({
                 message: err
               });
             } else {
-              sails.log.debug(brandingConfig.name);
-              BrandingConfig.findOne({ name: brandingConfig.name }).populate('roles').exec(function(err, branding) {
+              sails.log.debug(branding)
+              let roleIds = branding.roles.map(role => {
+                return role.id;
+              })
+              // update local admin user with new roles/brand
+              User.findOne({ username: 'admin' }).exec(function(err, user) {
                 if (err) {
-                  sails.log.error("Failed to find brand after brand insert");
-                  sails.log.error(error);
+                  sails.log.error('Error in finding user');
+                  sails.log.error(err);
                   return res.status(400).send({
                     message: err
                   });
                 } else {
-                  sails.log.debug(branding)
-                  let roleIds = branding.roles.map(role => {
-                    return role.id;
-                  })
                   UsersService.addUserRoles(user.id, roleIds).subscribe(function(userForRole) {
-                    return res.status(200).send({
-                      message: "Saved OK."
-                    });
+                    // also create inst. user with new roles/brand
+                    if (userObject) {
+                      sails.log.debug(userObject)
+                      sails.log.info(`Updated local user: ${user.id}`)
+                      User.create(userObject).exec(function(err, brandUser) {
+                        if (err) {
+                          sails.log.error(`Error in creating user`);
+                          sails.log.error(err);
+                          return res.status(400).send({
+                            message: err
+                          });
+                        } else {
+                          sails.log.info(`Created new user: ${brandUser.id}`)
+                          UsersService.addUserRoles(brandUser.id, roleIds).subscribe(function(userForRole) {
+                            return res.status(200).send({
+                              message: "Saved OK."
+                            });
+                          }, function(error) {
+                            sails.log.error(`Failed to update new user, ${brandUser.id}, with roles: ${roleIds}`);
+                            sails.log.error(error);
+                            return res.status(500).send({
+                              message: err
+                            });
+                          });
+                          sails.log.debug(brandUser)
+                        }
+                      });
+                    }
                   }, function(error) {
                     sails.log.error("Failed to update user roles:");
                     sails.log.error(error);
