@@ -91,10 +91,18 @@ export module Controllers {
               })
               UsersService.addRolesForEachUser(usernames, roleIds).subscribe(function(usersForRoles) {
                 sails.log.debug(`counted users updated: ${usersForRoles.length}`)
-                return res.status(200).send({
-                  message: "Saved OK.",
-                  "number of users updated": usersForRoles.length
-                });
+                BrandingService.loadAvailableBrands().subscribe(function(brandings) {
+                  return res.status(200).send({
+                    message: "Saved OK.",
+                    "number of users updated": usersForRoles.length
+                  });
+                }, function(error) {
+                  sails.log.error(error);
+                  return res.status(400).send({
+                    message: error
+                  });
+                })
+
               }, function(error) {
                 sails.log.error(error);
                 return res.status(400).send({

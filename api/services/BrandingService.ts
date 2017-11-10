@@ -19,7 +19,7 @@
 
 import { Observable } from 'rxjs/Rx';
 import services = require('../../typescript/services/CoreService.js');
-import {Sails, Model} from "sails";
+import { Sails, Model } from "sails";
 
 declare var sails: Sails;
 declare var BrandingConfig: Model;
@@ -42,47 +42,48 @@ export module Services {
       'getBrandAndPortalPath'
     ];
 
-    protected availableBrandings: any =  []
+    protected availableBrandings: any = []
     protected brandings: any = []
-    protected dBrand = {name: 'default'};
+    protected dBrand = { name: 'default' };
 
     public bootstrap = (): Observable<any> => {
       return super.getObservable(BrandingConfig.findOne(_this.dBrand))
-                              .flatMap(defaultBrand => {
-                                if (_.isEmpty(defaultBrand)) {
-                                  // create default brand
-                                  sails.log.verbose("Default brand doesn't exist, creating...");
-                                  return super.getObservable(BrandingConfig.create(_this.dBrand))
-                                }
-                                sails.log.verbose("Default brand already exists...");
-                                return Observable.of(defaultBrand);
-                              })
-                              .flatMap(_this.loadAvailableBrands);
+        .flatMap(defaultBrand => {
+          if (_.isEmpty(defaultBrand)) {
+            // create default brand
+            sails.log.verbose("Default brand doesn't exist, creating...");
+            return super.getObservable(BrandingConfig.create(_this.dBrand))
+          }
+          sails.log.verbose("Default brand already exists...");
+          return Observable.of(defaultBrand);
+        })
+        .flatMap(_this.loadAvailableBrands);
     }
 
-    public loadAvailableBrands = (defBrand) :Observable<any> => {
+    public loadAvailableBrands = (defBrand): Observable<any> => {
       sails.log.verbose("Loading available brands......");
       // Find all the BrandingConfig we have and add them to the availableBrandings array.
       // A policy is configured to reject any branding values not present in this array.
       return super.getObservable(BrandingConfig.find({}).populate('roles'))
-      .flatMap(brands => {
-        _this.brandings = brands;
-        _this.availableBrandings = _.map(_this.brandings, 'name');
-        var defBrandEntry = _this.getDefault();
-        if (defBrandEntry == null) {
-          sails.log.error("Failed to load default brand!");
-          return Observable.throw(new Error("Failed to load default brand!"));
-        }
-        return Observable.of(defBrandEntry);
-      });
+        .flatMap(brands => {
+          _this.brandings = brands;
+          _this.availableBrandings = _.map(_this.brandings, 'name');
+          sails.log.debug(`loaded brands: ${_this.availableBrandings}`)
+          var defBrandEntry = _this.getDefault();
+          if (defBrandEntry == null) {
+            sails.log.error("Failed to load default brand!");
+            return Observable.throw(new Error("Failed to load default brand!"));
+          }
+          return Observable.of(defBrandEntry);
+        });
     }
 
-    public getDefault = () :BrandingConfig => {
-      return _.find(_this.brandings, (o) => {return o.name == _this.dBrand.name});
+    public getDefault = (): BrandingConfig => {
+      return _.find(_this.brandings, (o) => { return o.name == _this.dBrand.name });
     }
 
-    public getBrand = (name) :BrandConfig => {
-      return _.find(_this.brandings, (o) => {return o.name == name});
+    public getBrand = (name): BrandConfig => {
+      return _.find(_this.brandings, (o) => { return o.name == name });
     }
 
     public getAvailable = () => {
