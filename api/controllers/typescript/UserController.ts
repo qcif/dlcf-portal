@@ -84,7 +84,8 @@ export module Controllers {
         if (req.session.redirUrl) {
           return req.session.redirUrl;
         } else {
-          return `${BrandingService.getBrandAndPortalPath(req)}/${sails.config.auth[req.session.branding].local.postLoginRedir}`;
+          let branding = sails.config.auth[req.session.branding] || sails.config.auth[sails.config.auth.defaultBrand]
+          return `${BrandingService.getBrandAndPortalPath(req)}/${branding.local.postLoginRedir}`;
         }
       }
 
