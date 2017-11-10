@@ -41,8 +41,6 @@ export module Controllers {
      **************************************************************************************************
      */
 
-    public
-
     /**
      * Creates a new branding
      * This will also add the roles to the admin user by default
@@ -50,23 +48,16 @@ export module Controllers {
         "name": "test1",
         "css": ".site-branding-area h1 {color: blue;}",
         "roles": ["Admin","Maintainer","Researcher","Guest"],
-        "user": {
-          "username": "test",
-          "password": "test",
-          "type": "local",
-          "name": "Test user"
-        }
+        "user": "test"
       }
      *
      * @param req
      * @param res
      */
     public createBranding(req, res) {
-
       let rolesObject = req.body.roles.map((role) => {
         return { "name": role };
       });
-      let userObject = req.body.user
       BrandingConfig.create({
         "name": req.body.name,
         "css": req.body.css,
@@ -89,57 +80,34 @@ export module Controllers {
               });
             } else {
               sails.log.debug(branding)
+              // update local admin user with new roles/brand
+              let usernames = ['admin']
+              if (req.body.user) {
+                usernames.push(req.body.user)
+              }
+              sails.log.debug(`usernames to find are: ${usernames}`)
               let roleIds = branding.roles.map(role => {
                 return role.id;
               })
-              // update local admin user with new roles/brand
-              User.findOne({ username: 'admin' }).exec(function(err, user) {
-                if (err) {
-                  sails.log.error('Error in finding user');
-                  sails.log.error(err);
-                  return res.status(400).send({
-                    message: err
-                  });
-                } else {
-                  UsersService.addUserRoles(user.id, roleIds).subscribe(function(userForRole) {
-                    // also create inst. user with new roles/brand
-                    if (userObject) {
-                      sails.log.debug(userObject)
-                      sails.log.info(`Updated local user: ${user.id}`)
-                      User.create(userObject).exec(function(err, brandUser) {
-                        if (err) {
-                          sails.log.error(`Error in creating user`);
-                          sails.log.error(err);
-                          return res.status(400).send({
-                            message: err
-                          });
-                        } else {
-                          sails.log.info(`Created new user: ${brandUser.id}`)
-                          UsersService.addUserRoles(brandUser.id, roleIds).subscribe(function(userForRole) {
-                            return res.status(200).send({
-                              message: "Saved OK."
-                            });
-                          }, function(error) {
-                            sails.log.error(`Failed to update new user, ${brandUser.id}, with roles: ${roleIds}`);
-                            sails.log.error(error);
-                            return res.status(500).send({
-                              message: err
-                            });
-                          });
-                          sails.log.debug(brandUser)
-                        }
-                      });
-                    }
-                  }, function(error) {
-                    sails.log.error("Failed to update user roles:");
-                    sails.log.error(error);
-                    return res.status(500).send({
-                      message: err
-                    });
-                  });
-                }
+              UsersService.addRolesForEachUser(usernames, roleIds).subscribe(function(usersForRoles) {
+                sails.log.debug(`counted users updated: ${usersForRoles.length}`)
+                return res.status(200).send({
+                  message: "Saved OK.",
+                  "number of users updated": usersForRoles.length
+                });
+              }, function(error) {
+                sails.log.error(error);
+                return res.status(400).send({
+                  message: error
+                });
               });
             }
+          }, function(error) {
+            sails.log.error("Failed to update user roles:");
+            sails.log.error(error);
+            return res.status(500).send({
+              message: err
+            });
           });
         }
       });
