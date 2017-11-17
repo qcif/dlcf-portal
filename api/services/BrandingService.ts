@@ -86,6 +86,10 @@ export module Services {
       return _.find(_this.brandings, (o) => { return o.name == name });
     }
 
+    public matchBrandFromRoles = (name): BrandConfig => {
+      return _.find(_this.brandings, (o) => { return o.name == name });
+    }
+
     public getAvailable = () => {
       return _this.availableBrandings;
     }

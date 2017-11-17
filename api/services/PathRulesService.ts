@@ -19,7 +19,7 @@
 
 import { Observable } from 'rxjs/Rx';
 import services = require('../../typescript/services/CoreService.js');
-import {Sails, Model} from "sails";
+import { Sails, Model } from "sails";
 import UrlPattern = require('url-pattern');
 
 declare var sails: Sails;
@@ -41,7 +41,8 @@ export module Services {
       'bootstrap',
       'getRulesFromPath',
       'canRead',
-      'canWrite'
+      'canWrite',
+      'updateBrandPath'
     ]
     // compromising, will cache for speed...
     protected pathRules;
@@ -61,19 +62,19 @@ export module Services {
               rule.branding = defBrand.id;
             });
             return Observable.from(seedRules)
-                           .flatMap(rule => {
-                             return super.getObservable(PathRule.create(rule));
-                           })
-                           .last()
-                           .flatMap(rule => {
-                             return this.loadRules();
-                           })
-                           .flatMap(rules => {
-                             return Observable.of(rules);
-                           });
+              .flatMap(rule => {
+                return super.getObservable(PathRule.create(rule));
+              })
+              .last()
+              .flatMap(rule => {
+                return this.loadRules();
+              })
+              .flatMap(rules => {
+                return Observable.of(rules);
+              });
           } else {
-              sails.log.verbose("Rules exists.");
-              return Observable.of(rules);
+            sails.log.verbose("Rules exists.");
+            return Observable.of(rules);
           }
         });
     }
@@ -83,24 +84,24 @@ export module Services {
     */
     public loadRules = () => {
       return super.getObservable(PathRule.find({}).populate('role').populate('branding'))
-                  .flatMap(rules => {
-                    this.pathRules = rules;
-                    this.rulePatterns = {};
-                    _.forEach(rules, (rule) => {
-                      this.rulePatterns[rule.path] = {pattern: new UrlPattern(rule.path), rule: rule};
-                    });
-                    return Observable.of(this.pathRules);
-                  });
+        .flatMap(rules => {
+          this.pathRules = rules;
+          this.rulePatterns = {};
+          _.forEach(rules, (rule) => {
+            this.rulePatterns[rule.path] = { pattern: new UrlPattern(rule.path), rule: rule };
+          });
+          return Observable.of(this.pathRules);
+        });
     }
     /**
     * Check path using cached rules...
     @return PathRule[]
     */
     public getRulesFromPath = (path, brand) => {
-      var matchedRulePatterns =  _.filter(this.rulePatterns, (rulePattern) => {
+      var matchedRulePatterns = _.filter(this.rulePatterns, (rulePattern) => {
         var pattern = rulePattern.pattern;
         // matching by path and brand, meaning only brand-specific rules apply
-        return pattern.match(path) && rulePattern.rule.branding.id  == brand.id;
+        return pattern.match(path) && rulePattern.rule.branding.id == brand.id;
       });
       if (matchedRulePatterns && matchedRulePatterns.length > 0) {
         return _.map(matchedRulePatterns, 'rule');
@@ -131,6 +132,49 @@ export module Services {
       }).length > 0;
     }
 
+    public updateBrandPath = (brandName) => {
+      let brandingToUpdate = BrandingService.getBrand(brandName);
+      return super.getObservable(PathRule.find({ branding: BrandingService.getDefault().id }).populate('role')).flatMap(pathrules => {
+        sails.log.debug('brand to update...');
+        sails.log.debug(brandingToUpdate);
+        return _this.createPathRuleFromBrand(pathrules, brandingToUpdate);
+      });
+    }
+
+    public createPathRuleFromBrand = (pathrules, brandingToUpdate) => {
+      return Observable.forkJoin(
+        pathrules.map(pathrule => {
+          return this.createPathRule(pathrule, brandingToUpdate)
+        }))
+    }
+
+    public createPathRule = (pathrule, brandingToUpdate) => {
+      let brandRole = this.matchRoleToPathRoleByName(brandingToUpdate.roles, pathrule);
+      sails.log.debug('received matching update brand role...');
+      sails.log.debug(brandRole);
+      return super.getObservable(PathRule.create(
+        this.createPathRoleObject(pathrule, brandRole, brandingToUpdate)
+      ));
+    }
+
+    public matchRoleToPathRoleByName = (roles, pathrule) => {
+      return _.find(roles, br => {
+        sails.log.debug(`path role name is ${pathrule.role.name}`);
+        sails.log.debug(`brand role name is ${br.name}`);
+        return br.name === pathrule.role.name;
+      });
+    }
+
+    public createPathRoleObject = (pathrule, brandRole, brandingToUpdate) => {
+      let object = { path: pathrule.path, role: brandRole.id, branding: brandingToUpdate.id }
+      if (pathrule.can_update) {
+        object.can_update = pathrule.can_update
+      }
+      if (pathrule.can_read) {
+        object.can_read = pathrule.can_read
+      }
+      return object
+    }
   }
 }
 

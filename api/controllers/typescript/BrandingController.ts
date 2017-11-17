@@ -2,8 +2,8 @@ declare var module;
 declare var sails;
 import { Observable } from 'rxjs/Rx';
 import { Model, Sails } from "sails";
-declare var BrandingConfig, User, Role: Model;
-declare var RolesService, BrandingService, UsersService;
+declare var BrandingConfig, User, Role, PathRule: Model;
+declare var RolesService, BrandingService, UsersService, PathRulesService;
 
 import skipperGridFs = require('skipper-gridfs');
 import controller = require('../../../typescript/controllers/CoreController.js');
@@ -92,9 +92,19 @@ export module Controllers {
               UsersService.addRolesForEachUser(usernames, roleIds).subscribe(function(usersForRoles) {
                 sails.log.debug(`counted users updated: ${usersForRoles.length}`)
                 BrandingService.loadAvailableBrands().subscribe(function(brandings) {
-                  return res.status(200).send({
-                    message: "Saved OK.",
-                    "number of users updated": usersForRoles.length
+                  let errorMessage = "There was a problem updating path rules from brand.";
+                  PathRulesService.updateBrandPath(req.body.name).subscribe(function(usersForRoles) {
+                    sails.log.debug(`number of path rules created: ${pathRulesCreated.length}`)
+                    return res.status(200).send({
+                      message: "Saved OK.",
+                      "number of users updated": usersForRoles.length,
+                      "number of brand paths created": pathRulesCreated.length
+                    });
+                  }, function(error) {
+                    sails.log.error(error);
+                    return res.status(400).send({
+                      message: error
+                    });
                   });
                 }, function(error) {
                   sails.log.error(error);
