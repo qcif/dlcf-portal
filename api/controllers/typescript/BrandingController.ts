@@ -93,7 +93,7 @@ export module Controllers {
                 sails.log.debug(`counted users updated: ${usersForRoles.length}`)
                 BrandingService.loadAvailableBrands().subscribe(function(brandings) {
                   let errorMessage = "There was a problem updating path rules from brand.";
-                  PathRulesService.updateBrandPath(req.body.name).subscribe(function(usersForRoles) {
+                  PathRulesService.updateBrandPath(req.body.name).subscribe(function(pathRulesCreated) {
                     sails.log.debug(`number of path rules created: ${pathRulesCreated.length}`)
                     return res.status(200).send({
                       message: "Saved OK.",
