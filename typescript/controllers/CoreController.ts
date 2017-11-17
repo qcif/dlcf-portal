@@ -151,7 +151,7 @@ export module Controllers.Core {
       if (resolvedView == null) {
         viewToTest = sails.config.appPath + "/views/default/" + portal + "/" + view + ".ejs";
         if (pathExists.sync(viewToTest)) {
-          resolvedView = "/default/" + portal + "/" + view;
+          resolvedView = "default/" + portal + "/" + view;
         }
       }
 
