@@ -178,7 +178,7 @@ export module Controllers.Core {
       if (resolvedLayout == null) {
         layoutToTest = sails.config.appPath + "/views/default/" + portal + "/layout.ejs";
         if (pathExists.sync(layoutToTest)) {
-          resolvedLayout = "/default/" + portal + "/layout";
+          resolvedLayout = "default/" + portal + "/layout";
         }
       }
 
