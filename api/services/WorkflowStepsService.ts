@@ -38,7 +38,8 @@ export module Services {
       'bootstrap',
       'create',
       'get',
-      'getFirst'
+      'getFirst',
+      'updateBrandWorkflowStep'
     ];
 
     public bootstrap = (defBrand) => {
@@ -71,6 +72,37 @@ export module Services {
         branding: brand.id,
         starting: starting
       }));
+    }
+
+    public updateBrandWorkflowStep = (brandName) => {
+      let brandingToUpdate = BrandingService.getBrand(brandName);
+      return super.getObservable(WorkflowStep.find({ branding: BrandingService.getDefault().id })).flatMap(workflowSteps => {
+        sails.log.debug('brand to update...');
+        sails.log.debug(brandingToUpdate);
+        sails.log.debug('workflow steps are:');
+        sails.log.debug(workflowSteps);
+        return _this.createWorkflowStepsFromBrand(workflowSteps, brandingToUpdate);
+      });
+    }
+
+    public createWorkflowStepsFromBrand = (workflowSteps, brandingToUpdate) => {
+      return Observable.forkJoin(
+        workflowSteps.map(workflowStep => {
+          sails.log.debug('next workflow step');
+          sails.log.debug(workflowStep);
+          return this.createWorkflowStep(workflowStep, brandingToUpdate);
+        }))
+    }
+
+    public createWorkflowStep = (workflowStep, brandingToUpdate) => {
+      return super.getObservable(WorkflowStep.create(
+        this.createWorkflowStepObject(workflowStep, brandingToUpdate);
+      ));
+    }
+
+    public createWorkflowStepObject = (workflowStep, brandingToUpdate) => {
+      let object = { name: workflowStep.name, config: workflowStep.config, branding: brandingToUpdate.id, starting: workflowStep.starting };
+      return object;
     }
 
     public get(brand, name) {

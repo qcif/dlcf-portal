@@ -3,7 +3,7 @@ declare var sails;
 import { Observable } from 'rxjs/Rx';
 import { Model, Sails } from "sails";
 declare var BrandingConfig, User, Role, PathRule: Model;
-declare var RolesService, BrandingService, UsersService, PathRulesService;
+declare var RolesService, BrandingService, UsersService, PathRulesService, WorkflowStepsService;
 
 import skipperGridFs = require('skipper-gridfs');
 import controller = require('../../../typescript/controllers/CoreController.js');
@@ -92,13 +92,21 @@ export module Controllers {
               UsersService.addRolesForEachUser(usernames, roleIds).subscribe(function(usersForRoles) {
                 sails.log.debug(`counted users updated: ${usersForRoles.length}`)
                 BrandingService.loadAvailableBrands().subscribe(function(brandings) {
-                  let errorMessage = "There was a problem updating path rules from brand.";
                   PathRulesService.updateBrandPath(req.body.name).subscribe(function(pathRulesCreated) {
-                    sails.log.debug(`number of path rules created: ${pathRulesCreated.length}`)
-                    return res.status(200).send({
-                      message: "Saved OK.",
-                      "number of users updated": usersForRoles.length,
-                      "number of brand paths created": pathRulesCreated.length
+                    sails.log.debug('pathrules service completed successfully')
+                    WorkflowStepsService.updateBrandWorkflowStep(req.body.name).subscribe(function(workflowStepsCreated) {
+                      sails.log.debug('workflowsteps service completed successfully')
+                      return res.status(200).send({
+                        message: "Saved OK.",
+                        "number of users updated": usersForRoles.length,
+                        "number of brand paths created": pathRulesCreated.length
+                        "number of workflow steps created": workflowStepsCreated.length
+                      });
+                    }, function(error) {
+                      sails.log.error(error);
+                      return res.status(400).send({
+                        message: error
+                      });
                     });
                   }, function(error) {
                     sails.log.error(error);
