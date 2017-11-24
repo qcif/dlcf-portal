@@ -80,25 +80,26 @@ export module Controllers {
         res.redirect(this.getPostLoginUrl(req, res));
       }
 
-      // protected getPostLoginUrl(req, res) {
-      //   if (req.session.redirUrl) {
-      //     return req.session.redirUrl;
-      //   } else {
-      //     let branding = sails.config.auth[req.session.branding] || sails.config.auth[sails.config.auth.defaultBrand]
-      //     return `${BrandingService.getBrandAndPortalPath(req)}/${branding.local.postLoginRedir}`;
-      //   }
-      // }
       protected getPostLoginUrl(req, res) {
-        const branding = req.body.branding;
-        const portal = req.body.portal;
-        sails.log.debug(`Login local using branding: ${branding} and portal: ${portal}`);
         if (req.session.redirUrl) {
           return req.session.redirUrl;
         } else {
-          let brandingConfig = sails.config.auth[branding] || sails.config.auth[sails.config.auth.defaultBrand]
-          return `/${branding}/${portal}/${brandingConfig.local.postLoginRedir}`;
+          let branding = sails.config.auth[req.session.branding] || sails.config.auth[sails.config.auth.defaultBrand]
+          return `${BrandingService.getBrandAndPortalPath(req)}/${branding.local.postLoginRedir}`;
         }
       }
+      //debug only
+      // protected getPostLoginUrl(req, res) {
+      //   const branding = req.body.branding;
+      //   const portal = req.body.portal;
+      //   sails.log.debug(`Login local using branding: ${branding} and portal: ${portal}`);
+      //   if (req.session.redirUrl) {
+      //     return req.session.redirUrl;
+      //   } else {
+      //     let brandingConfig = sails.config.auth[branding] || sails.config.auth[sails.config.auth.defaultBrand]
+      //     return `/${branding}/${portal}/${brandingConfig.local.postLoginRedir}`;
+      //   }
+      // }
 
       public logout(req, res) {
         req.logout();
