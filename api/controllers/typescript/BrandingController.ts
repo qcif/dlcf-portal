@@ -3,7 +3,7 @@ declare var sails;
 import { Observable } from 'rxjs/Rx';
 import { Model, Sails } from "sails";
 declare var BrandingConfig, User, Role, PathRule: Model;
-declare var RolesService, BrandingService, UsersService, PathRulesService, WorkflowStepsService;
+declare var RolesService, BrandingService, UsersService, PathRulesService, WorkflowStepsService, FormsService;
 
 import skipperGridFs = require('skipper-gridfs');
 import controller = require('../../../typescript/controllers/CoreController.js');
@@ -96,11 +96,20 @@ export module Controllers {
                     sails.log.debug('pathrules service completed successfully')
                     WorkflowStepsService.updateBrandWorkflowStep(req.body.name).subscribe(function(workflowStepsCreated) {
                       sails.log.debug('workflowsteps service completed successfully')
-                      return res.status(200).send({
-                        message: "Saved OK.",
-                        "number of users updated": usersForRoles.length,
-                        "number of brand paths created": pathRulesCreated.length
-                        "number of workflow steps created": workflowStepsCreated.length
+                      FormsService.updateBrandForms(req.body.name).subscribe(function(formsCreated) {
+                        sails.log.debug('forms service completed successfully')
+                        return res.status(200).send({
+                          message: "Saved OK.",
+                          "number of users updated": usersForRoles.length,
+                          "number of brand paths created": pathRulesCreated.length,
+                          "number of workflow steps created": workflowStepsCreated.length,
+                          "number of forms created": formsCreated.length
+                        });
+                      }, function(error) {
+                        sails.log.error(error);
+                        return res.status(400).send({
+                          message: error
+                        });
                       });
                     }, function(error) {
                       sails.log.error(error);

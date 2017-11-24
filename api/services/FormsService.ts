@@ -37,7 +37,8 @@ export module Services {
     protected _exportedMethods: any = [
       'bootstrap',
       'getForm',
-      'flattenFields'
+      'flattenFields',
+      'updateBrandForms'
     ];
 
     public bootstrap = (defBrand): Observable<any> => {
@@ -105,6 +106,39 @@ export module Services {
           this.flattenFields(f.fields, fieldArr);
         }
       });
+    }
+    public updateBrandForms = (brandName) => {
+      let brandingToUpdate = BrandingService.getBrand(brandName);
+      return super.getObservable(Form.find({ branding: BrandingService.getDefault().id })).flatMap(forms => {
+        sails.log.debug('brand to update...');
+        sails.log.debug(brandingToUpdate);
+        sails.log.debug('forms are:');
+        sails.log.debug(forms);
+        return _this.createFormsFromBrand(forms, brandingToUpdate);
+      });
+    }
+
+    public createFormsFromBrand = (forms, brandingToUpdate) => {
+      return Observable.forkJoin(
+        forms.map(form => {
+          sails.log.debug('next form');
+          sails.log.debug(form);
+          return this.createForms(form, brandingToUpdate);
+        }))
+    }
+
+    public createForms = (form, brandingToUpdate) => {
+      return super.getObservable(Form.create(
+        this.createFormsObject(form, brandingToUpdate);
+      ));
+    }
+
+    public createFormsObject = (form, brandingToUpdate) => {
+      let defaultBrandingName = BrandingService.getDefault().name
+      let formName = form.name.replace(defaultBrandingName, brandingToUpdate.name);
+      sails.log.debug(`next form name is: ${formName}`)
+      let object = { name: formName, fields: form.fields, branding: brandingToUpdate.id, type: form.type, messages: form.messages, viewCssClasses: form.viewCssClasses, editCssClasses: form.editCssClasses, skipValidationOnSave: form.skipValidationOnSave };
+      return object;
     }
   }
 }
