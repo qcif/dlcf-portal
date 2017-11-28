@@ -23,6 +23,7 @@ import {Sails, Model} from "sails";
 
 declare var sails: Sails;
 declare var WorkflowStep: Model;
+declare var BrandingService;
 declare var _this;
 
 export module Services {
@@ -101,8 +102,22 @@ export module Services {
     }
 
     public createWorkflowStepObject = (workflowStep, brandingToUpdate) => {
-      let object = { name: workflowStep.name, config: workflowStep.config, branding: brandingToUpdate.id, starting: workflowStep.starting };
+      let updatedConfig = this.updateWorkflowStepConfigForBrand(workflowStep.config, brandingToUpdate)
+      let object = { name: workflowStep.name, config: updatedConfig, branding: brandingToUpdate.id, starting: workflowStep.starting };
       return object;
+    }
+
+    public updateWorkflowStepConfigForBrand = (config, brandingToUpdate) => {
+      let updatedConfig = {}
+      _.assign(updatedConfig, config)
+      if (typeof updatedConfig.form === 'string') {
+        sails.log.debug("Found config form value. Replacing with brand equivalent...")
+        let defaultBrandingName = BrandingService.getDefault().name
+        let updatedFormName = updatedConfig.form.replace(defaultBrandingName, brandingToUpdate.name)
+        sails.log.debug(`updated form name is: ${updatedFormName}`)
+        _.set(updatedConfig, 'form', updatedFormName)
+      }
+      return updatedConfig
     }
 
     public get(brand, name) {
