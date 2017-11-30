@@ -45,8 +45,7 @@ export class RecordsService extends BaseService {
     if (_.isEmpty(oid)) {
       oid = null;
     }
-    sails.log.debug(`default form from config is: ${this.config.defaultForm}`)
-    return this.getFormFieldsMeta(this.config.defaultForm, editable, oid).then((form:any) => {
+    return this.getFormFieldsMeta(this.config.brandForm, editable, oid).then((form:any) => {
       return this.fcs.getLookupData(form.fieldsMeta).flatMap((fields:any) => {
         form.fieldsMata = fields;
         return Observable.of(form);
