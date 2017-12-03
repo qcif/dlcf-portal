@@ -61,6 +61,11 @@ module.exports.auth = {
       path: '/*/*/asynch(/*)',
       role: 'Admin',
       can_update:true
+    },
+    {
+      path: '/*/*/branding/create',
+      role: 'Admin',
+      can_update:true
     }
   ],
   // Bootstrap END
