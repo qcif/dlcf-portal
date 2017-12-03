@@ -42,7 +42,8 @@ export module Services {
       'getRulesFromPath',
       'canRead',
       'canWrite',
-      'updateBrandPath'
+      'updateBrandPath',
+      'loadRules'
     ]
     // compromising, will cache for speed...
     protected pathRules;
@@ -88,7 +89,10 @@ export module Services {
           this.pathRules = rules;
           this.rulePatterns = {};
           _.forEach(rules, (rule) => {
-            this.rulePatterns[rule.path] = { pattern: new UrlPattern(rule.path), rule: rule };
+            if (this.rulePatterns[rule.path] == null) {
+              this.rulePatterns[rule.path] = { pattern: new UrlPattern(rule.path), rules: [] }
+            }
+            this.rulePatterns[rule.path].rules.push(rule);
           });
           return Observable.of(this.pathRules);
         });
@@ -100,35 +104,55 @@ export module Services {
     public getRulesFromPath = (path, brand) => {
       var matchedRulePatterns = _.filter(this.rulePatterns, (rulePattern) => {
         var pattern = rulePattern.pattern;
+
+        var matchCount = 0;
         // matching by path and brand, meaning only brand-specific rules apply
-        return pattern.match(path) && rulePattern.rule.branding.id == brand.id;
+        if (pattern.match(path)) {
+          _.forEach(rulePattern.rules, function(rule) {
+            if(rule.branding.id == brand.id) {
+              matchCount++;
+            }
+          });
+          if(matchCount == 0) {
+            return false;
+          }
+          return true;
+        }
+
       });
       if (matchedRulePatterns && matchedRulePatterns.length > 0) {
-        return _.map(matchedRulePatterns, 'rule');
+        return _.pluck(matchedRulePatterns, 'rules');
       } else {
         return null;
       }
     }
 
     public canRead = (rules, roles, brandName) => {
-      var matchRule = _.filter(rules, (rule) => {
+      var matchRule = _.filter(rules, (brandingRules) => {
+
         // user must have this role, and at least can_read
         var userRole = _.find(roles, (role) => {
           // match by id and branding
-          return role.id == rule.role.id && rule.branding.name == brandName;
+          var matches = _.filter(brandingRules, function(rule) {
+            return role.id == rule.role.id && rule.branding.name == brandName && (rule.can_read == true || rule.can_update == true);
+          });
+          return matches.length > 0;
         });
-        return userRole != undefined && (rule.can_read == true || rule.can_update == true);
+        return userRole != undefined ;
       });
       return matchRule.length > 0;
     }
 
     public canWrite = (rules, roles, brandName) => {
-      return _.filter(rules, (rule) => {
+      return _.filter(rules, (brandingRules) => {
         var userRole = _.find(roles, (role) => {
           // match by id and branding
-          return role.id == rule.role.id && rule.branding.name == brandName;
+          var matches = _.filter(brandingRules, function(rule) {
+            return role.id == rule.role.id && rule.branding.name == brandName &&  rule.can_update == true;
+          });
+          return matches.length > 0;
         });
-        return userRole != undefined && (rule.can_update == true);
+        return userRole != undefined ;
       }).length > 0;
     }
 

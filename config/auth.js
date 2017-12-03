@@ -68,7 +68,7 @@ module.exports.auth = {
   defaultPortal: 'rdmp',
   loginPath: 'user/login',
   hiddenRoles: [],
-  postLogoutRedir: '/',
+  postLogoutRedir: function(branding,portal) {return `/${branding}/${portal}/home`},
   // Brand-Portal Specific configuration
   default: {
     defaultRole: 'Guest', // default when unauthenticated

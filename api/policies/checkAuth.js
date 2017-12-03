@@ -5,8 +5,8 @@ module.exports = function(req, res, next) {
     return res.notFound({branding: sails.config.auth.defaultBrand, portal: sails.config.auth.defaultPortal});
   }
   var roles;
-  // sails.log.verbose("User is....");
-  // sails.log.verbose(req.user);
+  // sails.log.error("User is....");
+  // sails.log.error(req.user);
   if (req.isAuthenticated()) {
     roles = req.user.roles;
   } else {
@@ -18,8 +18,8 @@ module.exports = function(req, res, next) {
   var rules = PathRulesService.getRulesFromPath(req.path, brand);
   if (rules) {
     // populate variables if this user has a role that can read or write...
-    // sails.log.verbose("Has rules for path:" + req.path);
-    // sails.log.verbose(roles);
+    // sails.log.error("Has rules for path:" + req.path);
+    // sails.log.error(rules);
     var canRead = PathRulesService.canRead(rules, roles, brand.name);
     // TODO: add assertions...
     if (!canRead) {
@@ -30,7 +30,7 @@ module.exports = function(req, res, next) {
       }
     }
   } else {
-    sails.log.verbose("No rules for path:" + req.path);
+    sails.log.error("No rules for path:" + req.path);
   }
   // no rules can proceed...
   return next();

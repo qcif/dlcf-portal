@@ -74,7 +74,7 @@ export module Controllers {
           BrandingConfig.findOne({ name: brandingConfig.name }).populate('roles').exec(function(err, branding) {
             if (err) {
               sails.log.error("Failed to find brand after brand insert");
-              sails.log.error(error);
+              sails.log.error(err);
               return res.status(400).send({
                 message: err
               });
@@ -98,6 +98,7 @@ export module Controllers {
                       sails.log.debug('workflowsteps service completed successfully')
                       FormsService.updateBrandForms(req.body.name).subscribe(function(formsCreated) {
                         sails.log.debug('forms service completed successfully')
+                        PathRulesService.loadRules().subscribe(rules => {});
                         return res.status(200).send({
                           message: "Saved OK.",
                           "number of users updated": usersForRoles.length,
