@@ -113,17 +113,19 @@ export module Services {
         var aafDefRoles = _.map(RolesService.getNestedRoles(RolesService.getDefAuthenticatedRole(brand).name, brand.roles), 'id');
         var aafUsernameField = authConfig.aaf.usernameField;
         const userName = Buffer.from(jwt_payload[aafUsernameField]).toString('base64');
-        User.findOne({ username: userName }, function(err, user) {
+        User.findOne({ username: userName }).populate('roles').exec(function(err, user) {
           sails.log.verbose("At AAF Strategy verify, payload:");
           sails.log.verbose(jwt_payload);
           sails.log.verbose("User:");
           sails.log.verbose(user);
           sails.log.verbose("Error:");
           sails.log.verbose(err);
+
           if (err) {
             return done(err, false);
           }
           if (user) {
+            user = _this._addRolesForNewBrand(user, aafDefRoles, brand);
             done(null, user);
           } else {
             sails.log.verbose("At AAF Strategy verify, creating new user...");
@@ -276,6 +278,29 @@ export module Services {
           return Observable.throw(new Error('No such user with id:' + userid));
         }
       });
+    }
+
+    private _addRolesForNewBrand(user, roles, brand) {
+        var rolesPresent = _.filter(user.roles, (role) => {
+          return role.branding == brand.id;
+        });
+        //Already roles present for this brand, they've logged in before so no need to do anything else
+        if(rolesPresent.length > 0) {
+          return user;
+        }
+
+        // No roles present for this brand, first login for this brand so merge in the defaults
+        var mergedRoles = _.union(_.map(user.roles, 'id'),roles);
+        User.update({id: user.id}, {roles: mergedRoles}).exec(function afterwards(err, updated){
+
+          if (err) {
+            return;
+          }
+
+        });
+
+        return user;
+
     }
 
     public hasRole(user, targetRole) {

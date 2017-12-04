@@ -104,7 +104,7 @@ export module Controllers {
       public logout(req, res) {
         req.logout();
         req.session.destroy(err => {
-          if(typeof sails.config.auth.postLogoutRedir === 'function'){
+          if(_.isFunction(sails.config.auth.postLogoutRedir)){
           var branding = req.options.locals['branding'] || sails.config.auth.defaultBranding;
           var portal = req.options.locals['portal'] || sails.config.auth.defaultPortal;
           res.redirect(sails.config.auth.postLogoutRedir(branding,portal))
