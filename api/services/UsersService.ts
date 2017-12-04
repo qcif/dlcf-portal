@@ -113,6 +113,12 @@ export module Services {
         var aafDefRoles = _.map(RolesService.getNestedRoles(RolesService.getDefAuthenticatedRole(brand).name, brand.roles), 'id');
         var aafUsernameField = authConfig.aaf.usernameField;
         const userName = Buffer.from(jwt_payload[aafUsernameField]).toString('base64');
+        var emailSuffix = null;
+        if(!_.isEmpty(brand["aaf"])) {
+           if(!_.isEmpty(brand["aaf"]["emailSuffix"])) {
+              emailSuffix = brand["aaf"]["emailSuffix"];
+           }
+        }
         User.findOne({ username: userName }).populate('roles').exec(function(err, user) {
           sails.log.verbose("At AAF Strategy verify, payload:");
           sails.log.verbose(jwt_payload);
@@ -121,14 +127,27 @@ export module Services {
           sails.log.verbose("Error:");
           sails.log.verbose(err);
 
+
           if (err) {
             return done(err, false);
           }
           if (user) {
+            if(emailSuffix != null && !_.endsWith(user.email, emailSuffix)) {
+              return done(null, false, {
+                message: 'You are not permitted to use this system'
+              });
+            }
             user = _this._addRolesForNewBrand(user, aafDefRoles, brand);
             done(null, user);
           } else {
             sails.log.verbose("At AAF Strategy verify, creating new user...");
+
+            if(emailSuffix != null && !_.endsWith(jwt_payload[aafAttributes].mail, emailSuffix)) {
+              return done(null, false, {
+                message: 'You are not permitted to use this system'
+              });
+            }
+
             // first time login, create with default role
             var userToCreate = {
               username: userName,
