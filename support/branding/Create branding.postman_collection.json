@@ -1,0 +1,78 @@
+{
+	"info": {
+		"name": "Create branding",
+		"_postman_id": "808259ee-ace0-48f4-456d-42427f587240",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create branding test",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "Login to the portal and copy your cookie using Developer tools"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"qcif90\",\n  \"css\": \".site-branding-area h1 {color: blue;}\",\n  \"roles\": [\"Admin\",\"Maintainer\",\"Researcher\",\"Guest\"]\n}"
+				},
+				"url": {
+					"raw": "https://dlcf-test.redboxresearchdata.com.au/default/rdmp/branding/create",
+					"protocol": "https",
+					"host": [
+						"dlcf-test",
+						"redboxresearchdata",
+						"com",
+						"au"
+					],
+					"path": [
+						"default",
+						"rdmp",
+						"branding",
+						"create"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create branding prod",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "Login to the portal and copy your cookie using Developer tools"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"qcif90\",\n  \"css\": \".site-branding-area h1 {color: blue;}\",\n  \"roles\": [\"Admin\",\"Maintainer\",\"Researcher\",\"Guest\"]\n}"
+				},
+				"url": {
+					"raw": "https://www.raportal.org.au/default/rdmp/branding/create",
+					"protocol": "https",
+					"host": [
+						"www",
+						"raportal",
+						"org",
+						"au"
+					],
+					"path": [
+						"default",
+						"rdmp",
+						"branding",
+						"create"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

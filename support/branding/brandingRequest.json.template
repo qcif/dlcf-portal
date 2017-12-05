@@ -1,0 +1,6 @@
+{
+  "name": "$NAME",
+  "css": "$CSS",
+  "roles": ["Admin","Maintainer","Researcher","Guest"],
+  "user": "$USER"
+}

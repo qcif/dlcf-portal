@@ -66,6 +66,11 @@ export module Controllers {
        * @param res
        */
       public login(req, res) {
+        //If there isn't a redirect URL on the session already, set it to the default
+        if(_.isEmpty(req.session.redirUrl)) {
+         let branding = sails.config.auth[req.session.branding] || sails.config.auth[sails.config.auth.defaultBrand];
+         req.session.redirUrl = `${BrandingService.getBrandAndPortalPath(req)}/${branding.local.postLoginRedir}`;
+        }
         this.sendView(req,res, sails.config.auth.loginPath);
       }
 
