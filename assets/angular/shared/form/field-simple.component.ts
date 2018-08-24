@@ -266,7 +266,7 @@ export class AnchorOrButtonComponent extends SimpleComponent {
   template: `
   <li *ngIf="!field.editMode && isVisible()" class="key-value-pair padding-bottom-10">
     <span class="key" *ngIf="field.label">{{field.label}}</span>
-    <span class="value"><a href='{{field.value}}' target="field.target">{{field.value}}</a></span>
+    <span class="value">{{field.value}}</span>
   </li>
   `,
 })

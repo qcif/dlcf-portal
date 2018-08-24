@@ -35,7 +35,7 @@ module.exports = {
   auth: {
     // Default brand...
     default: {
-      active: ["aaf", "local"],
+      active: ["aaf", "local", "tuakiri"],
       aaf: {
         loginUrl: "https://rapid.test.aaf.edu.au/jwt/authnrequest/research/OTG8tPdB2H_aT0yZ4s63zQ",
         opts: {
@@ -45,6 +45,17 @@ module.exports = {
             audience: 'http://localhost:1500/default/rdmp/',
             ignoreNotBefore: true
           }
+        }
+      }
+    },
+    tuakiri: {
+      loginUrl: "https://rapidconnect.staging.tuakiri.ac.nz/jwt/authnrequest/research/Y5o9OdPyYsIouATPDpvAEA",
+      opts: {
+        secretOrKey: 'wT+PAaZ3cF2ob+LRTBueMJ8Qsdu4CDxhKhWmlSCgHxwfTFkWX55x7ZJ2FNXk0Vut4a1Iid9B1CVd4qRWCeWOzhihoQR0JcojDm71z',
+        jsonWebTokenOptions: {
+          issuer: 'https://rapidconnect.staging.tuakiri.ac.nz',
+          audience: 'http://localhost:1500/default/rdmp/',
+          ignoreNotBefore: true
         }
       }
     }

@@ -178,6 +178,81 @@ export module Services {
           }
         });
       }));
+
+      const tuakiriOpts = defAuthConfig.tuakiri.opts;
+      tuakiriOpts.jwtFromRequest = ExtractJwt.fromBodyField('assertion');
+      sails.config.passport.use('tuakiri-jwt', new JwtStrategy(tuakiriOpts, function(req, jwt_payload, done) {
+        var brand = BrandingService.getBrand(req.session.branding);
+        const authConfig = ConfigService.getBrand(brand.name, 'auth');
+        var tuakiriAttributes = authConfig.tuakiri.attributesField;
+        var tuakiriDefRoles = _.map(RolesService.getNestedRoles(RolesService.getDefAuthenticatedRole(brand).name, brand.roles), 'id');
+        var tuakiriUsernameField = authConfig.tuakiri.usernameField;
+        const userName = Buffer.from(jwt_payload[tuakiriUsernameField]).toString('base64');
+        var emailSuffix = null;
+        if(!_.isEmpty(brand["tuakiri"])) {
+           if(!_.isEmpty(brand["tuakiri"]["emailSuffix"])) {
+              emailSuffix = brand["tuakiri"]["emailSuffix"];
+           }
+        }
+        User.findOne({ username: userName }).populate('roles').exec(function(err, user) {
+          sails.log.verbose("At tuakiri Strategy verify, payload:");
+          sails.log.verbose(jwt_payload);
+          sails.log.verbose("User:");
+          sails.log.verbose(user);
+          sails.log.verbose("Error:");
+          sails.log.verbose(err);
+
+
+          if (err) {
+            return done(err, false);
+          }
+          if (user) {
+            if(emailSuffix != null && !_.endsWith(user.email, emailSuffix)) {
+              return done(null, false, {
+                message: 'You are not permitted to use this system'
+              });
+            }
+            user = _this._addRolesForNewBrand(user, tuakiriDefRoles, brand);
+            done(null, user);
+          } else {
+            sails.log.verbose("At tuakiri Strategy verify, creating new user...");
+
+            if(emailSuffix != null && !_.endsWith(jwt_payload[tuakiriAttributes].mail, emailSuffix)) {
+              return done(null, false, {
+                message: 'You are not permitted to use this system'
+              });
+            }
+
+            // first time login, create with default role
+            var userToCreate = {
+              username: userName,
+              name: jwt_payload[tuakiriAttributes].cn,
+              email: jwt_payload[tuakiriAttributes].mail,
+              displayname: jwt_payload[tuakiriAttributes].displayname,
+              cn: jwt_payload[tuakiriAttributes].cn,
+              edupersonscopedaffiliation: jwt_payload[tuakiriAttributes].edupersonscopedaffiliation,
+              edupersontargetedid: jwt_payload[tuakiriAttributes].edupersontargetedid,
+              edupersonprincipalname: jwt_payload[tuakiriAttributes].edupersonprincipalname,
+              givenname: jwt_payload[tuakiriAttributes].givenname,
+              surname: jwt_payload[tuakiriAttributes].surname,
+              type: 'tuakiri',
+              roles: tuakiriDefRoles
+            };
+            sails.log.verbose(userToCreate);
+            User.create(userToCreate).exec(function(err, newUser) {
+              if (err) {
+                sails.log.error("Error creating new user:");
+                sails.log.error(err);
+                return done(err, false);
+              }
+
+              sails.log.verbose("Done, returning new user:");
+              sails.log.verbose(newUser);
+              return done(null, newUser);
+            });
+          }
+        });
+      }));
     }
 
     protected initDefAdmin = (defRoles, defAdminRole) => {

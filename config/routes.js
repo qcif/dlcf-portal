@@ -79,6 +79,7 @@ module.exports.routes = {
   ***************************************************************************/
   'post /user/login_local': 'typescript/UserController.localLogin',
   'post /user/login_aaf': 'typescript/UserController.aafLogin',
+  'post /user/login_tuakiri': 'typescript/UserController.tuakiriLogin',
   'get /user/info': 'typescript/UserController.info',
   'get /:branding/:portal/user/login': 'typescript/UserController.login',
   'get /:branding/:portal/user/logout': 'typescript/UserController.logout',

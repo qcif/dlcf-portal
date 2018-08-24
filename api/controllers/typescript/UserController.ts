@@ -39,6 +39,7 @@ export module Controllers {
           'logout',
           'info',
           'aafLogin',
+          'tuakiriLogin',
           'localLogin',
           'redirLogin',
           'redirPostLogin',
@@ -162,6 +163,29 @@ export module Controllers {
           req.logIn(user, function(err) {
             if (err) res.send(err);
             sails.log.debug("AAF Login OK, redirecting...");
+            return sails.controllers['typescript/user'].redirPostLogin(req, res);
+          });
+        })(req, res);
+      }
+
+      public tuakiriLogin(req, res) {
+        sails.config.passport.authenticate('tuakiri-jwt', function(err, user, info) {
+          sails.log.verbose("At Tuakiri Controller, verify...");
+          sails.log.verbose("Error:");
+          sails.log.verbose(err);
+          sails.log.verbose("Info:");
+          sails.log.verbose(info);
+          sails.log.verbose("User:");
+          sails.log.verbose(user);
+          if ((err) || (!user)) {
+              return res.send({
+                  message: info.message,
+                  user: user
+              });
+          }
+          req.logIn(user, function(err) {
+            if (err) res.send(err);
+            sails.log.debug("Tuakiri Login OK, redirecting...");
             return sails.controllers['typescript/user'].redirPostLogin(req, res);
           });
         })(req, res);
